@@ -1,6 +1,6 @@
 # group-meeting-planner
 
-## Project Description
+***Project Description***
 
 **Who is it for?**
 - People with busy calendars who need to schedule for group events/meetings.
