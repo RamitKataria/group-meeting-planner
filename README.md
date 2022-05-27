@@ -56,7 +56,6 @@ Allow users to set up meetings schedules & automatically fill in availability by
 - As an attendee, I want to be able to create an account through some external authentication service
 - As an attendee, I want to be able to log in to my account through the same external authentication service
 - As the meeting organizer, I want to be able to limit access to the meeting info and availability to registered users with given email addresses
-- As a user, I want to read guidance about website’s functions before I first use the website
 
 ## Minimal Requirements Breakdown
 
