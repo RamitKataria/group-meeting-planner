@@ -55,7 +55,7 @@
 - As a user, I want to read guidance about website’s functions before I first use the website.
 
 
-*Minimal Requirements Breakdown*
+***Minimal Requirements Breakdown***
 
 
 **Requirement 1:**
