@@ -55,6 +55,10 @@
 - As a user, I want to read guidance about website’s functions before I first use the website.
 
 
+
+
+
+
 ***Minimal Requirements Breakdown***
 
 
@@ -74,7 +78,12 @@
 - Server should serve “incorrect meeting ID” page for invalid meeting ID
 
 
-**rough sketch prototypes**
+
+
+
+
+
+***rough sketch prototypes***
 
 ![](https://github.com/RamitKataria/meeting-planner/blob/May/Sketch%20v2_00.png)
 
