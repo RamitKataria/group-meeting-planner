@@ -29,7 +29,7 @@
 
 
 
-##Project task requirements
+***Project task requirements***
 
 **Minimal requirements:**
 - As a meeting organizer, I want to be able to create a new meeting with a given span (possible days/time) and get a unique link for it
