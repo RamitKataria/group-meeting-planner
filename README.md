@@ -3,7 +3,7 @@
 ## Project Description
 
 **Who is it for?**
-1.People with busy calendars who need to schedule for group events/meetings.
+** People with busy calendars who need to schedule for group events/meetings.
 
 **What will it do? (What "human activity" will it support?)**
 1.Allow users to set up meetings schedules & automatically fill in availability by linking their personal calendars.
