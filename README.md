@@ -76,4 +76,4 @@ Allow users to set up meetings schedules & automatically fill in availability by
 
 ## Sketch Prototypes
 
-![Image containing rough sketch prototypes](InitialRoughSketch.png)
+![Image containing rough sketch prototypes](SketchPrototypes.png)
