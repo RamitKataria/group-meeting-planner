@@ -41,18 +41,18 @@ Allow users to set up meetings schedules & automatically fill in availability by
 
 ### Standard requirements
 
-- As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features
+- As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features[<sup>1</sup>](#foot1)
 - As a registered user, I want to be able to delete my account
-- As an organizer, I want to be able to change the meeting span after creating it by logging into the account I used to create it
+- As a meeting organizer, I want to be able to change the meeting span after creating it by logging into the account I used to create it
 - As a meeting organizer, I want to be notified by email after all team members have entered their availability
 - As a meeting attendee, I want to be notified after the organizer has finalized the meeting time
-- As a user, I want to be sent an email verification to change my password when I forget the password
+- As a registered user, I want to be sent an email verification to change my password when I forget the password
 - As a registered user, I want to be able to use my previously entered availability for new meetings
 
 ### Stretch requirements
 
-- All meeting attendees want to be able to vote for the best meeting time from all the options provided by our website
-- As an attendees, I want to be able to be send notifications once the meeting time is finalized
+- All meeting attendees should be able to vote for the best meeting time from all the options provided by the website
+- As an attendee, I want to be able to be send notifications once the meeting time is finalized
 - As an attendee, I want to be able to create an account through some external authentication service
 - As an attendee, I want to be able to log in to my account through the same external authentication service
 - As the meeting organizer, I want to be able to limit access to the meeting info and availability to registered users with given email addresses
@@ -77,3 +77,8 @@ Allow users to set up meetings schedules & automatically fill in availability by
 ## Sketch Prototypes
 
 ![Image containing rough sketch prototypes](SketchPrototypes.png)
+
+
+---
+###### *Footnotes*
+*1. <a id="#foot1"></a> A user of can be either a guest or a registered user. A guest can access the features listed in Minimal Requirements, whereas a registered user can access all implemented features.*
