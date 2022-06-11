@@ -1,4 +1,8 @@
 import "../css/navBar.css";
+import Home from "./Home.js";
+import NewMeeting from "./NewMeeting.js";
+import Account from "./Account.js";
+
 
 export default function NavBar() {
 	return (
@@ -7,11 +11,11 @@ export default function NavBar() {
 			<Route path="/">
 				<Home />
 			</Route>
-			<Route path="/recipe">
-				<RecipePage />
+			<Route path="/newMeeting">
+				<NewMeeting />
 			</Route>
-			<Route path="/about">
-				<About />
+			<Route path="/account">
+				<Account />
 			</Route>
 			<Footer />
 		</div>
