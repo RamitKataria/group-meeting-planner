@@ -1,4 +1,4 @@
-import "../css/account.css";
+import "../../css/account.css";
 
 export default function Account() {
 	return (

@@ -1,7 +1,7 @@
 import "../css/navBar.css";
-import Home from "./Home.js";
-import NewMeeting from "./NewMeeting.js";
-import Account from "./Account.js";
+import Home from "./pages/Home.js";
+import NewMeeting from "./pages/NewMeeting.js";
+import Account from "./pages/Account.js";
 import Route from "./Route.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faPlus, faUser} from "@fortawesome/free-solid-svg-icons";
