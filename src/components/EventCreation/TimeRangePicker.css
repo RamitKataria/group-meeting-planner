@@ -5,7 +5,7 @@
     /* Form outline */
     padding: 1em;
     border: 2px solid rgb(104, 104, 104);
-    border-radius: 1em;
+    border-radius: 0em;
     flex: auto;
 }
 

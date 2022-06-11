@@ -9,7 +9,7 @@ function EventCreation() {
         <EventName/>
         <Grid container spacing={2}
         columns={11}
-        sx={{margin:'0 auto', marginLeft: '20'}}>
+        sx={{margin:'0 auto', paddingLeft: '6em', paddingRight: '6em'}}>
             <Grid item xs={5} sx={{maxWidth: '200px'}}>
                 <DatePicker/>
             </Grid>
