@@ -1,0 +1,22 @@
+div{
+    text-align: left;
+}
+
+h1{
+    text-align: center;
+    padding: 0;
+}
+
+text{
+    padding-bottom: 0.5em;
+}
+
+button#confirm{
+    margin-right: 3em;
+}
+
+div#confirm{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}

@@ -1,0 +1,16 @@
+#pick-time-range {
+    /* Center the form on the page */
+    margin: 0 left;
+    width: 80%;
+    /* Form outline */
+    padding: 1em;
+    border: 2px solid rgb(104, 104, 104);
+    border-radius: 1em;
+    flex: auto;
+}
+
+div.time-field {
+    text-align: left;
+    padding: 0.5em;
+}
+

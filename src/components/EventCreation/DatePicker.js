@@ -3,10 +3,11 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { setDates } from '../../actions/EventCreation';
-// import './DatePicker.css'
+import './DatePicker.css'
 
 function DatePicker() {
     // const [date, setDate] = useState(new Date());
+
     const datesPicked = useSelector(state => state.datesPicked);
     const dispatch = useDispatch();
 
@@ -37,11 +38,14 @@ function DatePicker() {
     }
 
     return (
-      <div className='app'>
+      <div id='possible-days'>
+        <div>
+            <text>Possible Day(s)</text>
+        </div>
         <div className='calendar-container'>
           <Calendar onChange={handleChange} selectRange={true}/>
         </div>
-        {printDate(datesPicked)}
+        {/* {printDate(datesPicked)} */}
       </div>
     );
 
