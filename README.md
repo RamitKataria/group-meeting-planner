@@ -41,7 +41,7 @@ Allow users to set up meetings schedules & automatically fill in availability by
 
 ### Standard requirements
 
-- As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features[<sup>1</sup>](#foot1)
+- As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features[<sup>1</sup>](#footnotes)
 - As a registered user, I want to be able to delete my account
 - As a meeting organizer, I want to be able to change the meeting span after creating it by logging into the account I used to create it
 - As a meeting organizer, I want to be notified by email after all team members have entered their availability
