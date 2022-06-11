@@ -1,11 +1,10 @@
-import logo from './logo.svg';
+import NavBar from "./components/NavBar"
 import './App.css';
-import EventCreation from './components/EventCreation';
 
 function App() {
   return (
     <div className="App">
-      <EventCreation/>
+      <NavBar/>
     </div>
   );
 }
