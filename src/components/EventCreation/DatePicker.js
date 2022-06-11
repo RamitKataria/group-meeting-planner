@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { setDates } from '../../actions/EventCreation';
-import './DatePicker.css'
+import '../../css/EventCreation/DatePicker.css'
 
 function DatePicker() {
     // const [date, setDate] = useState(new Date());

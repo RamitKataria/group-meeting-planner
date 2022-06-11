@@ -1,6 +1,6 @@
 import DatePicker from "./DatePicker"
 import TimeRangePicker from "./TimeRangerPicker";
-import './index.css'
+import '../../css/EventCreation/EventCreation.css';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
