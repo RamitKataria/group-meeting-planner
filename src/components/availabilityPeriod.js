@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
-const AvailabilityPeriod = ({ start, availability }) => {
+const AvailabilityPeriod = ({ start, duration }) => {
+  const [state, setState] = useState('-');
+  const toggleValue = () => {
+    setState(state == '-' ? '+' : '-')
+  }
   return (
-    <td>
-      <div className="availability-table-cell" style={{ backgroundColor: `rgba(0, 96, 100, ${availability})` }} starttime={start}/>
-    </td>
+    <td onDrag={toggleValue} onClick={toggleValue}>{state}</td>
   );
 };
 

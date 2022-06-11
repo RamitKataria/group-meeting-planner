@@ -22,7 +22,7 @@ const AvailabilityTable = ({ days, timeRange, timeUnit }) => {
           <tr key={i}>
             <th>{pStart}</th>
             {days.map((d, j) => (
-              <AvailabilityPeriod key={(i, j)} start={pStart} availability={1}/>
+              <AvailabilityPeriod key={(i, j)} start={pStart} duration={1} availability={1}/>
             ))}
           </tr>
         ))}
