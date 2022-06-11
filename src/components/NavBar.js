@@ -2,12 +2,24 @@ import "../css/navBar.css";
 import Home from "./Home.js";
 import NewMeeting from "./NewMeeting.js";
 import Account from "./Account.js";
-
+import Route from "./Route.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse, faPlus, faUser} from "@fortawesome/free-solid-svg-icons";
 
 export default function NavBar() {
 	return (
-		<div className="navMenu">
-			<Header />
+		<div >
+			<div className="sidebar">
+				<a href="/" className="item-top"><FontAwesomeIcon icon={faHouse}/>
+
+				</a>
+				<a href="./newMeeting" className="item-top"><FontAwesomeIcon icon={faPlus}/>
+
+				</a>
+				<a href="./account" className="item-bottom"><FontAwesomeIcon icon={faUser}/>
+				</a>
+			</div>
+
 			<Route path="/">
 				<Home />
 			</Route>
@@ -17,7 +29,7 @@ export default function NavBar() {
 			<Route path="/account">
 				<Account />
 			</Route>
-			<Footer />
+			{/*<Footer />*/}
 		</div>
 	);
 }
