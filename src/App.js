@@ -3,6 +3,7 @@
 // import NewMeeting from './components/pages/NewMeeting';
 // import Account from './components/pages/Account';
 import NavBar from './components/NavBar.js';
+import "./App.css";
 // import AllMeetings from "./components/pages/AllMeetings.js";
 
 function App() {
