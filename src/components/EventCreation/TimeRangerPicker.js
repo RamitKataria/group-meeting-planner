@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import './TimeRangePicker.css'
+import '../../css/EventCreation/TimeRangePicker.css';
 
 const sliderMarks = [
     {value: 9, label: '09:00'},
