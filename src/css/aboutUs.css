@@ -1,0 +1,32 @@
+* {
+    font-family: 'Merriweather', serif;
+    line-height: 2;
+}
+.outer-div{
+    margin: 3% 15%;
+}
+
+.mission-div{
+    margin-bottom: 30px;
+}
+
+.image{
+    width: 25%;
+    height:auto;
+    margin-bottom: 30px;
+}
+
+.right{
+    float: right;
+    margin-left: 30px;
+}
+
+.left{
+    float: left;
+    margin-right: 30px;
+}
+.section{
+    margin: 80px auto;
+    text-align: left;
+    width: 80%;
+}

@@ -8,17 +8,6 @@ import NavBar from './components/NavBar.js';
 function App() {
     return (
         <NavBar/>
-        // <BrowserRouter>
-        //     <Routes>
-        //         <Route path='/' element={<NavBar />}>
-        //             <Route index element={<Home />} />
-        //             <Route path='/home' element={<Home />} />
-        //             <Route path='/newMeeting' element={<NewMeeting />} />
-        //             <Route path='/allMeetings' element={<AllMeetings />} />
-        //             <Route path='/account' element={<Account />} />
-        //         </Route>
-        //     </Routes>
-        // </BrowserRouter>
     );
 }
 
