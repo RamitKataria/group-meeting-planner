@@ -4,8 +4,10 @@
 // import Account from './components/pages/Account';
 import NavBar from './components/NavBar.js';
 // import AllMeetings from "./components/pages/AllMeetings.js";
+import AOS from 'aos';
 
 function App() {
+    AOS.init();
     return (
         <NavBar/>
     );
