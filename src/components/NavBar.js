@@ -7,6 +7,7 @@ import AllMeetings from "./pages/AllMeetings";
 import AboutUs from "./pages/AboutUs";
 import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser } from "react-icons/bi";
 
+
 export default function NavBar() {
 	return (
 		<div className="">
