@@ -17,32 +17,60 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import {theme} from '../../theme/color-theme'
 
-function createData(meetingId, name, dateCreated, link, status) {
+
+const formatStringtoDate = (date) => {
+	const [dateValues, timeValues] = date.split(' ');
+
+	const [month, day, year] = dateValues.split('-');
+	const [hours, minutes, seconds] = timeValues.split(':');
+	return new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
+}
+
+const formatDatetoString = (date) => {
+	return String(date.getMonth()).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0') + "-"
+		+ date.getFullYear() + " " + String(date.getHours()).padStart(2, '0') + ":" +String(date.getMinutes()).padStart(2, '0');
+}
+
+function createData(meetingId, name, date, link, status) {
 	return {
-		meetingId,
-		name,
-		dateCreated,
-		link,
-		status,
+		meetingId: meetingId,
+		name: name,
+		dateCreated: formatStringtoDate(date),
+		link: link,
+		status: status,
 	};
 }
 
 const rows = [
-	createData("1001", "Hiking Day", "Feb 24, 2022", "new Date(2022, 2,24,13,23,24)",
-		"67"),
-	createData("1002", "Boxing Day", "new Date(2022, 2,20,13,23,24)",
-		"51", 4.9),
-	createData("1003", "Christmas Party", "new Date(2022, 2,4,13,23,24)",
-		"24", 6.0),
-	createData("1004", "Brainstorming Day", "new Date(2022, 2,14,13,23,24)",
-		"24", 4.0)
+	createData("1001", "Hiking Day", "09-04-2021 07:30:34", "google.com",
+		"More Info"),
+	createData("1002", "Boxing Day", "10-04-2021 07:30:34",
+		"yahoo.com", "More Info"),
+	createData("1003", "Christmas Party", "11-04-2021 07:30:34",
+		"amazon.com", "More Info"),
+	createData("1004", "Brainstorming Day", "12-04-2021 07:30:34",
+		"reddit.com", "More Info"),
+	createData("1005", "Hiking Day", "09-04-2021 07:30:34", "google.com",
+		"More Info"),
+	createData("1006", "Boxing Day", "10-04-2021 07:30:34",
+		"yahoo.com", "More Info"),
+	createData("1007", "Christmas Party", "11-04-2021 07:30:34",
+		"amazon.com", "More Info"),
+	createData("1008", "Brainstorming Day", "12-04-2021 07:30:34",
+		"reddit.com", "More Info"),
+	createData("1009", "Hiking Day", "09-04-2021 07:30:34", "google.com",
+		"More Info"),
+	createData("1010", "Boxing Day", "10-04-2021 07:30:34",
+		"yahoo.com", "More Info"),
+	createData("1011", "Christmas Party", "11-04-2021 07:30:34",
+		"amazon.com", "More Info"),
+	createData("1012", "Brainstorming Day", "12-04-2021 07:30:34",
+		"reddit.com", "More Info")
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -92,19 +120,19 @@ const headCells = [
 		id: "dateCreated",
 		numeric: true,
 		disablePadding: false,
-		label: "Date Created"
+		label: "Date & Time Created"
 	},
 	{
 		id: "link",
 		numeric: true,
 		disablePadding: false,
-		label: "Meeting Link"
+		label: "Meeting Link"
 	},
 	{
 		id: "status",
 		numeric: true,
 		disablePadding: false,
-		label: "Meeting Status"
+		label: "Meeting Status"
 	}
 ];
 
@@ -159,7 +187,8 @@ function EnhancedTableHead(props) {
 				{headCells.map((headCell) => (
 					<StyledTableCell
 						key={headCell.id}
-						align={headCell.numeric ? "right" : "left"}
+						// align={headCell.numeric ? "right" : "left"}
+						align="right"
 						padding={headCell.disablePadding ? "none" : "normal"}
 						sortDirection={orderBy === headCell.id ? order : false}
 					>
@@ -259,7 +288,6 @@ export default function EnhancedTable() {
 	const [orderBy, setOrderBy] = React.useState("meetingId");
 	const [selected, setSelected] = React.useState([]);
 	const [page, setPage] = React.useState(0);
-	// const [dense, setDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 	const handleRequestSort = (event, property) => {
@@ -305,10 +333,6 @@ export default function EnhancedTable() {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
-
-	// const handleChangeDense = (event) => {
-	//   setDense(event.target.checked);
-	// };
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -366,13 +390,14 @@ export default function EnhancedTable() {
 												id={labelId}
 												scope="row"
 												padding="none"
+												align="right"
 											>
 												{row.meetingId}
 											</StyledTableCell>
 											<StyledTableCell align="right">{row.name}</StyledTableCell>
-											<StyledTableCell align="right">{row.dateCreated}</StyledTableCell>
-											<StyledTableCell align="right" numeric component="a" href="google.com">{row.link}</StyledTableCell>
-											<StyledTableCell align="right" numeric component="a" href="google.com">{row.status}</StyledTableCell>
+											<StyledTableCell align="right">{formatDatetoString(row.dateCreated)}</StyledTableCell>
+											<StyledTableCell align="right" numeric component="a" href={row.link}>{row.link}</StyledTableCell>
+											<StyledTableCell align="right" numeric component="a" href={row.status}>{row.status}</StyledTableCell>
 										</StyledTableRow>
 									);
 								})}
