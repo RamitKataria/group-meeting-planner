@@ -10,12 +10,13 @@ function EventCreation() {
         <Grid container spacing={2}
         columns={11}
         sx={{margin:'0 auto', paddingLeft: '6em', paddingRight: '6em'}}>
-            <Grid item xs={5} sx={{maxWidth: '200px'}}>
+            <Grid item xs={11} sx={{maxWidth: '200px'}}>
                 <DatePicker/>
+                <div/>
             </Grid>
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
                 <TimeRangePicker/>
-            </Grid>
+            </Grid> */}
         </Grid>
         <div id='confirm'>
             <Button variant='contained' 

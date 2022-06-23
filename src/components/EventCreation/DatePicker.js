@@ -3,13 +3,13 @@ import React, { useCallback, useState } from 'react';
 import { Calendar } from '@natscale/react-calendar';
 import "../../css/EventCreation/DatePicker.css"
 import '@natscale/react-calendar/dist/main.css';
-import CalendarToggles from './CalendarToggles'
+import ViewSwitch from './ViewSwitch';
 
-const toggleStates = ['Range', 'Dates']
+const viewStates = {"Range": false, "Dates": true}
 
 export default function DatePicker() {
     const [dates, setDates] = useState([]);
-    const [toggleState, setState] = useState('Range');
+    const [view, setView] = useState(false);
 
     const onChange = useCallback(
         (val) => {
@@ -18,36 +18,34 @@ export default function DatePicker() {
         [setDates],
     );
 
-    function onToggle(newState) {
+    function onSwitch(newState) {
         if (dates.length === 2) {
             setDates(rangeToMultiDates(dates[0], dates[1]));
         } else if (dates.length > 2) {
-            setDates([dates[0], dates[dates.length-1]]); // todo: fix 'earliest date' bug
+            setDates([dates[0], dates[dates.length-1]]); // TODO: fix 'earliest date' bug
         }
         // console.log(dates)
-        setState(newState);
+        setView(newState);
     }
 
     return (
         <div className="dateChosen">
             <div>
-                <CalendarToggles
-                toggleState = {toggleState}
-                setState = {onToggle}/>
+                <ViewSwitch
+                checked = {view}
+                handleSwitch = {onSwitch}
+                />
             </div>
             <Calendar size={360} 
-            // showDualCalendar={true} 
-            isRangeSelector={toggleState === toggleStates[0]} 
-            noPadRangeCell={toggleState === toggleStates[0]}
-            isMultiSelector={toggleState === toggleStates[1]} 
+            isRangeSelector={view === viewStates.Range}
+            noPadRangeCell={view === viewStates.Range}
+            isMultiSelector={view === viewStates.Dates}
             value={dates} onChange={onChange} />
             <h2>Date Range Chosen:</h2>
-            {dates.length !== 0 ? (
-                // <p>{getMonthName(value[0].getMonth()) + " " + value[0].getDate() + ", " + value[0].getFullYear()}</p>
+            {dates.length > 0 ? (
                 <p>{dates[0].toDateString()}</p>
             ) : null}
             {dates.length > 1 ? (
-                // <p>{getMonthName(value[1].getMonth()) + " " + value[1].getDate() + ", " + value[1].getFullYear()}</p>
                 <p>{dates[1].toDateString()}</p>
             ) : null}
         </div>
@@ -67,32 +65,3 @@ function rangeToMultiDates(start, end) {
     }
     return multiDates;
 }
-
-// const getMonthName = (num) => {
-//     switch (num) {
-//         case 0:
-//             return "Jan";
-//         case 1:
-//             return "Feb";
-//         case 2:
-//             return "Mar";
-//         case 3:
-//             return "Apr";
-//         case 4:
-//             return "May";
-//         case 5:
-//             return "Jun";
-//         case 6:
-//             return "Jul";
-//         case 7:
-//             return "Aug";
-//         case 8:
-//             return "Sep";
-//         case 9:
-//             return "Oct";
-//         case 10:
-//             return "Nov";
-//         default:
-//             return "Dec";
-//     }
-// }
