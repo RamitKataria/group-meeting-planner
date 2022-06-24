@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const meetingsRouter = require('./routes/meetings');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/meetings', meetingsRouter);
+app.use('/users', usersRouter);
 
 module.exports = app;
