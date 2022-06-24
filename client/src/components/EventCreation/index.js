@@ -6,14 +6,14 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 
 function EventCreation() {
-    return (<div id="event-creation">
+    return (<div className="event-creation">
         {/* <EventName/> */}
         <Grid container spacing={2}
         columns={12}
         // sx={{margin:'0 auto', paddingLeft: '10%', paddingRight: '10%'}}
         >
-            <Grid item className="padding-left" xs={4}></Grid>
-            <Grid item className="name-field" xs={4}>
+            <Grid item className="padding-left" xs={3}></Grid>
+            <Grid item className="name-field" xs={6}>
                 <h1>Schedule An Event</h1>
                 <div className="input">
                     <div className="input item left-padding "></div>
@@ -25,7 +25,7 @@ function EventCreation() {
                 </div>
                 
             </Grid>
-            <Grid item className="padding-right" xs={4}></Grid>
+            <Grid item className="padding-right" xs={3}></Grid>
 
             <Grid item className="padding-left" md={2} xs={2}></Grid>
             <Grid item md={4} xs={8} >
