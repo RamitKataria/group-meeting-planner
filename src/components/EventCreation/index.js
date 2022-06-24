@@ -31,6 +31,7 @@ function EventCreation() {
             <Grid item md={4} xs={8} >
                 <div className="inner-flex">
                     <div className="item"></div>
+                    
                     <DatePicker/>
                     <div className="item"></div>
                 </div>
@@ -38,17 +39,18 @@ function EventCreation() {
             <Grid item className="padding-right-single-column"  md={0.1} xs={2}> </Grid>
             <Grid item className="padding-left-single-column"  md={0.1} xs={2} ></Grid>
             <Grid item id="time-range-picker-and-btn" md={4} xs={8}>
+            
                 <div className="inner-flex">
                     <div className="item"></div>
                         <div className="picker-and-btn">
-                        <TimeRangePicker/>
-                        <div id='confirm'>
-                            <Button variant='contained' 
-                            // color='success'
-                            id='confirm' 
-                            sx={{borderRadius:'2em'}}
-                            >Create Event</Button>
-                        </div>
+                            <TimeRangePicker/>
+                            <div id='confirm'>
+                                <Button variant='contained' 
+                                // color='success'
+                                id='confirm' 
+                                sx={{borderRadius:'2em'}}
+                                >Create Event</Button>
+                            </div>
                         </div>
                     <div className="item"></div>
                 </div>

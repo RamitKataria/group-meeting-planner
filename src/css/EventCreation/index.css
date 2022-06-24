@@ -18,7 +18,7 @@ button#confirm{
 #time-range-picker-and-btn{
         /* Center the form on the page */
         min-width: 25em;
-        max-width: 34em;
+        max-width: 36em;
 }
 
 div#confirm{
@@ -56,6 +56,9 @@ div.inner-flex .date-selection{
     flex-grow: 2;
 }
 
+/* Time Range Alignment */
 div.inner-flex .picker-and-btn{
-    flex-grow: 2;
+    flex-grow: 4;
+    min-width: 24em;
 }
+

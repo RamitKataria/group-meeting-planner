@@ -4,7 +4,7 @@ div#time-of-day {
 
 div#time-of-day #pick-time-range {
     /* TO REMOVE: Vertically aligh with left box*/
-    margin-top: 53.92px; 
+    /* margin-top: 53.92px;  */
 
     /* Form outline */
     padding: 1em;
