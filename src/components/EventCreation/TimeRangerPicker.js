@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
 import '../../css/EventCreation/TimeRangePicker.css';
+import TimeSlider from './TimeSlider';
 
 const sliderMarks = [
     {value: 9, label: '09:00'},
@@ -43,38 +42,55 @@ function TimeRangePicker() {
 
     return (
         <div id='time-of-day'>
-            <div>Time of Day</div>
-            <div className='time-range' id='pick-time-range'>
+            <h2>What time might work? </h2>
+            <div className='pick-time-range' id='pick-time-range'>
                 <div className='time-field'>
                     <label>No Earlier Than: </label>
-                    <input type='time' value={startTime} max={endTime}
-                        onChange={(e) => setStartTime(roundToHour(e.target.value))}
+                    <input type='time' value={startTime} 
+                        onChange={(e) => {
+                            const targetValue = sliderTime(e.target.value) < sliderTime(endTime) ? 
+                                e.target.value : endTime; 
+                            setSliderNums([sliderTime(targetValue), sliderNums[1]])
+                            setStartTime(roundToHour(targetValue))}
+                        }
                         step={3600} />
                     {/* <TimePicker value={startTime} onChange={setStartTime} disableClock={true}/> */}
                 </div>
                 <div className='time-field'>
                     <label>No Later Than: </label>
-                    <input type='time' value={endTime} min={startTime}
-                        onChange={(e) => setEndTime(roundToHour(e.target.value))}
+                    <input type='time' value={endTime} 
+                        onChange={(e) => {
+                            const targetValue = sliderTime(e.target.value) > sliderTime(startTime) ? 
+                                e.target.value : startTime; 
+                            setSliderNums([sliderNums[0], sliderTime(targetValue)])
+                            setEndTime(roundToHour(targetValue))}
+                        }
                         step={3600} />
                     {/* <TimePicker value={endTime} onChange={setEndTime} disableClock={true}/> */}
                 </div>
-                <div className='time-slider'>
-                    <Box sx={{ width: '97%', paddingTop: '2em'}}>
-                        <Slider
-                            color='success'
-                            min={4}
-                            max={23}
-                            step={1}
-                            value={sliderNums}
-                            onChange={handleSliderChange}
-                            marks={sliderMarks}
-                        />
-                    </Box>
-                </div>
+                <TimeSlider
+                sliderNums = {sliderNums}
+                handleSliderChange={handleSliderChange}
+                sliderMarks = {sliderMarks}/>
             </div>
+            <TimeRangeText
+            startTime={startTime}
+            endTime={endTime}/>
         </div>
     );
+}
+
+function TimeRangeText(props) {
+
+    return (
+        <div id="time-range-text">
+            { (props.startTime !== null & props.endTime !== null) ? (
+                <div>
+                    <p>Between <strong>{props.startTime}</strong> and <strong>{props.endTime}</strong></p>
+                </div>
+            ) : <p></p>}
+        </div>
+    )
 }
 
 export default TimeRangePicker;

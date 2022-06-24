@@ -4,50 +4,55 @@ import { Calendar } from '@natscale/react-calendar';
 import "../../css/EventCreation/DatePicker.css"
 import '@natscale/react-calendar/dist/main.css';
 import ViewSwitch from './ViewSwitch';
-
-const viewStates = {"Range": false, "Dates": true}
+import { DateRangeSharp, ElectricalServicesRounded } from '@mui/icons-material';
 
 export default function DatePicker() {
-    const [dates, setDates] = useState([]);
-    const [view, setView] = useState(false);
+    const [rangeDates, setRangeDates] = useState([]);
+    const [multiDates, setMultiDates] = useState([])
+    const [multiDateView, setView] = useState(false); // false: range view; true: multi-date view
 
-    const onChange = useCallback(
+    const onRangeChange = useCallback(
         (val) => {
-            setDates(val);
+            setMultiDates(rangeToMultiDates(val[0], val[1]));
+            setRangeDates(val);
         },
-        [setDates],
+        [setRangeDates],
     );
 
+    const onMultiDateChange = useCallback(
+        (val) => {
+            setMultiDates(val);
+        },
+        [setMultiDates],
+    )
+
     function onSwitch(newState) {
-        if (dates.length === 2) {
-            setDates(rangeToMultiDates(dates[0], dates[1]));
-        } else if (dates.length > 2) {
-            setDates([dates[0], dates[dates.length-1]]); // TODO: fix 'earliest date' bug
+        if (multiDateView & multiDates.length > 0) {
+            setRangeDates(multiDatesToRange(multiDates)); 
         }
-        // console.log(dates)
         setView(newState);
     }
 
     return (
-        <div className="dateChosen">
-            <div>
+        <div className="date-selection">
+            <h2>What days might work? </h2>
+            <div class='date-selection-switch'>
                 <ViewSwitch
-                checked = {view}
+                checked = {multiDateView}
                 handleSwitch = {onSwitch}
                 />
             </div>
             <Calendar size={360} 
-            isRangeSelector={view === viewStates.Range}
-            noPadRangeCell={view === viewStates.Range}
-            isMultiSelector={view === viewStates.Dates}
-            value={dates} onChange={onChange} />
-            <h2>Date Range Chosen:</h2>
-            {dates.length > 0 ? (
-                <p>{dates[0].toDateString()}</p>
-            ) : null}
-            {dates.length > 1 ? (
-                <p>{dates[1].toDateString()}</p>
-            ) : null}
+            fontSize={18}
+            isRangeSelector={!multiDateView}
+            noPadRangeCell={!multiDateView}
+            isMultiSelector={multiDateView}
+            value={multiDateView ? multiDates : rangeDates} onChange={multiDateView ? onMultiDateChange : onRangeChange} />
+            <DateSelectionText
+            multiDateView={multiDateView}
+            rangeDates={rangeDates}
+            multiDates={multiDates}
+            />
         </div>
     );
 }
@@ -64,4 +69,36 @@ function rangeToMultiDates(start, end) {
         multiDates.push(next);
     }
     return multiDates;
+}
+
+function multiDatesToRange(multiDates) {
+    if (multiDates < 1) {
+        return [];
+    }
+    const earliest = multiDates.reduce((previous, current) => {
+        return previous > current ? current : previous;
+    })
+    var latest = multiDates.reduce((previous, current) => {
+        return previous > current ? previous : current;
+    })
+    return [earliest, latest]
+}
+
+function DateSelectionText(props) {
+    const range = multiDatesToRange(props.multiDates);
+
+    return (
+        <div id="date-selection-text">
+            { (props.multiDates.length > 1) ? (
+                <div>
+                    <p>Between <strong>{range[0].toDateString()}</strong> and <strong>{range[1].toDateString()}</strong></p>
+                </div>
+            ) : null}
+            { (props.multiDates.length > 0 & props.multiDates.length <= 1) ? (
+                <div>
+                    <p>On <strong>{range[0].toDateString()}</strong></p>
+                </div>
+            ) : <p> </p>}
+        </div>
+    )
 }

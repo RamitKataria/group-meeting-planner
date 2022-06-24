@@ -1,16 +1,27 @@
-#pick-time-range {
-    /* Center the form on the page */
-    margin: 0 left;
-    width: 80%;
+div#time-of-day {
+    margin-top: 2.5em;
+}
+
+div#time-of-day #pick-time-range {
+    /* TO REMOVE: Vertically aligh with left box*/
+    margin-top: 53.92px; 
+
     /* Form outline */
     padding: 1em;
-    border: 2px solid rgb(104, 104, 104);
-    border-radius: 0em;
+    border: 1px;
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    line-height: 1.125em;
+    border-radius: 0.5em;
     flex: auto;
 }
 
 div.time-field {
     text-align: left;
     padding: 0.5em;
+}
+
+input[type="time"]{
+    font-family: 'Kdam Thmor Pro', sans-serif;
 }
 

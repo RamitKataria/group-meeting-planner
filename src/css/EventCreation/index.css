@@ -1,0 +1,61 @@
+div{
+    text-align: left;
+}
+
+h1{
+    text-align: center;
+    padding: 0;
+}
+
+text{
+    padding-bottom: 0.5em;
+}
+
+button#confirm{
+    margin-top: 6em;
+}
+
+#time-range-picker-and-btn{
+        /* Center the form on the page */
+        min-width: 25em;
+        max-width: 34em;
+}
+
+div#confirm{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+
+/* input field alignment */
+div.input{
+    display:flex;
+    align-items: center;
+}
+
+div.input.item {
+    flex-grow: 1;
+}
+
+.MuiInput-root input{
+    text-align: center;
+}
+
+/* datepicker alignment */
+div.inner-flex{
+    display:flex;
+    align-items: center;
+}
+
+div.inner-flex .item{
+    flex-grow: 2;
+}
+
+div.inner-flex .date-selection{
+    flex-grow: 2;
+}
+
+div.inner-flex .picker-and-btn{
+    flex-grow: 2;
+}
