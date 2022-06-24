@@ -1,0 +1,63 @@
+div.date-selection {
+    /* padding: 5% 5%; */
+    margin-top: 2.5em;
+}
+
+.rc_root {
+    /* max-width: 110%; */
+    color: #222;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    line-height: 1.125em;
+}
+
+.date-selection-switch {
+    margin-left: 0.5em;
+}
+
+div#date-selection-text {
+    text-align: center;
+}
+
+/*** Calendar Styling ***/
+.date-selection .rc_root {
+    /* --rc-color-primary: purple;
+    --rc-color-primary-light: rgba(128, 0, 128, 0.4);
+    --rc-color-primary-lighter: rgba(128, 0, 128, 0.1); */
+    --rc-color-accent:purple;
+    --rc-color-accent-light:rgba(128, 0, 128, 0.4);
+    --rc-color-accent-lighter:rgba(128, 0, 128, 0.1);
+}
+
+div.rc_body-days-of-month .rc_body-cell .rc_body-cell_value:hover {
+    border-radius: 20px;
+}
+
+/* no radius when hovering over in-range */
+div.rc_body-days-of-month .rc_body-cell.rc_in_range .rc_body-cell_value:hover {
+    border-radius: 0px;
+}
+
+/* Make all selected dates round */
+
+div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_end .rc_body-cell_value{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_start .rc_body-cell_value {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+/* Round dates when range is not yet selected */
+div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_mode .rc_body-cell_value{
+    border-radius: 20px;
+}
+ 
+
+/* Make multi-day selection round */
+div.rc_body-days-of-month .rc_body-cell.rc_selected .rc_body-cell_value {
+    border-radius: 20px;
+}
+
+
