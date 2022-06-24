@@ -1,10 +1,12 @@
 import "../css/navbar.css";
-import Home from "./pages/Home.js";
-import Route from "./Route.js";
-import NewMeeting from "./pages/NewMeeting.js";
-import Account from "./pages/Account.js";
-import AllMeetings from "./pages/AllMeetings.js";
-import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiUser } from "react-icons/bi";
+import Home from "./pages/Home";
+import Route from "./Route";
+import NewMeeting from "./pages/NewMeeting";
+import Account from "./pages/Account";
+import AllMeetings from "./pages/AllMeetings";
+import AboutUs from "./pages/AboutUs";
+import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser } from "react-icons/bi";
+
 
 export default function NavBar() {
 	return (
@@ -39,6 +41,12 @@ export default function NavBar() {
 							<span className="nav-text">All Meetings</span>
 						</a>
 					</li>
+					<li className="tabs">
+						<a href="./aboutUs">
+							<BiInfoCircle className="fa"/>
+							<span className="nav-text">About Us</span>
+						</a>
+					</li>
 				</ul>
 
 				<ul class="logout">
@@ -62,6 +70,9 @@ export default function NavBar() {
 			</Route>
 			<Route path="/allMeetings">
 				<AllMeetings />
+			</Route>
+			<Route path="/aboutUs">
+				<AboutUs />
 			</Route>
 			<Route path="/account">
 				<Account />

@@ -1,0 +1,81 @@
+* {
+    font-family: 'Merriweather', serif;
+    line-height: 2;
+}
+.outer-div{
+    margin: 3% 10% 3% 15%;
+}
+
+.mission-div{
+    margin-bottom: 30px;
+}
+
+.image{
+    width: 25%;
+    height:auto;
+    margin: 50px 0;
+}
+
+.right{
+    float: right;
+    margin-left: 30px;
+}
+
+.left{
+    float: left;
+    margin-right: 30px;
+}
+
+.section-left{
+    margin-top: 80px;
+    margin-left:auto;
+    margin-right:0;
+    width: 80%;
+    box-shadow: 0 15px 30px 1px grey;
+}
+
+.section-right{
+    margin-top: 80px;
+    margin-left:0;
+    margin-right:auto;
+    width: 80%;
+    box-shadow: 0 15px 30px 1px grey;
+}
+
+.section-inner-div-left {
+    padding: 20px 30px;
+    text-align: left;
+}
+
+.section-inner-div-right {
+    padding: 20px 30px;
+    text-align: right;
+}
+
+.icon {
+    font-size: 30px;
+    color: black;
+    padding: 15px;
+}
+
+.icon:hover {
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 600px) {
+
+    .mission-div, .team-div, .section-inner-div-left, .section-inner-div-right  {
+        text-align: center;
+    }
+
+    .image{
+        width: 60%;
+        margin: 0;
+    }
+
+    .right, .left{
+        float: none;
+        margin: 0;
+    }
+
+}

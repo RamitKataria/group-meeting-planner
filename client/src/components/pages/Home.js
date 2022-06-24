@@ -1,9 +1,10 @@
 import "../../css/home.css";
+import AvailabilityPage from "./AvailabilityPage";
 
 export default function Home() {
 	return (
 		<div className="">
-			<h1>Home</h1>
+			<AvailabilityPage/>
 		</div>
 	);
 }
