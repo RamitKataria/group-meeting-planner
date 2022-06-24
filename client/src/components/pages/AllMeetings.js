@@ -22,8 +22,11 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import {theme} from '../../theme/color-theme'
 
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {getMeetingsAsync} from "../../redux/meetings/thunks";
 
-const formatStringtoDate = (date) => {
+const formatStringToDate = (date) => {
 	const [dateValues, timeValues] = date.split(' ');
 
 	const [month, day, year] = dateValues.split('-');
@@ -31,47 +34,10 @@ const formatStringtoDate = (date) => {
 	return new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
 }
 
-const formatDatetoString = (date) => {
+const formatDateToString = (date) => {
 	return String(date.getMonth()).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0') + "-"
-		+ date.getFullYear() + " " + String(date.getHours()).padStart(2, '0') + ":" +String(date.getMinutes()).padStart(2, '0');
+		+ date.getFullYear() + " " + String(date.getHours()).padStart(2, '0') + ":" + String(date.getMinutes()).padStart(2, '0');
 }
-
-function createData(meetingId, name, date, link, status) {
-	return {
-		meetingId: meetingId,
-		name: name,
-		dateCreated: formatStringtoDate(date),
-		link: link,
-		status: status,
-	};
-}
-
-const rows = [
-	createData("1001", "Hiking Day", "09-04-2021 07:30:34", "google.com",
-		"More Info"),
-	createData("1002", "Boxing Day", "10-04-2021 07:30:34",
-		"yahoo.com", "More Info"),
-	createData("1003", "Christmas Party", "11-04-2021 07:30:34",
-		"amazon.com", "More Info"),
-	createData("1004", "Brainstorming Day", "12-04-2021 07:30:34",
-		"reddit.com", "More Info"),
-	createData("1005", "Hiking Day", "09-04-2021 07:30:34", "google.com",
-		"More Info"),
-	createData("1006", "Boxing Day", "10-04-2021 07:30:34",
-		"yahoo.com", "More Info"),
-	createData("1007", "Christmas Party", "11-04-2021 07:30:34",
-		"amazon.com", "More Info"),
-	createData("1008", "Brainstorming Day", "12-04-2021 07:30:34",
-		"reddit.com", "More Info"),
-	createData("1009", "Hiking Day", "09-04-2021 07:30:34", "google.com",
-		"More Info"),
-	createData("1010", "Boxing Day", "10-04-2021 07:30:34",
-		"yahoo.com", "More Info"),
-	createData("1011", "Christmas Party", "11-04-2021 07:30:34",
-		"amazon.com", "More Info"),
-	createData("1012", "Brainstorming Day", "12-04-2021 07:30:34",
-		"reddit.com", "More Info")
-];
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -105,34 +71,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
 	{
-		id: "meetingId",
-		numeric: false,
-		disablePadding: true,
-		label: "Meeting ID"
-	},
-	{
 		id: "name",
 		numeric: true,
 		disablePadding: false,
 		label: "Meeting Name"
 	},
 	{
-		id: "dateCreated",
+		id: "dateTimeUpdated",
 		numeric: true,
 		disablePadding: false,
-		label: "Date & Time Created"
+		label: "Last Updated"
+	},
+	{
+		id: "createdBy",
+		numeric: true,
+		disablePadding: false,
+		label: "Created By"
 	},
 	{
 		id: "link",
 		numeric: true,
 		disablePadding: false,
-		label: "Meeting Link"
-	},
-	{
-		id: "status",
-		numeric: true,
-		disablePadding: false,
-		label: "Meeting Status"
+		label: "Link"
 	}
 ];
 
@@ -275,11 +235,18 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	const [order, setOrder] = React.useState("asc");
-	const [orderBy, setOrderBy] = React.useState("meetingId");
-	const [selected, setSelected] = React.useState([]);
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const currentMeetings = useSelector((state) => state.meetings.list);
+
+	useEffect(() => {
+		dispatch(getMeetingsAsync("d515b255-0691-4778-9796-cb4f41840136"));
+	}, []);
+	const dispatch = useDispatch();
+
+	const [order, setOrder] = useState("asc");
+	const [orderBy, setOrderBy] = useState("meetingId");
+	const [selected, setSelected] = useState([]);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -289,7 +256,7 @@ export default function EnhancedTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			const newSelecteds = rows.map((n) => n.meetingId);
+			const newSelecteds = currentMeetings.map((n) => n.meetingId);
 			setSelected(newSelecteds);
 			return;
 		}
@@ -329,7 +296,7 @@ export default function EnhancedTable() {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - currentMeetings.length) : 0;
 
 	return (
 		<div className="">
@@ -357,23 +324,23 @@ export default function EnhancedTable() {
 							orderBy={orderBy}
 							onSelectAllClick={handleSelectAllClick}
 							onRequestSort={handleRequestSort}
-							rowCount={rows.length}
+							rowCount={currentMeetings.length}
 						/>
 						<TableBody>
-							{stableSort(rows, getComparator(order, orderBy))
+							{stableSort(currentMeetings, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((row, index) => {
-									const isItemSelected = isSelected(row.meetingId);
+								.map((meeting, index) => {
+									const isItemSelected = isSelected(meeting.meetingId);
 									const labelId = `enhanced-table-checkbox-${index}`;
 
 									return (
 										<StyledTableRow
 											hover
-											onClick={(event) => handleClick(event, row.meetingId)}
+											onClick={(event) => handleClick(event, meeting.meetingId)}
 											role="checkbox"
 											aria-checked={isItemSelected}
 											tabIndex={-1}
-											key={row.meetingId}
+											key={meeting.meetingId}
 											selected={isItemSelected}
 										>
 											<StyledTableCell padding="checkbox">
@@ -391,13 +358,14 @@ export default function EnhancedTable() {
 												scope="row"
 												padding="none"
 												align="right"
+												component="a"
+												href={"http://localhost:3001/availability/" + meeting.meetingId}
 											>
-												{row.meetingId}
+												{meeting.name}
 											</StyledTableCell>
-											<StyledTableCell align="right">{row.name}</StyledTableCell>
-											<StyledTableCell align="right">{formatDatetoString(row.dateCreated)}</StyledTableCell>
-											<StyledTableCell align="right" numeric component="a" href={row.link}>{row.link}</StyledTableCell>
-											<StyledTableCell align="right" numeric component="a" href={row.status}>{row.status}</StyledTableCell>
+											<StyledTableCell align="right">{meeting.dateTimeUpdated}</StyledTableCell>
+											<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
+											<StyledTableCell align="right" numeric component="a" >{"http://localhost:3001/availability/" + meeting.meetingId}</StyledTableCell>
 										</StyledTableRow>
 									);
 								})}
@@ -407,17 +375,13 @@ export default function EnhancedTable() {
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component="div"
-					count={rows.length}
+					count={currentMeetings.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					onPageChange={handleChangePage}
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
 			</Paper>
-			{/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
 		</Box>
 		</ThemeProvider>
 		</div>
