@@ -1,12 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import meetingsReducer from './meetings/reducer';
 import meetingCreation from './meetingCreation';
 
-const store = configureStore({
-    reducer: {
-        meetingCreation
-    },
-    devTools: true
+export const store = configureStore({
+  reducer: {
+    meetings: meetingsReducer,
+    meetingCreation: meetingCreation
+  },
+  devTools: true
 });
-console.log(store.getState())
-
-export default store;
