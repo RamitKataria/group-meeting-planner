@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../../css/EventCreation/TimeRangePicker.css';
 import TimeSlider from './TimeSlider';
+import {storeStartTime, storeEndTime} from '../../redux/meetingCreation'
+import { useSelector, useDispatch } from 'react-redux';
 
 const sliderMarks = [
     {value: 9, label: '09:00'},
@@ -28,16 +30,35 @@ function sliderTimeToString(sliderTime) {
 }
 
 function TimeRangePicker() {
-    const [startTime, setStartTime] = useState('09:00');
-    const [endTime, setEndTime] = useState('17:00');
-    const [sliderNums, setSliderNums] = useState([9, 17]);
-    
-    //TODO: add redux states for start time & end time
+    const dispatch = useDispatch();
+    const meetingCreationStore = useSelector(state => state.meetingCreation);
 
+    const [startTime, setStartTime] = useState(sliderTimeToString(meetingCreationStore['start-time']));
+    const [endTime, setEndTime] = useState(sliderTimeToString(meetingCreationStore['end-time']));
+    const [sliderNums, setSliderNums] = useState([meetingCreationStore['start-time'], meetingCreationStore['end-time']]);
+    
     function handleSliderChange(event, newValues) {
         setSliderNums(newValues);
         setStartTime(sliderTimeToString(newValues[0]));
         setEndTime(sliderTimeToString(newValues[1]));
+        dispatch(storeStartTime(newValues[0]))
+        dispatch(storeEndTime(newValues[1]))
+    }
+
+    function handleStartTimeChange(e) {
+        const targetValue = sliderTime(e.target.value) < sliderTime(endTime) ? 
+        e.target.value : endTime; 
+        setSliderNums([sliderTime(targetValue), sliderNums[1]])
+        setStartTime(roundToHour(targetValue))
+        dispatch(storeStartTime(sliderTime(targetValue)))
+    }
+
+    function handleEndTimeChange(e) {
+        const targetValue = sliderTime(e.target.value) > sliderTime(startTime) ? 
+        e.target.value : startTime; 
+        setSliderNums([sliderNums[0], sliderTime(targetValue)])
+        setEndTime(roundToHour(targetValue))
+        dispatch(storeEndTime(sliderTime(targetValue)))
     }
 
     return (
@@ -47,24 +68,14 @@ function TimeRangePicker() {
                 <div className='time-field'>
                     <label>No Earlier Than: </label>
                     <input type='time' value={startTime} 
-                        onChange={(e) => {
-                            const targetValue = sliderTime(e.target.value) < sliderTime(endTime) ? 
-                                e.target.value : endTime; 
-                            setSliderNums([sliderTime(targetValue), sliderNums[1]])
-                            setStartTime(roundToHour(targetValue))}
-                        }
+                        onChange={handleStartTimeChange}
                         step={3600} />
                     {/* <TimePicker value={startTime} onChange={setStartTime} disableClock={true}/> */}
                 </div>
                 <div className='time-field'>
                     <label>No Later Than: </label>
                     <input type='time' value={endTime} 
-                        onChange={(e) => {
-                            const targetValue = sliderTime(e.target.value) > sliderTime(startTime) ? 
-                                e.target.value : startTime; 
-                            setSliderNums([sliderNums[0], sliderTime(targetValue)])
-                            setEndTime(roundToHour(targetValue))}
-                        }
+                        onChange={handleEndTimeChange}
                         step={3600} />
                     {/* <TimePicker value={endTime} onChange={setEndTime} disableClock={true}/> */}
                 </div>

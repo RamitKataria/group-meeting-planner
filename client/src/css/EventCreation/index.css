@@ -42,6 +42,11 @@ div.input.item {
     flex-grow: 1;
 }
 
+div.input.item.padding {
+    flex-grow: 2;
+}
+
+
 .MuiInput-root input{
     text-align: center;
 }
@@ -57,7 +62,7 @@ div.inner-flex .item{
 }
 
 div.inner-flex .date-selection{
-    flex-grow: 2;
+    flex-grow: 1;
 }
 
 /* Time Range Alignment */

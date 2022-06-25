@@ -4,26 +4,36 @@ import { Calendar } from '@natscale/react-calendar';
 import "../../css/EventCreation/DatePicker.css"
 import '@natscale/react-calendar/dist/main.css';
 import ViewSwitch from './ViewSwitch';
-import { DateRangeSharp, ElectricalServicesRounded } from '@mui/icons-material';
+import {storeDates} from '../../redux/meetingCreation'
+import { useDispatch } from 'react-redux';
 
 export default function DatePicker() {
     const [rangeDates, setRangeDates] = useState([]);
     const [multiDates, setMultiDates] = useState([])
     const [multiDateView, setView] = useState(false); // false: range view; true: multi-date view
+    const dispatch = useDispatch();
+
+    const changeMultiDates = useCallback(
+        (val) => {
+        setMultiDates(val);
+        dispatch(storeDates(val.map(e=>e.toString())));
+        },
+        [dispatch]
+    )
 
     const onRangeChange = useCallback(
         (val) => {
-            setMultiDates(rangeToMultiDates(val[0], val[1]));
+            changeMultiDates(rangeToMultiDates(val[0], val[1]));
             setRangeDates(val);
         },
-        [setRangeDates],
+        [setRangeDates, changeMultiDates],
     );
 
     const onMultiDateChange = useCallback(
         (val) => {
-            setMultiDates(val);
+            changeMultiDates(val);
         },
-        [setMultiDates],
+        [changeMultiDates],
     )
 
     function onSwitch(newState) {
@@ -93,12 +103,12 @@ function DateSelectionText(props) {
                 <div>
                     <p>Between <strong>{range[0].toDateString()}</strong> and <strong>{range[1].toDateString()}</strong></p>
                 </div>
-            ) : null}
+            ) : <p></p>}
             { (props.multiDates.length > 0 & props.multiDates.length <= 1) ? (
                 <div>
                     <p>On <strong>{range[0].toDateString()}</strong></p>
                 </div>
-            ) : <p> </p>}
+            ) : <p></p>}
         </div>
     )
 }

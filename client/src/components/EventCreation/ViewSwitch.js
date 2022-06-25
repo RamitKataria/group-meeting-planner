@@ -12,7 +12,7 @@ export default function ViewSwitch(props) {
 
     return (
         <FormGroup>
-            <Stack direction="row" spacing={0.5} alignItems="center">
+            <Stack direction="row" spacing={1} alignItems="center">
                 <Typography>Range</Typography>
                 <MaterialUISwitch 
                     onChange={handleChange}

@@ -4,24 +4,37 @@ import '../../css/EventCreation/index.css'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
+import { useSelector, useDispatch } from 'react-redux';
+import {storeMeetingName} from '../../redux/meetingCreation';
+
 
 function EventCreation() {
+    const meetingCreationStore = useSelector(state => state.meetingCreation)
+    const dispatch = useDispatch();
+
+    function handleCreateEvent() {
+        console.log(meetingCreationStore)
+    }
+
+    function handleNameChange(e) {
+        dispatch(storeMeetingName(e.target.value))
+    }
+
     return (<div className="event-creation">
-        {/* <EventName/> */}
         <Grid container spacing={2}
-        columns={12}
-        // sx={{margin:'0 auto', paddingLeft: '10%', paddingRight: '10%'}}
-        >
+            columns={12}>
             <Grid item className="padding-left" xs={3}></Grid>
             <Grid item className="name-field" xs={6}>
                 <h1>Schedule An Event</h1>
                 <div className="input">
-                    <div className="input item left-padding "></div>
+                    <div className="input item padding "></div>
                         <Input 
+                        value={meetingCreationStore['meeting-name']}
+                        onChange={handleNameChange}
                         className="input item"
                         label="event-name" 
                         placeholder="Enter Event Name"></Input>
-                    <div className="input item right-padding"></div>
+                    <div className="input item padding"></div>
                 </div>
                 
             </Grid>
@@ -49,6 +62,7 @@ function EventCreation() {
                                 // color='success'
                                 id='confirm' 
                                 sx={{borderRadius:'2em'}}
+                                onClick={handleCreateEvent}
                                 >Create Event</Button>
                             </div>
                         </div>
@@ -64,15 +78,6 @@ function EventCreation() {
             <Grid className="padding-right" item xs={2}></Grid>
         </Grid>        
     </div>)
-}
-
-function EventName() {
-    return (
-        <div>
-            <h1>Schedule An Event</h1>
-            {/* <input defaultValue='Event Name' type='text' size='50' ></input> */}
-        </div>
-    )
 }
 
 export default EventCreation;
