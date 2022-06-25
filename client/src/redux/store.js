@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import datesPicked from '../reducers/datesPicked';
 import meetingCreation from './meetingCreation';
 
 const store = configureStore({
