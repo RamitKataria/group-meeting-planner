@@ -31,7 +31,7 @@ router.get('/:meetingId', function (req, res, next) {
 	return res.status(404).send({message: 'Not found'});
 });
 
-router.post('/:meetingId', function (req, res) {
+router.post('/', function (req, res) {
 	if (req.body) {
 		const item = {...req.body, meetingId: uuidv4()};
 		items.push(item);
