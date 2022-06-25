@@ -5,6 +5,10 @@ import NewMeeting from "./pages/NewMeeting";
 import Account from "./pages/Account";
 import AllMeetings from "./pages/AllMeetings";
 import AboutUs from "./pages/AboutUs";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import Guest from "./pages/Guest";
+import AvailabilityPage from "./pages/AvailabilityPage";
 import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser } from "react-icons/bi";
 
 
@@ -18,31 +22,31 @@ export default function NavBar() {
 			<nav className="main-menu">
 				<ul>
 					<li>
-						<a href="./home" >
+						<a href="./Home" >
 							<BiBookBookmark className="fa title-icon"/>
 							<span className="title-text">Meeting Planner</span>
 						</a>
 					</li>
 					<li className="tabs">
-						<a href="./home">
+						<a href="./Home">
 							<BiHomeAlt className="fa"/>
 							<span className="nav-text">Home</span>
 						</a>
 					</li>
 					<li className="tabs">
-						<a href="./newMeeting">
+						<a href="./NewMeeting">
 							<BiPlus className="fa"/>
 							<span className="nav-text">New Meeting</span>
 						</a>
 					</li>
 					<li className="tabs">
-						<a href="./allMeetings">
+						<a href="./AllMeetings">
 							<BiListOl className="fa"/>
 							<span className="nav-text">All Meetings</span>
 						</a>
 					</li>
 					<li className="tabs">
-						<a href="./aboutUs">
+						<a href="./AboutUs">
 							<BiInfoCircle className="fa"/>
 							<span className="nav-text">About Us</span>
 						</a>
@@ -51,7 +55,7 @@ export default function NavBar() {
 
 				<ul class="logout">
 					<li className="tabs">
-						<a href="./account">
+						<a href="./Account">
 							<BiUser className="fa"/>
 							<span class="nav-text">Account</span>
 						</a>
@@ -62,20 +66,32 @@ export default function NavBar() {
 			<Route path="/">
 				<Home />
 			</Route>
-			<Route path="/home">
+			<Route path="/Home">
 				<Home />
 			</Route>
-			<Route path="/newMeeting">
+			<Route path="/NewMeeting">
 				<NewMeeting />
 			</Route>
-			<Route path="/allMeetings">
+			<Route path="/AllMeetings">
 				<AllMeetings />
 			</Route>
-			<Route path="/aboutUs">
+			<Route path="/AboutUs">
 				<AboutUs />
 			</Route>
-			<Route path="/account">
+			<Route path="/Account">
 				<Account />
+			</Route>
+			<Route path="/SignUp">
+				<SignUp />
+			</Route>
+			<Route path="/Login">
+				<Login />
+			</Route>
+			<Route path="/Guest">
+				<Guest />
+			</Route>
+			<Route path="/AvailabilityPage">
+				<AvailabilityPage />
 			</Route>
 			</body>
 			</html>
