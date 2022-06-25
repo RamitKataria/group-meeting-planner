@@ -250,16 +250,7 @@ const EnhancedTableToolbar = (props) => {
 				>
 					{numSelected} selected
 				</Typography>
-			) : (
-				<Typography
-					sx={{ flex: '1 1 100%', fontFamily: 'Merriweather', fontWeight: 'bold' }}
-					variant="h5"
-					id="tableTitle"
-					component="div"
-				>
-					All Meetings
-				</Typography>
-			)}
+			) : null }
 
 			{numSelected > 0 ? (
 				<Tooltip title="Delete">
@@ -341,7 +332,17 @@ export default function EnhancedTable() {
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 	return (
+		<div className="">
 		<ThemeProvider theme={theme}>
+			<Typography
+				sx={{ flex: '1 1 100%', fontWeight: 'bold', margin: "3% 0", "text-align": "center"}}
+				variant="h4"
+				id="tableTitle"
+				component="div"
+			>
+				All Meetings
+			</Typography>
+
 		<Box sx={{ mx: "auto", my: "3%", width: "80%" }}>
 			<Paper sx={{ width: "100%", mb: 2 }}>
 				<EnhancedTableToolbar numSelected={selected.length} />
@@ -349,7 +350,6 @@ export default function EnhancedTable() {
 					<Table
 						sx={{ minWidth: 750 }}
 						aria-labelledby="tableTitle"
-						// size={dense ? 'small' : 'medium'}
 					>
 						<EnhancedTableHead
 							numSelected={selected.length}
@@ -401,17 +401,6 @@ export default function EnhancedTable() {
 										</StyledTableRow>
 									);
 								})}
-							{emptyRows > 0 && (
-								<StyledTableRow
-									style={
-										{
-											// height: (dense ? 33 : 53) * emptyRows,
-										}
-									}
-								>
-									<StyledTableCell colSpan={6} />
-								</StyledTableRow>
-							)}
 						</TableBody>
 					</Table>
 				</TableContainer>
@@ -431,5 +420,6 @@ export default function EnhancedTable() {
       /> */}
 		</Box>
 		</ThemeProvider>
+		</div>
 	);
 }
