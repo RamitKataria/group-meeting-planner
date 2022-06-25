@@ -10,9 +10,9 @@ export default function Login(){
         window.location.href = "./Guest.js";
     }
     return (
-        <div>
+        <div className={"outer-div"}>
         <form className="aa" onSubmit={handleSubmit} >
-            <Typography variant = "h4" display="inline-box" component="h3"  align="center">
+            <Typography variant="h4" display="inline-box" component="h3"  align="center" sx={{ flex: '1 1 100%', fontWeight: 'bold' }}>
                 Login
             </Typography>
             <br></br>

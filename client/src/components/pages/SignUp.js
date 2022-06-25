@@ -26,11 +26,11 @@ export default function SignUp(){
     }
 
     return (
-        <div>
+        <div className="outer-div">
         <Grid container spacing={2}>
             <Grid item xs={6}>
                 <form className="aa" onSubmit={handleSubmit} >
-                    <Typography variant = "h4" display="inline-box" component="h3"  align="center">
+                    <Typography variant="h4" display="inline-box" component="h3"  align="center" sx={{ flex: '1 1 100%', fontWeight: 'bold' }}>
                         Sign Up
                     </Typography>
                     <br></br>
@@ -54,7 +54,7 @@ export default function SignUp(){
                     <br></br>
 
 
-                    <div className = "SignUp">
+                    <div className="signUp">
                         <Button variant="contained"  size ="large" type="submit" align="center" type="submit"
                         >Sign Up
                         </Button>

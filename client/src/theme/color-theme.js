@@ -20,6 +20,6 @@ export const theme = createTheme({
 		contrastThreshold: 3,
 	},
 	typography: {
-		fontFamily: 'Merriweather',
+		fontFamily: 'Merriweather, sans-serif',
 	},
 });
