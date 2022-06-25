@@ -1,0 +1,87 @@
+
+
+.background {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.modalContainer {
+    background-color: white;
+    width: 500px;
+    height: 500px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+}
+
+.title{
+    padding:20px;
+    border-bottom: 1px solid silver;
+}
+
+
+
+
+form{
+    width:80%;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    padding:20px;
+}
+
+form input{
+    border-radius: 6px;
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #020202;
+    resize:vertical;
+    font-size:20px;
+}
+
+.body{
+    flex: 50%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    font-size:1.7rem;
+    text-align: center;
+}
+
+.footer{
+    flex:20%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer Button{
+    width: 150px;
+    height: 45px;
+    margin: 10px;
+    border: none;
+    background-color:cornflowerblue;
+    color: whitesmoke;
+    border-radius: 12px;
+    font-size:20px;
+    cursor: pointer
+}
+
+#cancel{
+    background-color: crimson;
+}
+
+
