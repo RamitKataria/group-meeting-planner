@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeMeetingName} from '../../redux/meetingCreation';
-
+import Route from "../Route";
 
 function EventCreation() {
     const meetingCreationStore = useSelector(state => state.meetingCreation)
@@ -14,6 +14,7 @@ function EventCreation() {
 
     function handleCreateEvent() {
         console.log(meetingCreationStore)
+        return window.location.href = '/AvailabilityPage'; // TO REMOVE: placeholder redirect
     }
 
     function handleNameChange(e) {
@@ -58,6 +59,7 @@ function EventCreation() {
                         <div className="picker-and-btn">
                             <TimeRangePicker/>
                             <div id='confirm'>
+                                
                                 <Button variant='contained' 
                                 // color='success'
                                 id='confirm' 
