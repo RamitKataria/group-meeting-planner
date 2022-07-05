@@ -1,6 +1,20 @@
 import "../../css/availabilityPage.css";
+import { useDispatch, useSelector } from "react-redux";
+import {useEffect, useState} from "react";
+// import { fetchMeetingInfo } from "../../redux/availabilityPage";
+import { useParams } from 'react-router-dom';
+import {getMeetingAsync} from "../../redux/meetings/thunks";
 
 export default function AvailabilityPage() {
+	const { meetingId } = useParams();
+	const meetingInfo = useSelector((state) => state.meetingsReducer.list);
+
+	useEffect(() => {
+		dispatch(getMeetingAsync(meetingId));
+		}, []);
+
+	const dispatch = useDispatch();
+
 	return (
 		<div className="outer-div">
 			<h1>Welcome to Meeting Planner!!</h1>
@@ -9,15 +23,15 @@ export default function AvailabilityPage() {
 				<table>
 					<tr>
 						<td className="table-header"><strong>Meeting ID: </strong></td>
-						<td>1234567</td>
+						<td>{meetingInfo.meetingId}</td>
 					</tr>
 					<tr>
 						<td className="table-header"><strong>Name: </strong></td>
-						<td>Hiking Day</td>
+						<td>{meetingInfo.name}</td>
 					</tr>
 					<tr>
 						<td className="table-header"><strong>Description: </strong></td>
-						<td>Let's go for a hike on a sunny day!</td>
+						<td>{meetingInfo.name}</td>
 					</tr>
 				</table>
 			</div>
