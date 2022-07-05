@@ -17,22 +17,14 @@ const addMeeting = async (meetingId, content) => {
   return data;
 };
 
-const getMeetingsBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId + "/meetings";
-  const response = await fetch(link, {
-    method: 'GET'
-  });
-  return response.json();
-};
-
 const getMeeting = async (meetingId) => {
+  console.log("meetingID: " + meetingId);
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
     method: 'GET'
   });
   return response.json();
 };
-
 
 const deleteMeeting = async (meetingId) => {
   const link = 'http://localhost:3001/meetings/' + meetingId;
@@ -69,7 +61,6 @@ const updateMeeting = async (meetingId, content) => {
 
 export default {
   addMeeting: addMeeting,
-  getMeetingsBasedOnUserId: getMeetingsBasedOnUserId,
   getMeeting: getMeeting,
   deleteMeeting: deleteMeeting,
   updateMeeting: updateMeeting

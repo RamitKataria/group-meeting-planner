@@ -2,17 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { actionTypes } from './actionTypes';
 import MeetingService from './service';
 
-export const getMeetingsAsync = createAsyncThunk(
-  actionTypes.GET_MEETINGS,
-  async (userId) => {
-    return await MeetingService.getMeetingsBasedOnUserId(userId);
-  }
-);
-
 export const getMeetingAsync = createAsyncThunk(
     actionTypes.GET_MEETING,
-    async () => {
-        return await MeetingService.getMeeting();
+    async (meetingId) => {
+        console.log("in thunks");
+        console.log(meetingId);
+        return await MeetingService.getMeeting(meetingId);
     }
 );
 
