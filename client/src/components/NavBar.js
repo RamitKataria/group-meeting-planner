@@ -19,31 +19,31 @@ export default function NavBar() {
 			<nav className="main-menu">
 				<ul>
 					<li>
-						<Link to="/Home">
+						<Link to="/home">
 							<BiBookBookmark className="fa title-icon"/>
 							<span className="title-text">Meeting Planner</span>
 						</Link>
 					</li>
 					<li className="tabs">
-						<Link to="/Home">
+						<Link to="/home">
 							<BiHomeAlt className="fa"/>
 							<span className="nav-text">Home</span>
 						</Link>
 					</li>
 					<li className="tabs">
-						<Link to="/NewMeeting">
+						<Link to="/new-meeting">
 							<BiPlus className="fa"/>
 							<span className="nav-text">New Meeting</span>
 						</Link>
 					</li>
 					<li className="tabs">
-						<Link to="/AllMeetings">
+						<Link to="/all-meetings">
 							<BiListOl className="fa"/>
 							<span className="nav-text">All Meetings</span>
 						</Link>
 					</li>
 					<li className="tabs">
-						<Link to="/AboutUs">
+						<Link to="/about-us">
 							<BiInfoCircle className="fa"/>
 							<span className="nav-text">About Us</span>
 						</Link>
@@ -52,7 +52,7 @@ export default function NavBar() {
 
 				<ul class="logout">
 					<li className="tabs">
-						<Link to="/Account">
+						<Link to="/account">
 							<BiUser className="fa"/>
 							<span class="nav-text">Account</span>
 						</Link>
@@ -61,15 +61,15 @@ export default function NavBar() {
 			</nav>
 				<Routes>
 					<Route exact path="/" element={<Home/>}/>
-					<Route exact path="/Home" element={<Home/>}/>
-					<Route exact path="/NewMeeting" element={<NewMeeting/>}/>
-					<Route exact path="/AllMeetings" element={<AllMeetings/>}/>
-					<Route exact path="/AboutUs" element={<AboutUs/>}/>
-					<Route exact path="/Account" element={<Account/>}/>
-					<Route exact path="/SignUp" element={<SignUp/>}/>
-					<Route exact path="/Login" element={<Login/>}/>
-					<Route exact path="/Guest" element={<Guest/>}/>
-					<Route exact path="/AvailabilityPage" element={<AvailabilityPage/>}/>
+					<Route exact path="/home" element={<Home/>}/>
+					<Route exact path="/new-meeting" element={<NewMeeting/>}/>
+					<Route exact path="/all-meetings" element={<AllMeetings/>}/>
+					<Route exact path="/about-us" element={<AboutUs/>}/>
+					<Route exact path="/account" element={<Account/>}/>
+					<Route exact path="/signup" element={<SignUp/>}/>
+					<Route exact path="/login" element={<Login/>}/>
+					<Route exact path="/guest" element={<Guest/>}/>
+					<Route exact path="/availability-page/:meetingId" element={<AvailabilityPage/>}/>
 				</Routes>
 			</BrowserRouter>
 
