@@ -1,9 +1,9 @@
 import "../../css/availabilityPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect, useState} from "react";
-// import { fetchMeetingInfo } from "../../redux/availabilityPage";
 import { useParams } from 'react-router-dom';
 import {getMeetingAsync} from "../../redux/meetings/thunks";
+import Paper from '@mui/material/Paper';
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
@@ -19,21 +19,33 @@ export default function AvailabilityPage() {
 		<div className="outer-div">
 			<h1>Welcome to Meeting Planner!!</h1>
 			<div className="meeting-summary-div">
-				<h2>Meeting Summary</h2>
-				<table>
-					<tr>
-						<td className="table-header"><strong>Meeting ID: </strong></td>
-						<td>{meetingInfo.meetingId}</td>
-					</tr>
-					<tr>
-						<td className="table-header"><strong>Name: </strong></td>
-						<td>{meetingInfo.name}</td>
-					</tr>
-					<tr>
-						<td className="table-header"><strong>Description: </strong></td>
-						<td>{meetingInfo.name}</td>
-					</tr>
-				</table>
+
+				<Paper elevation={8} style={{borderRadius: 15}}>
+					<div style={{marginTop: '20px', padding: '10px 30px'}}>
+						{/*<br/>*/}
+						<h2>Meeting Summary</h2>
+						<table>
+							<tr>
+								<td className="table-header"><strong>Meeting ID: </strong></td>
+								<td>{meetingInfo.meetingId}</td>
+							</tr>
+							<tr>
+								<td className="table-header"><strong>Name: </strong></td>
+								<td>{meetingInfo.name}</td>
+							</tr>
+							<tr>
+								<td className="table-header"><strong>Description: </strong></td>
+								<td>{meetingInfo.description}</td>
+							</tr>
+							<tr>
+								<td className="table-header"><strong>Created By: </strong></td>
+								<td>{meetingInfo.createdBy}</td>
+							</tr>
+						</table>
+					</div>
+				</Paper>
+
+				
 			</div>
 
 			<div className="availability-picker-div">
