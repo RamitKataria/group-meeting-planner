@@ -1,6 +1,5 @@
 import "../css/navbar.css";
 import Home from "./pages/Home";
-import Route from "./Route";
 import NewMeeting from "./pages/NewMeeting";
 import Account from "./pages/Account";
 import AllMeetings from "./pages/AllMeetings";
@@ -10,91 +9,70 @@ import SignUp from "./pages/SignUp";
 import Guest from "./pages/Guest";
 import AvailabilityPage from "./pages/AvailabilityPage";
 import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser } from "react-icons/bi";
-
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 
 export default function NavBar() {
 	return (
 		<div className="">
-			<html>
-			<head></head>
-			<body>
 			<div className="area"></div>
+			<BrowserRouter>
 			<nav className="main-menu">
 				<ul>
 					<li>
-						<a href="./Home" >
+						<Link to="/Home">
 							<BiBookBookmark className="fa title-icon"/>
 							<span className="title-text">Meeting Planner</span>
-						</a>
+						</Link>
 					</li>
 					<li className="tabs">
-						<a href="./Home">
+						<Link to="/Home">
 							<BiHomeAlt className="fa"/>
 							<span className="nav-text">Home</span>
-						</a>
+						</Link>
 					</li>
 					<li className="tabs">
-						<a href="./NewMeeting">
+						<Link to="/NewMeeting">
 							<BiPlus className="fa"/>
 							<span className="nav-text">New Meeting</span>
-						</a>
+						</Link>
 					</li>
 					<li className="tabs">
-						<a href="./AllMeetings">
+						<Link to="/AllMeetings">
 							<BiListOl className="fa"/>
 							<span className="nav-text">All Meetings</span>
-						</a>
+						</Link>
 					</li>
 					<li className="tabs">
-						<a href="./AboutUs">
+						<Link to="/AboutUs">
 							<BiInfoCircle className="fa"/>
 							<span className="nav-text">About Us</span>
-						</a>
+						</Link>
 					</li>
 				</ul>
 
 				<ul class="logout">
 					<li className="tabs">
-						<a href="./Account">
+						<Link to="/Account">
 							<BiUser className="fa"/>
 							<span class="nav-text">Account</span>
-						</a>
+						</Link>
 					</li>
 				</ul>
 			</nav>
+				<Routes>
+					<Route exact path="/" element={<Home/>}/>
+					<Route exact path="/Home" element={<Home/>}/>
+					<Route exact path="/NewMeeting" element={<NewMeeting/>}/>
+					<Route exact path="/AllMeetings" element={<AllMeetings/>}/>
+					<Route exact path="/AboutUs" element={<AboutUs/>}/>
+					<Route exact path="/Account" element={<Account/>}/>
+					<Route exact path="/SignUp" element={<SignUp/>}/>
+					<Route exact path="/Login" element={<Login/>}/>
+					<Route exact path="/Guest" element={<Guest/>}/>
+					<Route exact path="/AvailabilityPage" element={<AvailabilityPage/>}/>
+				</Routes>
+			</BrowserRouter>
 
-			<Route path="/">
-				<Home />
-			</Route>
-			<Route path="/Home">
-				<Home />
-			</Route>
-			<Route path="/NewMeeting">
-				<NewMeeting />
-			</Route>
-			<Route path="/AllMeetings">
-				<AllMeetings />
-			</Route>
-			<Route path="/AboutUs">
-				<AboutUs />
-			</Route>
-			<Route path="/Account">
-				<Account />
-			</Route>
-			<Route path="/SignUp">
-				<SignUp />
-			</Route>
-			<Route path="/Login">
-				<Login />
-			</Route>
-			<Route path="/Guest">
-				<Guest />
-			</Route>
-			<Route path="/AvailabilityPage">
-				<AvailabilityPage />
-			</Route>
-			</body>
-			</html>
 		</div>
 	);
 }
