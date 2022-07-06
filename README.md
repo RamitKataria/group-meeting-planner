@@ -35,20 +35,20 @@ Allow users to set up meetings schedules & automatically fill in availability by
 
 ### Minimal requirements
 
-1. As a meeting organizer, I want to be able to create a new meeting with a given span (possible days/time) and get a unique link for it - Tom
-2. As a meeting attendee, I want to be able to go to the link shared by the meeting organizer and access meeting title and notes - Sophie
-3. As a meeting attendee, I want to be able to go to that link as a guest and enter my availability by dragging my mouse across the calendar - Ramit
+1. As a meeting organizer, I want to be able to create a new meeting with a given span (possible days/time) and get a unique link for it - `Tom`
+2. As a meeting attendee, I want to be able to go to the link shared by the meeting organizer and access meeting title and notes - `Sophie`
+3. As a meeting attendee, I want to be able to go to that link as a guest and enter my availability by dragging my mouse across the calendar - `Ramit`
 
 ### Standard requirements
 
-1. As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features[<sup>1</sup>](#footnotes) - May, Sophie, Ramit
-2. As a registered user, I want to be able to delete my account and update account information ([Settings Page](#account-settings-page)) - Sophie
-3. As a registered user, I want to be able to change the meeting span after creating it by logging into the account I used to create it - Tom
-4. As a meeting attendee, I want to be notified after the organizer has finalized the meeting time - Ramit
-5. As a registered user, I want to be sent an email verification to change my password when I forget the password - May
-6. As a registered user, I want to be able to use my previously entered availability for new meetings
-7. As an attendee, I want to be able to create an account through some external authentication service - Ramit
-8. As an attendee, I want to be able to log in to my account through the same external authentication service - Ramit
+1. As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features[<sup>1</sup>](#footnotes) - `May`, `Sophie`, `Ramit`
+2. As a registered user, I want to be able to delete my account and update account information ([Settings Page](#account-settings-page)) - `Sophie`
+3. As a registered user, I want to be able to change the meeting span after creating it by logging into the account I used to create it - `Tom`
+4. As a meeting attendee, I want to be notified after the organizer has finalized the meeting time - `Ramit`
+5. As a registered user, I want to be sent an email verification to change my password when I forget the password - `May`
+6. As a registered user, I want to be able to use my previously entered availability for new meetings - `Tom`
+7. As an attendee, I want to be able to create an account through some external authentication service - `Ramit`
+8. As an attendee, I want to be able to log in to my account through the same external authentication service - `Ramit`
 9. As a meeting organizer, I want to be able to remove a user from a meeting
 
 ### Stretch Requirements
