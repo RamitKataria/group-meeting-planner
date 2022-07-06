@@ -24,7 +24,7 @@ import {theme} from '../../theme/color-theme'
 
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {getMeetingsAsync} from "../../redux/meetings/thunks";
+import {getMeetingsAsync} from "../../redux/users/thunks";
 
 const formatStringToDate = (date) => {
 	const [dateValues, timeValues] = date.split(' ');
@@ -235,7 +235,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	const currentMeetings = useSelector((state) => state.meetings.list);
+	const currentMeetings = useSelector((state) => state.usersReducer.list);
 
 	useEffect(() => {
 		dispatch(getMeetingsAsync("d515b255-0691-4778-9796-cb4f41840136"));

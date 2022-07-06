@@ -18,7 +18,7 @@ exports.items = [
 				availableSlots: []
 			}
 		],
-		notes: "let's go hiking!"
+		description: "let's go hiking!"
 	},
 	{
 		meetingId: "fc73754b-00be-4fa4-b02f-1efad9cffe05",
@@ -38,7 +38,7 @@ exports.items = [
 				availableSlots: []
 			}
 		],
-		notes: "let's go boxing!"
+		description: "let's go boxing!"
 	},
 	{
 		meetingId: "d6a7c008-3d8d-4230-83fa-2c4aab6628d7",
@@ -58,7 +58,7 @@ exports.items = [
 				availableSlots: []
 			}
 		],
-		notes: "let's go hiking!"
+		description: "let's go hiking!"
 	},
 	{
 		meetingId: "8d64ba13-33a2-46cb-af4a-8a5b1672a37c",
@@ -78,6 +78,6 @@ exports.items = [
 				availableSlots: []
 			}
 		],
-		notes: "let's go biking!"
+		description: "let's go biking!"
 	},
 ];

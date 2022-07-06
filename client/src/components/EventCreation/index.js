@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeMeetingName} from '../../redux/meetingCreation';
-import Route from "../Route";
+// import Route from "../Route";
 
 function EventCreation() {
     const meetingCreationStore = useSelector(state => state.meetingCreation)
