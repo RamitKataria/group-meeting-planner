@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import {getMeetingAsync} from "../../redux/meetings/thunks";
 import Paper from '@mui/material/Paper';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
@@ -14,6 +15,16 @@ export default function AvailabilityPage() {
 		}, []);
 
 	const dispatch = useDispatch();
+
+	const copyClipboard = () => {
+		navigator.clipboard.writeText(meetingInfo.meetingId)
+			.then(() => {
+				alert("Copied the text: " + meetingInfo.meetingId);
+			})
+			.catch(() => {
+				alert("something went wrong with clipboard");
+			});
+	}
 
 	return (
 		<div className="outer-div">
@@ -26,7 +37,7 @@ export default function AvailabilityPage() {
 						<h2>Meeting Summary</h2>
 						<table>
 							<tr>
-								<td className="table-header"><strong>Meeting ID: </strong></td>
+								<td className="table-header"><strong>Meeting ID: &emsp;</strong><ContentCopyIcon fontSize="small" onClick={copyClipboard}></ContentCopyIcon></td>
 								<td>{meetingInfo.meetingId}</td>
 							</tr>
 							<tr>
