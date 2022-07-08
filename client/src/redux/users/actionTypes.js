@@ -1,3 +1,4 @@
 export const actionTypes = {
   GET_MEETINGS: 'users/getMeetings',
+  GET_USER: 'users/getUser',
 };

@@ -22,6 +22,14 @@ router.get('/:userId/meetings', function (req, res, next) {
 	return res.status(404).send({message: 'Not found'});
 });
 
+router.get('/:userId', function (req, res, next) {
+	const user = items.find(item => item.userId === req.params['userId']);
+	if (user) {
+		return res.send(user);
+	}
+	return res.status(404).send({message: 'Not found'});
+});
+
 router.put('/:userId', function (req, res) {
 	const index = items.findIndex(item => item.userId === req.params['userId']);
 	if (index > -1) {

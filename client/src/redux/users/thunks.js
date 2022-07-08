@@ -8,3 +8,10 @@ export const getMeetingsAsync = createAsyncThunk(
     return await MeetingService.getMeetingsBasedOnUserId(userId);
   }
 );
+
+export const getUserAsync = createAsyncThunk(
+    actionTypes.GET_USER,
+    async (userId) => {
+        return await MeetingService.getUserBasedOnUserId(userId);
+    }
+);

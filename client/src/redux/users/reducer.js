@@ -5,6 +5,7 @@ import { getMeetingsAsync } from './thunks';
 const INITIAL_STATE = {
   list: [],
   getMeetings: REQUEST_STATE.IDLE,
+  getUser: REQUEST_STATE.IDLE,
   error: null
 };
 
@@ -24,6 +25,18 @@ const usersSlice = createSlice({
       })
       .addCase(getMeetingsAsync.rejected, (state, action) => {
         state.getMeetings = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(getUserAsync.pending, (state) => {
+        state.getUser = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getUserAsync.fulfilled, (state, action) => {
+        state.getUser = REQUEST_STATE.FULFILLED;
+        state.list = action.payload;
+      })
+      .addCase(getUserAsync.rejected, (state, action) => {
+        state.getUser = REQUEST_STATE.REJECTED;
         state.error = action.error;
       })
   }

@@ -55,7 +55,6 @@ const updateMeeting = async (meetingId, content) => {
     const errorMsg = data?.message;
     throw new Error(errorMsg)
   }
-
   return data;
 };
 
