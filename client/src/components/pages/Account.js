@@ -12,20 +12,43 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
-import {getUserAsync} from "../../redux/users/thunks";
+import {getUserAsync, updateUserAsync} from "../../redux/users/thunks";
 
 export default function Account() {
-	const { register, handleSubmit } = useForm();
-	// or you can set up the defaultValues at useForm
-	// const { register, handleSubmit } = useForm({
-	//   defaultValues,
-	// });
-	const onSubmit = (data) => {
-		alert(JSON.stringify(data));
+	const [inputs, setInputs] = useState({});
+	const [ics, setIcs] = useState({});
+	const [updateAccSucceed, setUpdateAccSucceed] = useState(false);
+	const [updateIcsSucceed, setUpdateIcsSucceed] = useState(false);
+	const [deleteIcsSucceed, setDeleteIcsSucceed] = useState(false);
+
+	const handleAccountChange = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		setInputs((values) => ({ ...values, [name]: value }));
+	};
+
+	const handleIcsChange = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		setIcs((values) => ({[name]: value}));
+	};
+
+	const submitAccount = async (event) => {
+		event.preventDefault();
+		console.log("inputs:");
+		console.log(inputs);
+		await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
+		setUpdateAccSucceed(true);
+	};
+
+	const submitIcs = (event) => {
+		event.preventDefault();
+		dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics}));
+		setUpdateIcsSucceed(true);
 	};
 
 	const deleteCalendar = () => {
-		// alert(JSON.stringify(data));
+		setDeleteIcsSucceed(true);
 	};
 
 	const deleteAccount = () => {
@@ -49,42 +72,61 @@ export default function Account() {
 
 			<div className="account-info">
 			<Paper elevation={8}>
-				<div className="paper-div">
-				<form className="form-account" onSubmit={handleSubmit(onSubmit)}>
+				<div className="left-div">
+				<form className="form-account">
 				<label htmlFor="name">Name</label>
 				<input
+					name="name"
 					defaultValue={currentUser.name}
 					type="text"
-					{...register("name")}
+					onChange={handleAccountChange}
+					required
 				/>
 
 				<label htmlFor="email">Email</label>
 				<input
+					name="email"
 					defaultValue={currentUser.email}
 					type="email"
-					{...register("email")}
+					onChange={handleAccountChange}
+					required
 				/>
 
 				<label htmlFor="oldPassword">Old Password</label>
 				<input
+					name="oldPassword"
 					// defaultValue={currentUser.oldPassword}
 					placeholder="old password"
 					type="password"
-					{...register("oldPassword")}
+					// onChange={handleAccountChange}
+					required
 				/>
 
 				<label htmlFor="newPassword">New Password</label>
 				<input
+					name="newPassword"
 					// defaultValue={currentUser.newPassword}
 					placeholder="new password"
 					type="password"
-					{...register("newPassword")}
+					// onChange={handleAccountChange}
+					required
 				/>
 				<br/>
-					<Button variant="contained" startIcon={<SaveIcon />}>
+					{/*<div className="message-warning">*/}
+					{/*	Incorrect Old Password.*/}
+					{/*</div>*/}
+
+					<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount}>
 						Update
 					</Button>
-				{/*<input type="submit" value="Save"/>*/}
+
+					{updateAccSucceed ? (
+						<div className="message-success">
+							Your account is updated!<br/>
+						</div>
+					) : null}
+
+
 			</form>
 				</div>
 			</Paper>
@@ -92,23 +134,34 @@ export default function Account() {
 
 			<div className="ics-div">
 				<Paper elevation={8}>
-					<div className="paper-div">
+					<div className="right-top-div">
 						<form className="form-ics" >
-						<label htmlFor="icsCalendar">ICS Link</label>
+						<label htmlFor="ics">ICS Link</label>
 						<input
+							name="ics"
 							defaultValue={currentUser.ics}
 							type="text"
-							{...register("icsCalendar")}
+							onChange={handleIcsChange}
+							required
 						/>
 							<br/>
-							<Button variant="contained" startIcon={<SaveIcon />}>
+
+							<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs}>
 								Update
 							</Button>
-							{/*<input type="submit" value="Update"/>*/}
+							{updateIcsSucceed ? (
+								<span className="message-success">
+									Your ICS Calendar is updated!<br/>
+								</span>
+							) : null}
 						</form>
-
-						<br/><br/><br/><br/><br/><br/><br/>
-
+					</div>
+				</Paper>
+						<br/>
+				<Paper elevation={8}>
+					<div className="right-bottom-div">
+						<br/>
+						<form>
 						<Stack
 							direction="column"
 							justifyContent="center"
@@ -123,8 +176,14 @@ export default function Account() {
 							</Button>
 
 						</Stack>
-						{/*<input type="button" value="Delete Calendar "/>*/}
-						{/*<input type="button" value="Delete Account"/>*/}
+
+						{deleteIcsSucceed ? (
+							<span className="message-success">
+								Calendar Deleted!
+							</span>
+						) : null}
+
+						</form>
 					</div>
 				</Paper>
 
