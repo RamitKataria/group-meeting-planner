@@ -30,6 +30,12 @@ router.get('/:userId', function (req, res, next) {
 	return res.status(404).send({message: 'Not found'});
 });
 
+// For Testing, shouldn't be needed.
+router.get('/', function (req, res, next) {
+	return res.send(items);
+	// return res.status(404).send({message: 'Not found'});
+});
+
 router.patch('/:userId', function (req, res) {
 	const user = items.find(item => item.userId === req.params['userId']);
 	// if (req.body.oldPassword === user["password"]) {
@@ -46,6 +52,15 @@ router.patch('/:userId', function (req, res) {
 	}
 	return res.send(user);
 	// return res.status(404).send({message: 'Not found'});
+});
+
+router.delete('/:userId', function (req, res, next) {
+	const index = items.findIndex(item => item.userId === req.params['userId']);
+	if (index > -1) {
+		items.splice(index, 1);
+		return res.send({message: 'Deleted'});
+	}
+	return res.status(404).send({message: 'Not found'});
 });
 
 module.exports = router;
