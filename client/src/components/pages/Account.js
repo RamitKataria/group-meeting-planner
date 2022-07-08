@@ -18,7 +18,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
-import {getUserAsync, updateUserAsync} from "../../redux/users/thunks";
+import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
 
 export default function Account() {
 	const [inputs, setInputs] = useState({});
@@ -63,6 +63,8 @@ export default function Account() {
 
 	const deleteAccount = () => {
 		setDialogOpen(false);
+		dispatch(deleteUserAsync("d515b255-0691-4778-9796-cb4f41840136"));
+		window.location.href = "http://localhost:3000/about-us";
 	};
 
 	const currentUser = useSelector((state) => state.usersReducer.list);
