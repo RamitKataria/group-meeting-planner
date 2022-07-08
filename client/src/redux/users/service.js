@@ -13,7 +13,26 @@ const getUserBasedOnUserId = async (userId) => {
   });
   return response.json();
 };
+const updateUserBasedOnUserId = async (content) => {
+  const link = 'http://localhost:3001/users/' + content.userId;
+  const response = await fetch(link, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(content.updateContents)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg)
+  }
+  return data;
+};
+
 export default {
   getMeetingsBasedOnUserId: getMeetingsBasedOnUserId,
   getUserBasedOnUserId: getUserBasedOnUserId,
+  updateUserBasedOnUserId: updateUserBasedOnUserId
 };

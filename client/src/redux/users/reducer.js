@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from '../utils';
-import { getMeetingsAsync } from './thunks';
+import { getMeetingsAsync, getUserAsync, updateUserAsync, deleteUserAsync } from './thunks';
 
 const INITIAL_STATE = {
   list: [],
   getMeetings: REQUEST_STATE.IDLE,
   getUser: REQUEST_STATE.IDLE,
+  updateUser: REQUEST_STATE.IDLE,
   error: null
 };
 
@@ -37,6 +38,18 @@ const usersSlice = createSlice({
       })
       .addCase(getUserAsync.rejected, (state, action) => {
         state.getUser = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(updateUserAsync.pending, (state) => {
+        state.updateUser = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(updateUserAsync.fulfilled, (state, action) => {
+        state.updateUser = REQUEST_STATE.FULFILLED;
+        state.list = action.payload;
+      })
+      .addCase(updateUserAsync.rejected, (state, action) => {
+        state.updateUser = REQUEST_STATE.REJECTED;
         state.error = action.error;
       })
   }
