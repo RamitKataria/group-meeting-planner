@@ -13,6 +13,20 @@ const getUserBasedOnUserId = async (userId) => {
   });
   return response.json();
 };
+
+const deleteUserBasedOnUserId = async (userId) => {
+  const link = 'http://localhost:3001/users/' + userId;
+  const response = await fetch(link, {
+    method: 'DELETE'
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg)
+  }
+  return data;
+};
+
 const updateUserBasedOnUserId = async (content) => {
   const link = 'http://localhost:3001/users/' + content.userId;
   const response = await fetch(link, {
@@ -34,5 +48,6 @@ const updateUserBasedOnUserId = async (content) => {
 export default {
   getMeetingsBasedOnUserId: getMeetingsBasedOnUserId,
   getUserBasedOnUserId: getUserBasedOnUserId,
+  deleteUserBasedOnUserId: deleteUserBasedOnUserId,
   updateUserBasedOnUserId: updateUserBasedOnUserId
 };

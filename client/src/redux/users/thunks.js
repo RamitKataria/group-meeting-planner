@@ -22,3 +22,10 @@ export const updateUserAsync = createAsyncThunk(
         return await MeetingService.updateUserBasedOnUserId(content);
     }
 );
+
+export const deleteUserAsync = createAsyncThunk(
+    actionTypes.DELETE_USER,
+    async (userId) => {
+        return await MeetingService.deleteUserBasedOnUserId(userId);
+    }
+);
