@@ -1,0 +1,92 @@
+* {
+    font-family: 'Merriweather', sans-serif;
+    /*line-height: 2;*/
+}
+
+.outer-div{
+    margin: 3% 15%;
+}
+
+.form-account, .form-ics {
+    padding: 0;
+    text-align: center;
+}
+
+.form-account label, .form-ics label {
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 22px;
+    font-size: 14px;
+}
+
+.form-account input, .form-ics input{
+    display: block;
+    width: 90%;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 5px 10px;
+    border:0;
+    box-shadow:0 0 4px rgba(0,0,0,0.3);
+    transition: .3s box-shadow;
+}
+
+.form-account input:hover, .form-ics input:hover{
+    box-shadow:0 0 4px rgba(0,0,0,0.7);
+}
+
+.account-info {
+    float: left;
+    width: 50%;
+    margin-top: 5%;
+}
+
+.ics-div {
+    float: right;
+    width: 45%;
+    margin-top: 5%;
+}
+
+.paper-div {
+    padding: 10px 30px;
+    min-height: 550px;
+}
+
+input[type="submit"] {
+    width: 80px;
+    background: #016ABC;
+    color: #fff;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #eee;
+    text-shadow: none;
+    margin: 20px 0;
+}
+input[type="submit"]:hover {
+    background: #52abf6;
+    color: #fff;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #eee;
+    text-shadow: none;
+}
+
+input[type="button"] {
+    display: block;
+    width: 120px;
+    background: #016ABC;
+    color: #fff;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #eee;
+    text-shadow: none;
+    margin: 20px 25px;
+}
+input[type="button"]:hover {
+    background: #52abf6;
+    color: #fff;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #eee;
+    text-shadow: none;
+}
