@@ -47,7 +47,9 @@ export default function Account() {
 		setUpdateIcsSucceed(true);
 	};
 
-	const deleteCalendar = () => {
+	const deleteCalendar = (event) => {
+		event.preventDefault();
+		dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}}));
 		setDeleteIcsSucceed(true);
 	};
 

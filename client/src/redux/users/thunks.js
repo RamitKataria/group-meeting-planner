@@ -15,3 +15,10 @@ export const getUserAsync = createAsyncThunk(
         return await MeetingService.getUserBasedOnUserId(userId);
     }
 );
+
+export const updateUserAsync = createAsyncThunk(
+    actionTypes.UPDATE_USER,
+    async (content) => {
+        return await MeetingService.updateUserBasedOnUserId(content);
+    }
+);
