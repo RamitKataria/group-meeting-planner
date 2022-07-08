@@ -6,6 +6,12 @@ import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -20,6 +26,8 @@ export default function Account() {
 	const [updateAccSucceed, setUpdateAccSucceed] = useState(false);
 	const [updateIcsSucceed, setUpdateIcsSucceed] = useState(false);
 	const [deleteIcsSucceed, setDeleteIcsSucceed] = useState(false);
+	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
+	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const handleAccountChange = (event) => {
 		const name = event.target.name;
@@ -54,7 +62,7 @@ export default function Account() {
 	};
 
 	const deleteAccount = () => {
-		// alert(JSON.stringify(data));
+		setDialogOpen(false);
 	};
 
 	const currentUser = useSelector((state) => state.usersReducer.list);
@@ -173,9 +181,31 @@ export default function Account() {
 							<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
 								Delete Calendar
 							</Button>
-							<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={deleteAccount}>
+							<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
 								Delete Account
 							</Button>
+
+							<Dialog
+								open={dialogOpen}
+								onClose={() => setDialogOpen(false)}
+								aria-labelledby="alert-dialog-title"
+								aria-describedby="alert-dialog-description"
+							>
+								<DialogTitle id="alert-dialog-title">
+									{"Are you sure you want to delete this account?"}
+								</DialogTitle>
+								<DialogContent>
+									<DialogContentText id="alert-dialog-description">
+										There's no turning back !
+									</DialogContentText>
+								</DialogContent>
+								<DialogActions>
+									<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+									<Button onClick={deleteAccount} autoFocus>
+										Delete
+									</Button>
+								</DialogActions>
+							</Dialog>
 
 						</Stack>
 
