@@ -69,7 +69,7 @@ export default function NavBar() {
 					<Route exact path="/signup" element={<SignUp/>}/>
 					<Route exact path="/login" element={<Login/>}/>
 					<Route exact path="/guest" element={<Guest/>}/>
-					<Route exact path="/availability-page/:meetingId" element={<AvailabilityPage/>}/>
+					<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 				</Routes>
 			</BrowserRouter>
 
