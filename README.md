@@ -57,15 +57,6 @@ Allow users to set up meetings schedules & automatically fill in availability by
 2. As the meeting organizer, I want to be able to limit access to the meeting info and availability to registered users with given email addresses
 3. As a user, I want to be able to import my availability from a link to my personal availability ICS file
 
-### Account Settings Page
-
-- Name
-- email
-- password
-- ICS calendar link, Update calendar now
-- Delete saved availability
-- Delete account
-
 ## Minimal Requirements Breakdown
 
 **Requirement 1:** As a meeting organizer, I want to be able to create a new meeting with a given span (possible days/time) and get a unique link for it
