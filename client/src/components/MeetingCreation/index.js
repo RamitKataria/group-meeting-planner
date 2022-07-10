@@ -8,33 +8,33 @@ import { useSelector, useDispatch } from 'react-redux';
 import {storeMeetingName} from '../../redux/meetingCreation';
 // import Route from "../Route";
 
-function EventCreation() {
+function MeetingCreation() {
     const meetingCreationStore = useSelector(state => state.meetingCreation)
     const dispatch = useDispatch();
 
-    function handleCreateEvent() {
+    function handleCreateMeeting() {
         console.log(meetingCreationStore)
-        return window.location.href = '/AvailabilityPage'; // TO REMOVE: placeholder redirect
+        // return window.location.href = '/Home'; // TO REMOVE: placeholder redirect
     }
 
     function handleNameChange(e) {
         dispatch(storeMeetingName(e.target.value))
     }
 
-    return (<div className="event-creation">
+    return (<div className="meeting-creation">
         <Grid container spacing={2}
             columns={12}>
             <Grid item className="padding-left" xs={3}></Grid>
             <Grid item className="name-field" xs={6}>
-                <h1>Schedule An Event</h1>
+                <h1>Schedule A Meeting</h1>
                 <div className="input">
                     <div className="input item padding "></div>
                         <Input 
                         value={meetingCreationStore['meeting-name']}
                         onChange={handleNameChange}
                         className="input item"
-                        label="event-name" 
-                        placeholder="Enter Event Name"></Input>
+                        label="meeting-name" 
+                        placeholder="Enter Meeting Name"></Input>
                     <div className="input item padding"></div>
                 </div>
                 
@@ -64,7 +64,7 @@ function EventCreation() {
                                 // color='success'
                                 id='confirm' 
                                 sx={{borderRadius:'2em'}}
-                                onClick={handleCreateEvent}
+                                onClick={handleCreateMeeting}
                                 >Create Event</Button>
                             </div>
                         </div>
@@ -82,4 +82,4 @@ function EventCreation() {
     </div>)
 }
 
-export default EventCreation;
+export default MeetingCreation;
