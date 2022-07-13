@@ -43,8 +43,6 @@ export default function Account() {
 
 	const submitAccount = async (event) => {
 		event.preventDefault();
-		console.log("inputs:");
-		console.log(inputs);
 		await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
 		setUpdateAccSucceed(true);
 	};
@@ -70,8 +68,7 @@ export default function Account() {
 	const currentUser = useSelector((state) => state.usersReducer.list);
 
 	useEffect(() => {
-		const temp = dispatch(getUserAsync("d515b255-0691-4778-9796-cb4f41840136"));
-		console.log(temp);
+		dispatch(getUserAsync("d515b255-0691-4778-9796-cb4f41840136"));
 	}, []);
 	const dispatch = useDispatch();
 

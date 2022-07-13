@@ -263,6 +263,10 @@ export default function EnhancedTable() {
 		setSelected([]);
 	};
 
+	const handleRedirectLink = (event, meetingId) => {
+		window.location.href = "http://localhost:3000/home/" + meetingId;
+	}
+
 	const handleClick = (event, name) => {
 		const selectedIndex = selected.indexOf(name);
 		let newSelected = [];
@@ -302,7 +306,7 @@ export default function EnhancedTable() {
 		<div className="">
 		<ThemeProvider theme={theme}>
 			<Typography
-				sx={{ flex: '1 1 100%', fontWeight: 'bold', margin: "3% 0", "text-align": "center"}}
+				sx={{ flex: '1 1 100%', fontWeight: 'bold', margin: "3% 0", "textAlign": "center"}}
 				variant="h4"
 				id="tableTitle"
 				component="div"
@@ -340,7 +344,7 @@ export default function EnhancedTable() {
 											role="checkbox"
 											aria-checked={isItemSelected}
 											tabIndex={-1}
-											key={meeting.meetingId}
+											key={index}
 											selected={isItemSelected}
 										>
 											<StyledTableCell padding="checkbox">
@@ -353,19 +357,25 @@ export default function EnhancedTable() {
 												/>
 											</StyledTableCell>
 											<StyledTableCell
-												component="th"
+												sx={{ textDecoration: 'underline' }}
 												id={labelId}
 												scope="row"
 												padding="none"
 												align="right"
-												component="a"
-												href={"http://localhost:3001/availability/" + meeting.meetingId}
+												onClick={(event) => handleRedirectLink(event,
+													meeting.meetingId
+													// "fc73754b-00be-4fa4-b02f-1efad9cffe05"
+												)}
 											>
-												{meeting.name}
+												Test
+												{/*{meeting.name}*/}
 											</StyledTableCell>
 											<StyledTableCell align="right">{meeting.dateTimeUpdated}</StyledTableCell>
 											<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
-											<StyledTableCell align="right" numeric component="a" >{"http://localhost:3001/availability/" + meeting.meetingId}</StyledTableCell>
+											<StyledTableCell align="right" numeric="true"
+															 // component="a"
+											>{"http://localhost:3000/availability/" + meeting.meetingId}
+											</StyledTableCell>
 										</StyledTableRow>
 									);
 								})}

@@ -36,22 +36,24 @@ export default function AvailabilityPage() {
 						{/*<br/>*/}
 						<h2>Meeting Summary</h2>
 						<table>
-							<tr>
-								<td className="table-header"><strong>Meeting ID: &emsp;</strong><ContentCopyIcon fontSize="small" onClick={copyClipboard}></ContentCopyIcon></td>
-								<td>{meetingInfo.meetingId}</td>
-							</tr>
-							<tr>
-								<td className="table-header"><strong>Name: </strong></td>
-								<td>{meetingInfo.name}</td>
-							</tr>
-							<tr>
-								<td className="table-header"><strong>Description: </strong></td>
-								<td>{meetingInfo.description}</td>
-							</tr>
-							<tr>
-								<td className="table-header"><strong>Created By: </strong></td>
-								<td>{meetingInfo.createdBy}</td>
-							</tr>
+							<thead>
+								<tr>
+									<td className="table-header"><strong>Meeting ID: &emsp;</strong><ContentCopyIcon fontSize="small" onClick={copyClipboard}></ContentCopyIcon></td>
+									<td>{meetingInfo.meetingId}</td>
+								</tr>
+								<tr>
+									<td className="table-header"><strong>Name: </strong></td>
+									<td>{meetingInfo.name}</td>
+								</tr>
+								<tr>
+									<td className="table-header"><strong>Description: </strong></td>
+									<td>{meetingInfo.description}</td>
+								</tr>
+								<tr>
+									<td className="table-header"><strong>Created By: </strong></td>
+									<td>{meetingInfo.createdBy}</td>
+								</tr>
+							</thead>
 						</table>
 					</div>
 				</Paper>
