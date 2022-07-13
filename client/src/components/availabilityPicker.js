@@ -1,51 +1,30 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import AvailabilityTable from "./availabilityTable";
+import {useDispatch, useSelector} from "react-redux";
+import "./availabilityPicker.css"
+import { setUserSlots } from "../redux/availability";
 
-const AvailabilityPicker = ({ days, timeRange, othersAvailability }) => {
-  const [state, setState] = useState({
-    showEveryone: false,
-    userAvailability: {},
-  })
+const AvailabilityPicker = () => {
+    const state = useSelector((state) => state.availability);
+    const dispatch = useDispatch();
 
-  const handleAvail = (e) => {
-    console.log(2);
-    if (e.target.className === "availability-table-cell") {
-      console.log(1)
-      setUserAvail(e.target.starttime, 0);
-    }
-  };
+    const [showEveryone, setShowEveryone] = useState(false);
 
-  const toggleShowEveryone = () => {
-    setState({
-      showEveryone: !state.showEveryone,
-      ...state
-    })
-  }
+    const toggleShowEveryone = () => {
+      setShowEveryone(!showEveryone);
+    };
 
-  const setUserAvail = (startTime, avail) => {
-    setState({
-      userAvailability: {
-        startTime: avail,
-        ...state.userAvailability
-      },
-      ...state
-    })
-  }
+    const hourInMilliS = 60 * 60 * 1000;
 
-  return (
-    <>
-      <link rel="stylesheet" href="availabilityPicker.css" />
-      <AvailabilityTable
-        days={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]}
-        timeRange={{
-          start: 8,
-          end: 17,
-        }}
-        timeUnit={1}
-        onClick={() => { console.log(3) }}
-      />
-    </>
-  );
+    return (
+        <AvailabilityTable
+            days={state.dates.map(d => new Date(d))}
+            timeRange={state.timeRanges[0].map(x => x * hourInMilliS)}
+            timeUnit={hourInMilliS}
+            setUserSlots={(args) => dispatch(setUserSlots(args))}
+            selectedSlots={state.userAvailability}
+        />
+    );
 };
 
 export default AvailabilityPicker;
