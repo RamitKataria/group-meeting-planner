@@ -4,6 +4,7 @@ import '../../css/EventCreation/index.css'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeMeetingName, resetAddMeeting} from '../../redux/meetingCreation';
 import { addMeetingsAsync } from "../../redux/meetings/thunks";
@@ -34,7 +35,7 @@ function MeetingCreation() {
             dispatch(resetAddMeeting());
             navigate('../home');
         }
-    }, [addMeeting.state, addMeeting.response])
+    }, [addMeeting, dispatch, navigate])
 
     return (<div className="meeting-creation">
         <Grid container spacing={2}
@@ -73,15 +74,10 @@ function MeetingCreation() {
                     <div className="item"></div>
                         <div className="picker-and-btn">
                             <TimeRangePicker/>
-                            <div id='confirm'>
-                                <Button variant='contained' 
-                                // color='success'
-                                id='confirm' 
-                                sx={{borderRadius:'2em'}}
-                                onClick={handleCreateMeeting}
-                                >Create Meeting</Button>
-                            </div>
-                            <div>{addMeeting.state}</div>
+                            <CreateMeetingBtn
+                                handleClick={handleCreateMeeting}
+                                loading={addMeeting.state === REQUEST_STATE.PENDING}
+                            />
                         </div>
                     <div className="item"></div>
                 </div>
@@ -95,6 +91,32 @@ function MeetingCreation() {
             <Grid className="padding-right" item xs={2}></Grid>
         </Grid>        
     </div>)
+}
+
+function CreateMeetingBtn(props) {
+    return (
+        <div id='confirm'>
+            <Button variant='contained' 
+            id='confirm' 
+            sx={{borderRadius:'2em'}}
+            onClick={props.handleClick}
+            disabled={props.loading}
+            >Create Meeting</Button>
+            {props.loading && (
+                <CircularProgress
+                    size={24}
+                    sx={{
+                    // color: green[500],
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-12px',
+                    marginLeft: '-12px',
+                    }}
+                />
+            )}
+        </div>
+    )
 }
 
 export default MeetingCreation;
