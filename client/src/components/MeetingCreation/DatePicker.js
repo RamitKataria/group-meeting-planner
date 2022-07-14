@@ -16,7 +16,7 @@ export default function DatePicker() {
     const changeMultiDates = useCallback(
         (val) => {
         setMultiDates(val);
-        dispatch(storeDates(val.map(e=>e.toString())));
+        dispatch(storeDates(val.map(e=>e.toDateString())));
         },
         [dispatch]
     )

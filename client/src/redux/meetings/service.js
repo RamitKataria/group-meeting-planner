@@ -1,5 +1,5 @@
-const addMeeting = async (meetingId, content) => {
-  const link = 'http://localhost:3001/meetings/' + meetingId;
+const addMeeting = async (content) => {
+  const link = 'http://localhost:3001/meetings/';
   const response = await fetch(link, {
     method: 'POST',
     headers: {

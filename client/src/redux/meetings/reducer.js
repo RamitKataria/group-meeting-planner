@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from '../utils';
-import { getMeetingAsync } from './thunks';
+import { addMeetingsAsync, getMeetingAsync } from './thunks';
 
 const INITIAL_STATE = {
   list: [],

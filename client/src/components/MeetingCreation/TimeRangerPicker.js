@@ -3,6 +3,7 @@ import '../../css/EventCreation/TimeRangePicker.css';
 import TimeSlider from './TimeSlider';
 import {storeStartTime, storeEndTime} from '../../redux/meetingCreation'
 import { useSelector, useDispatch } from 'react-redux';
+import { sliderTimeToString, sliderTime, roundToHour } from './utils';
 
 const sliderMarks = [
     {value: 9, label: '09:00'},
@@ -10,39 +11,23 @@ const sliderMarks = [
     {value: 17, label: '17:00'}
 ]
 
-function roundToHour(timeStr) {
-    let time = timeStr.split(':')
-    if (time[1] !== '00') {
-        time[1] = '00'
-    }
-    return time[0] + ':' + time[1];
-}
-
-function sliderTime(timeStr) {
-    return Number(timeStr.split(':')[0]);
-}
-
-function sliderTimeToString(sliderTime) {
-    let timeStr = sliderTime+':00'
-    timeStr = ((sliderTime / 10) < 1) ? ('0'+timeStr) : timeStr;
-
-    return timeStr;
-}
-
 function TimeRangePicker() {
     const dispatch = useDispatch();
     const meetingCreationStore = useSelector(state => state.meetingCreation);
 
-    const [startTime, setStartTime] = useState(sliderTimeToString(meetingCreationStore['start-time']));
-    const [endTime, setEndTime] = useState(sliderTimeToString(meetingCreationStore['end-time']));
-    const [sliderNums, setSliderNums] = useState([meetingCreationStore['start-time'], meetingCreationStore['end-time']]);
+    const [startTime, setStartTime] = useState(sliderTimeToString(meetingCreationStore['startTime']));
+    const [endTime, setEndTime] = useState(sliderTimeToString(meetingCreationStore['endTime']));
+    const [sliderNums, setSliderNums] = useState([meetingCreationStore['startTime'], meetingCreationStore['endTime']]);
     
     function handleSliderChange(event, newValues) {
         setSliderNums(newValues);
-        setStartTime(sliderTimeToString(newValues[0]));
-        setEndTime(sliderTimeToString(newValues[1]));
-        dispatch(storeStartTime(newValues[0]))
-        dispatch(storeEndTime(newValues[1]))
+        if (sliderNums[0] != newValues[0]) {
+            setStartTime(sliderTimeToString(newValues[0]));
+            dispatch(storeStartTime(newValues[0]))
+        } else {
+            setEndTime(sliderTimeToString(newValues[1]));
+            dispatch(storeEndTime(newValues[1]))
+        }
     }
 
     function handleStartTimeChange(e) {

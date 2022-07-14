@@ -5,21 +5,36 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import { useSelector, useDispatch } from 'react-redux';
-import {storeMeetingName} from '../../redux/meetingCreation';
-// import Route from "../Route";
+import {storeMeetingName, resetAddMeeting} from '../../redux/meetingCreation';
+import { addMeetingsAsync } from "../../redux/meetings/thunks";
+import { creationSliceToInstance } from "./utils";
+import { useEffect } from "react";
+import { REQUEST_STATE } from "../../redux/utils";
+import {useNavigate} from "react-router-dom";
 
 function MeetingCreation() {
-    const meetingCreationStore = useSelector(state => state.meetingCreation)
+    const meetingCreationSlice = useSelector(state => state.meetingCreation)
+    const addMeeting = useSelector(state => state.meetingCreation.addMeeting)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     function handleCreateMeeting() {
-        console.log(meetingCreationStore)
-        // return window.location.href = '/Home'; // TO REMOVE: placeholder redirect
+        const instance = creationSliceToInstance(meetingCreationSlice); 
+        dispatch(addMeetingsAsync(instance));
     }
 
     function handleNameChange(e) {
         dispatch(storeMeetingName(e.target.value))
     }
+
+    useEffect( () => {
+        console.log(addMeeting)
+        if (addMeeting.state === REQUEST_STATE.FULFILLED) {
+            console.log(addMeeting.response);
+            dispatch(resetAddMeeting());
+            navigate('../home');
+        }
+    }, [addMeeting.state, addMeeting.response])
 
     return (<div className="meeting-creation">
         <Grid container spacing={2}
@@ -30,10 +45,10 @@ function MeetingCreation() {
                 <div className="input">
                     <div className="input item padding "></div>
                         <Input 
-                        value={meetingCreationStore['meeting-name']}
+                        value={meetingCreationSlice['name']}
                         onChange={handleNameChange}
                         className="input item"
-                        label="meeting-name" 
+                        label="name" 
                         placeholder="Enter Meeting Name"></Input>
                     <div className="input item padding"></div>
                 </div>
@@ -59,14 +74,14 @@ function MeetingCreation() {
                         <div className="picker-and-btn">
                             <TimeRangePicker/>
                             <div id='confirm'>
-                                
                                 <Button variant='contained' 
                                 // color='success'
                                 id='confirm' 
                                 sx={{borderRadius:'2em'}}
                                 onClick={handleCreateMeeting}
-                                >Create Event</Button>
+                                >Create Meeting</Button>
                             </div>
+                            <div>{addMeeting.state}</div>
                         </div>
                     <div className="item"></div>
                 </div>
