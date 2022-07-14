@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import AvailabilityTable from "./availabilityTable";
+import AvailabilityTable from "./AvailabilityTable";
 import {useDispatch, useSelector} from "react-redux";
-import "./availabilityPicker.css"
+import "../css/availability-picker.css"
 import { setUserSlots } from "../redux/availability";
 
 const AvailabilityPicker = () => {

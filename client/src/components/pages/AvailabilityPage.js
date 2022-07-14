@@ -1,10 +1,10 @@
-import "../../css/availabilityPage.css";
+import "../../css/availability-page.css";
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import {getMeetingAsync} from "../../redux/meetings/thunks";
 import Paper from '@mui/material/Paper';
-import AvailabilityPicker from "../availabilityPicker";
+import AvailabilityPicker from "../AvailabilityPicker";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();

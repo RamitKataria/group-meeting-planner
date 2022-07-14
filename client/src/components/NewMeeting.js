@@ -1,4 +1,4 @@
-import "../css/newMeeting.css";
+import "../css/new-meeting.css";
 import EventCreation from './EventCreation/EventCreateion'
 
 

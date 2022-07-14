@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AvailabilityPeriod from "./availabilityPeriod";
+import AvailabilityPeriod from "./AvailabilityPeriod";
 
 const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSlots }) => {
     const [selectionMode, setSelectionMode] = useState(null);

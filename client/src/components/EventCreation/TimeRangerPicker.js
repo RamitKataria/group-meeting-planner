@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../css/EventCreation/TimeRangePicker.css';
+import '../../css/EventCreation/time-range-picker.css';
 import TimeSlider from './TimeSlider';
 import {storeStartTime, storeEndTime} from '../../redux/meetingCreation'
 import { useSelector, useDispatch } from 'react-redux';
