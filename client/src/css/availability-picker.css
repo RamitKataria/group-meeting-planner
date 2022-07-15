@@ -1,0 +1,15 @@
+.availability-table-cell {
+    min-width: 48px;
+    min-height: 48px;
+}
+
+table, td, th {
+    border-collapse: collapse;
+    padding: 0;
+    user-select: none;
+    border: none;
+}
+
+.selected {
+    background-color: #5fa2db;
+}

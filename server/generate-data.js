@@ -79,7 +79,7 @@ function generateMeetings() {
         range: [],
         userAvailability: [
             {
-                user: {_id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
+                user: { _id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
                 availableSlots: []
             },
             {

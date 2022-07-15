@@ -1,10 +1,11 @@
-import "../../css/availabilityPage.css";
+import "../../css/availability-page.css";
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import {getMeetingAsync} from "../../redux/meetings/thunks";
 import Paper from '@mui/material/Paper';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import AvailabilityPicker from "../AvailabilityPicker";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
@@ -28,7 +29,6 @@ export default function AvailabilityPage() {
 
 	return (
 		<div className="outer-div">
-			<h1>Welcome to Meeting Planner!!</h1>
 			<div className="meeting-summary-div">
 
 				<Paper elevation={8} style={{borderRadius: 15}}>
@@ -64,6 +64,7 @@ export default function AvailabilityPage() {
 			<div className="availability-picker-div">
 
 				<h2>Choose your availability:</h2>
+				<AvailabilityPicker/>
 			</div>
 		</div>
 	);

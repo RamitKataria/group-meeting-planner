@@ -1,4 +1,4 @@
-import "../../css/signUp.css";
+import "../../css/sign-up.css";
 import React, {useState} from 'react';
 import {Grid, Button, TextField, Typography, Link} from "@mui/material";
 import CreatePopBox from "./Popbox";
