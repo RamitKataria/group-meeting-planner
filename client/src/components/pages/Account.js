@@ -1,7 +1,6 @@
 import "../../css/account.css";
 import SignUp from './SignUp.js';
 import Login from './Login.js';
-import { useForm } from "react-hook-form";
 import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';
