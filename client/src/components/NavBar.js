@@ -8,10 +8,13 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Guest from "./pages/Guest";
 import AvailabilityPage from "./pages/AvailabilityPage";
-import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser } from "react-icons/bi";
+import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser, BiLogIn } from "react-icons/bi";
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import {useEffect, useState} from "react";
 
 export default function NavBar() {
+
+	const [status, setStatus] = useState(true);
 	return (
 		<div className="">
 			<div className="area"></div>
@@ -30,46 +33,66 @@ export default function NavBar() {
 							<span className="nav-text">Home</span>
 						</Link>
 					</li>
-					<li key="new-meeting" className="tabs">
+					{status ? (
+					[<li className="tabs">
 						<Link to="/new-meeting">
 							<BiPlus className="fa"/>
 							<span className="nav-text">New Meeting</span>
 						</Link>
-					</li>
-					<li key="all-meetings" className="tabs">
+					</li>,
+					<li className="tabs">
 						<Link to="/all-meetings">
 							<BiListOl className="fa"/>
 							<span className="nav-text">All Meetings</span>
 						</Link>
-					</li>
-					<li key="about-us" className="tabs">
+					</li>]
+						) : null}
+					<li className="tabs">
 						<Link to="/about-us">
 							<BiInfoCircle className="fa"/>
-							<span className="nav-text">About Us</span>
+							<span className="nav-text">
+								About Us
+							</span>
 						</Link>
 					</li>
 				</ul>
 
-				<ul className="logout">
-					<li key="account" className="tabs">
-						<Link to="/account">
-							<BiUser className="fa"/>
-							<span className="nav-text">Account</span>
-						</Link>
+				<ul class="logout">
+					<li className="tabs">
+						{status ? (
+
+								<Link to="/account">
+									<BiUser className="fa"/>
+									<span className="nav-text">Account</span>
+								</Link>
+
+							) :
+
+								<Link to="/login">
+									<BiLogIn className="fa"/>
+									<span className="nav-text">Sign Up / Login</span>
+								</Link>
+							}
 					</li>
 				</ul>
 			</nav>
 				<Routes>
 					<Route exact path="/" element={<Home/>}/>
-					<Route exact path="/home" element={<Home/>}/>
-					<Route exact path="/new-meeting" element={<NewMeeting/>}/>
-					<Route exact path="/all-meetings" element={<AllMeetings/>}/>
 					<Route exact path="/about-us" element={<AboutUs/>}/>
-					<Route exact path="/account" element={<Account/>}/>
-					<Route exact path="/signup" element={<SignUp/>}/>
-					<Route exact path="/login" element={<Login/>}/>
-					<Route exact path="/guest" element={<Guest/>}/>
+					<Route exact path="/home" element={<Home/>}/>
 					<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
+
+					{status ? (
+						[
+							<Route exact path="/new-meeting" element={<NewMeeting/>}/>,
+							<Route exact path="/all-meetings" element={<AllMeetings/>}/>,
+							<Route exact path="/account" element={<Account/>}/>
+						]) :
+						[
+							<Route exact path="/signup" element={<SignUp/>}/>,
+							<Route exact path="/login" element={<Login/>}/>,
+							<Route exact path="/guest" element={<Guest/>}/>
+						]}
 				</Routes>
 			</BrowserRouter>
 
