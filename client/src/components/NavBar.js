@@ -18,31 +18,31 @@ export default function NavBar() {
 			<BrowserRouter>
 			<nav className="main-menu">
 				<ul>
-					<li>
+					<li key="home-icon">
 						<Link to="/home">
 							<BiBookBookmark className="fa title-icon"/>
 							<span className="title-text">Meeting Planner</span>
 						</Link>
 					</li>
-					<li className="tabs">
+					<li key="home" className="tabs">
 						<Link to="/home">
 							<BiHomeAlt className="fa"/>
 							<span className="nav-text">Home</span>
 						</Link>
 					</li>
-					<li className="tabs">
+					<li key="new-meeting" className="tabs">
 						<Link to="/new-meeting">
 							<BiPlus className="fa"/>
 							<span className="nav-text">New Meeting</span>
 						</Link>
 					</li>
-					<li className="tabs">
+					<li key="all-meetings" className="tabs">
 						<Link to="/all-meetings">
 							<BiListOl className="fa"/>
 							<span className="nav-text">All Meetings</span>
 						</Link>
 					</li>
-					<li className="tabs">
+					<li key="about-us" className="tabs">
 						<Link to="/about-us">
 							<BiInfoCircle className="fa"/>
 							<span className="nav-text">About Us</span>
@@ -50,11 +50,11 @@ export default function NavBar() {
 					</li>
 				</ul>
 
-				<ul class="logout">
-					<li className="tabs">
+				<ul className="logout">
+					<li key="account" className="tabs">
 						<Link to="/account">
 							<BiUser className="fa"/>
-							<span class="nav-text">Account</span>
+							<span className="nav-text">Account</span>
 						</Link>
 					</li>
 				</ul>
@@ -69,7 +69,7 @@ export default function NavBar() {
 					<Route exact path="/signup" element={<SignUp/>}/>
 					<Route exact path="/login" element={<Login/>}/>
 					<Route exact path="/guest" element={<Guest/>}/>
-					<Route exact path="/availability-page/:meetingId" element={<AvailabilityPage/>}/>
+					<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 				</Routes>
 			</BrowserRouter>
 
