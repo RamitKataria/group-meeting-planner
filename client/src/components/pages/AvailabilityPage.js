@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import {getMeetingAsync} from "../../redux/meetings/thunks";
 import Paper from '@mui/material/Paper';
-import AvailabilityPicker from "../AvailabilityPicker";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import AvailabilityPicker from "../AvailabilityPicker";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();

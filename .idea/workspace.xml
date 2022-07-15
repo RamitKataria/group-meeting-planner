@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1812b49a-bf56-4fd0-8072-21754b312d56" name="Changes" comment="update users schema">
+      <change beforePath="$PROJECT_DIR$/client/src/components/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/NavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/pages/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/pages/Account.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/users/actionTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/actionTypes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/users/reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/users/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/users/thunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/thunks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/users.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2AvEr2FhCJfEvDyhkCTmy5YuG5J" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/client/src/redux/users" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src/redux/users" />
+      <recent name="$PROJECT_DIR$/client/src/components/pages" />
+      <recent name="$PROJECT_DIR$/client/src/css" />
+      <recent name="$PROJECT_DIR$/client/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/May-files" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1812b49a-bf56-4fd0-8072-21754b312d56" name="Changes" comment="" />
+      <created>1655881854296</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1655881854296</updated>
+      <workItem from="1655881858175" duration="905000" />
+      <workItem from="1655884663316" duration="32263000" />
+      <workItem from="1656119919231" duration="4274000" />
+      <workItem from="1656124243433" duration="27378000" />
+      <workItem from="1657011641105" duration="50112000" />
+    </task>
+    <task id="LOCAL-00001" summary="refactored reducers and added redux folder &amp; added basic REST routes &amp; implemented getMeetings request for AllMeetings page">
+      <created>1655980993981</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1655980993981</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add users and meetings default data">
+      <created>1656096061490</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096061490</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add /users routes on server side">
+      <created>1656096243652</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096243652</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add /meetings routes on server side">
+      <created>1656096258560</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096258560</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add redux state for allMeetings page">
+      <created>1656096347334</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096347334</updated>
+    </task>
+    <task id="LOCAL-00006" summary="edit table contents and send GET request to obtain all meetings for a specific userId">
+      <created>1656096444548</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096444548</updated>
+    </task>
+    <task id="LOCAL-00007" summary="edit store path">
+      <created>1656096510044</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096510044</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add /users route">
+      <created>1656096533497</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1656096533497</updated>
+    </task>
+    <task id="LOCAL-00009" summary="move all files to a temporary directory">
+      <created>1656118738600</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1656118738600</updated>
+    </task>
+    <task id="LOCAL-00010" summary="move css files to css folder">
+      <created>1656124320654</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124320654</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add Login component &amp; remove useNavigate()">
+      <created>1656124394816</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124394816</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add login page to Account (temporary)">
+      <created>1656124453061</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124453061</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add SignUp, Popbox and Modal components">
+      <created>1656124505864</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124505864</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add routes for additional pages">
+      <created>1656124533667</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124533667</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add Guest page (temporary) &amp; state slice">
+      <created>1656124607071</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124607071</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add dependencies">
+      <created>1656124642902</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124642902</updated>
+    </task>
+    <task id="LOCAL-00017" summary="delete May-files folder">
+      <created>1656124672629</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1656124672629</updated>
+    </task>
+    <task id="LOCAL-00018" summary="basic styling for consistency">
+      <created>1656126844590</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1656126844590</updated>
+    </task>
+    <task id="LOCAL-00019" summary="edit meetings POST api">
+      <created>1656132266016</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1656132266016</updated>
+    </task>
+    <task id="LOCAL-00020" summary="update Routes in NavBar.js to be more responsive">
+      <created>1657003694096</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1657003694096</updated>
+    </task>
+    <task id="LOCAL-00021" summary="split redux into two entities">
+      <created>1657014098452</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1657014098452</updated>
+    </task>
+    <task id="LOCAL-00022" summary="add params to availability-page">
+      <created>1657014144437</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1657014144437</updated>
+    </task>
+    <task id="LOCAL-00023" summary="change notes to description">
+      <created>1657014161415</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1657014161415</updated>
+    </task>
+    <task id="LOCAL-00024" summary="refactor allMeetings page for new redux directory">
+      <created>1657014195452</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1657014195452</updated>
+    </task>
+    <task id="LOCAL-00025" summary="add redux state to reflect meetings info based on url params">
+      <created>1657014223984</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1657014223984</updated>
+    </task>
+    <task id="LOCAL-00026" summary="add Paper mui component for styling">
+      <created>1657049235957</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1657049235957</updated>
+    </task>
+    <task id="LOCAL-00027" summary="implement copy to clipboard button">
+      <created>1657222711491</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1657222711491</updated>
+    </task>
+    <task id="LOCAL-00028" summary="update Schema">
+      <created>1657228206786</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1657228206786</updated>
+    </task>
+    <task id="LOCAL-00029" summary="update users schema">
+      <created>1657237936440</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1657237936440</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add redux state for allMeetings page" />
+    <MESSAGE value="edit table contents and send GET request to obtain all meetings for a specific userId" />
+    <MESSAGE value="edit store path" />
+    <MESSAGE value="add /users route" />
+    <MESSAGE value="move all files to a temporary directory" />
+    <MESSAGE value="move css files to css folder" />
+    <MESSAGE value="add Login component &amp; remove useNavigate()" />
+    <MESSAGE value="add login page to Account (temporary)" />
+    <MESSAGE value="add SignUp, Popbox and Modal components" />
+    <MESSAGE value="add routes for additional pages" />
+    <MESSAGE value="add Guest page (temporary) &amp; state slice" />
+    <MESSAGE value="add dependencies" />
+    <MESSAGE value="delete May-files folder" />
+    <MESSAGE value="basic styling for consistency" />
+    <MESSAGE value="edit meetings POST api" />
+    <MESSAGE value="update Routes in NavBar.js to be more responsive" />
+    <MESSAGE value="split redux into two entities" />
+    <MESSAGE value="add params to availability-page" />
+    <MESSAGE value="change notes to description" />
+    <MESSAGE value="refactor allMeetings page for new redux directory" />
+    <MESSAGE value="add redux state to reflect meetings info based on url params" />
+    <MESSAGE value="add Paper mui component for styling" />
+    <MESSAGE value="implement copy to clipboard button" />
+    <MESSAGE value="update Schema" />
+    <MESSAGE value="update users schema" />
+    <option name="LAST_COMMIT_MESSAGE" value="update users schema" />
+  </component>
+</project>
