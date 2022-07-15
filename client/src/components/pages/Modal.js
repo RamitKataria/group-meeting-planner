@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "../../css/modal.css";
 import { useDispatch} from "react-redux"
-import {addGuest} from "./guestSlice";
+import {addGuest} from "./GuestSlice";
 import {Button, TextField, Typography} from "@mui/material";
 
 export default function Modal({onClose}){
