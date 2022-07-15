@@ -21,13 +21,13 @@ export default function NavBar() {
 			<BrowserRouter>
 			<nav className="main-menu">
 				<ul>
-					<li>
+					<li key="home-icon">
 						<Link to="/home">
 							<BiBookBookmark className="fa title-icon"/>
 							<span className="title-text">Meeting Planner</span>
 						</Link>
 					</li>
-					<li className="tabs">
+					<li key="home" className="tabs">
 						<Link to="/home">
 							<BiHomeAlt className="fa"/>
 							<span className="nav-text">Home</span>

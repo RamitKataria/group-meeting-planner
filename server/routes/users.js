@@ -22,13 +22,45 @@ router.get('/:userId/meetings', function (req, res, next) {
 	return res.status(404).send({message: 'Not found'});
 });
 
-router.put('/:userId', function (req, res) {
-	const index = items.findIndex(item => item.userId === req.params['userId']);
-	if (index > -1) {
-		items[index] = {...req.body, userId: req.params['userId']};
-		return res.send({message: 'OK'});
+router.get('/:userId', function (req, res, next) {
+	const user = items.find(item => item.userId === req.params['userId']);
+	if (user) {
+		return res.send(user);
 	}
 	return res.status(404).send({message: 'Not found'});
-})
+});
+
+// For Testing, shouldn't be needed.
+router.get('/', function (req, res, next) {
+	return res.send(items);
+	// return res.status(404).send({message: 'Not found'});
+});
+
+router.patch('/:userId', function (req, res) {
+	const user = items.find(item => item.userId === req.params['userId']);
+	// if (req.body.oldPassword === user["password"]) {
+		// console.log("oldpassword: " + req.body.oldPassword);
+		// console.log("databasepassword: " + user["password"]);
+		// console.log("correct password!");
+	// }		
+	// else
+		// console.log("wrong password!");
+	console.log(req.body);
+	for (let [key, value] of Object.entries(req.body)) {
+		if (key !== "oldPassword")
+			user[key] = value;
+	}
+	return res.send(user);
+	// return res.status(404).send({message: 'Not found'});
+});
+
+router.delete('/:userId', function (req, res, next) {
+	const index = items.findIndex(item => item.userId === req.params['userId']);
+	if (index > -1) {
+		items.splice(index, 1);
+		return res.send({message: 'Deleted'});
+	}
+	return res.status(404).send({message: 'Not found'});
+});
 
 module.exports = router;

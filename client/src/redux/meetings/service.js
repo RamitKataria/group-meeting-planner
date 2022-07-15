@@ -17,7 +17,7 @@ const addMeeting = async (meetingId, content) => {
   return data;
 };
 
-const getMeeting = async (meetingId) => {
+export const getMeeting = async (meetingId) => {
   console.log("meetingID: " + meetingId);
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
@@ -55,7 +55,6 @@ const updateMeeting = async (meetingId, content) => {
     const errorMsg = data?.message;
     throw new Error(errorMsg)
   }
-
   return data;
 };
 
