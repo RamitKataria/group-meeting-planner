@@ -27,7 +27,7 @@ const deleteUserBasedOnUserId = async (userId) => {
   return data;
 };
 
-const updateUserBasedOnUserId = async (content) => {
+export const updateUserBasedOnUserId = async (content) => {
   const link = 'http://localhost:3001/users/' + content.userId;
   const response = await fetch(link, {
     method: 'PATCH',
