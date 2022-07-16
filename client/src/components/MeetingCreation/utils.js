@@ -15,22 +15,38 @@ export function sliderTimeToString(sliderTime) {
     return timeStr;
 }   
 
+// TODO: update user state
 export function creationSliceToInstance(state) {
-    const dateTime = new Date();
-    const user = state['currUser'] == "" ? "Guest" : state['currUser'];
+    const creationTime = new Date();
+    const user = state['currUser'] === "" ? "Guest" : state['currUser'];
     return {
         name: state['name'],
-        dateTimeCreated: dateTime.toString(),
-        dateTimeUpdated: dateTime.toString(),
+        description: "Enter Descriptions", // TODO
+        dateTimeCreated: creationTime.getTime(),
+        dateTimeUpdated: creationTime.getTime(),
         createdBy: user,
-        dateRange: state['dates'],
-        timeRange: [state['startTime'], state['endTime']],
+        range: convertToRange(state['dates'], state['startTime'], state['endTime']),
         usersAvailability: [
             {
                 name: user,
                 availableSlots: [],
             }
         ],
-        description: "Enter Descriptions", // TODO
     }
+}
+
+function convertToRange(dates, startHour, endHour) {
+    const dateTimeArr = [];
+    for (const date of dates) {
+        const start = new Date(date);
+        start.setHours(startHour, 0, 0)
+        const end = new Date(date);
+        end.setHours(endHour, 0, 0)
+        dateTimeArr.push([
+            start.getTime(), 
+            end.getTime()
+        ]);
+    }
+
+    return dateTimeArr;
 }

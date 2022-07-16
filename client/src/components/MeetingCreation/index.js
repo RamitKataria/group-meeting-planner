@@ -22,6 +22,7 @@ function MeetingCreation() {
     function handleCreateMeeting() {
         const instance = creationSliceToInstance(meetingCreationSlice); 
         dispatch(addMeetingsAsync(instance));
+        console.log(instance)
     }
 
     function handleNameChange(e) {
@@ -33,7 +34,7 @@ function MeetingCreation() {
         if (addMeeting.state === REQUEST_STATE.FULFILLED) {
             console.log(addMeeting.response);
             dispatch(resetAddMeeting());
-            navigate('../home');
+            navigate('../home/' + addMeeting.response.meetingId);
         }
     }, [addMeeting, dispatch, navigate])
 
