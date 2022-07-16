@@ -1,9 +1,9 @@
 import "../../css/new-meeting.css";
-import EventCreation from '../EventCreation'
+import MeetingCreation from '../MeetingCreation'
 
 
 export default function NewMeeting() {
 	return (
-		<EventCreation/>
+		<MeetingCreation/>
 	);
 }

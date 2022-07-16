@@ -17,7 +17,7 @@ const availabilitySlice = createSlice({
     reducers: {
         setUserSlots(state, action) {
             state.userAvailability = action.payload;
-        },
+        }
     },
 })
 

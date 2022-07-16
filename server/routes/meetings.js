@@ -27,9 +27,13 @@ router.patch('/:meetingId', async function (req, res) {
 })
 
 router.get('/:meetingId', async function (req, res, next) {
-	const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
+	try {
+		const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
 
-	return res.send(meeting[0]);
+		return res.send(meeting[0]);
+	} catch (e) {
+		res.status(400).send("Internal Server Error");
+	}
 });
 
 router.post('/', async function (req, res) {

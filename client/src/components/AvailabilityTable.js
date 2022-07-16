@@ -55,15 +55,15 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
         <table onMouseDown={startSelection} onMouseUp={endSelection} onMouseLeave={endSelection}>
             <thead>
             <tr>
-                <th>Time</th>
-                {days.map((d, i) => <th key={i}>
+                <th></th>
+                {days.map((d, i) => <th key={i} className='date'>
                     {colDateFormat.format(d)}</th>)}
             </tr>
             </thead>
             <tbody>
                 {slots[0].map((pStart, i) => (
                     <tr key={i}>
-                        <th>{pStart.getHours()}</th>
+                        <th className="hour">{formatDate(pStart)}</th>
                         {days.map((d, j) => (
                             <AvailabilityPeriod
                                 key={j}
@@ -80,5 +80,20 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
         </table>
     );
 };
+
+function formatDate(date) {
+  return (
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+    //   padTo2Digits(date.getSeconds()),
+    ].join(':')
+  );
+}
+
+function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+}
+// https://bobbyhadz.com/blog/javascript-format-date-mm-dd-yyyy-hh-mm-ss
 
 export default AvailabilityTable;
