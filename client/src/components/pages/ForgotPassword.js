@@ -1,6 +1,6 @@
 
 import React, {useState} from "react";
-import Modal from "./Modal";
+import ForgotPasswordModal from "./SignUp/ForgotPasswordModal";
 import {Button} from "@mui/material";
 
 export default function ForgotPassword(){

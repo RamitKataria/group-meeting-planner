@@ -1,6 +1,6 @@
 // https://github.com/cyber-wolve/AuthInMern/blob/Authentication-In-MERN/client/src/components/Singup/index.jsx
 import { useState } from "react";
-import signUp from "../../css/signUp.module.css";
+import signUp from "../../../css/signUp.module.css";
 import {Button} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import GitHubIcon from '@mui/icons-material/GitHub';

@@ -1,6 +1,6 @@
-import "../../css/popbox.css";
+import "../../../css/popbox.css";
 import React, {useState} from "react";
-import Modal from "./Modal";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 import {Button} from "@mui/material";
 
 export default function CreatePopBox(){
@@ -13,7 +13,7 @@ export default function CreatePopBox(){
                {()=>{setIsOpen(true)}}>
              Forgot Password?
            </Button>
-           {isOpen && <Modal onClose={setIsOpen}/>}
+           {isOpen && <ForgotPasswordModal onClose={setIsOpen}/>}
        </div>
 
     );

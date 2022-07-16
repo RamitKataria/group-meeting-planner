@@ -1,12 +1,12 @@
 import { useState } from "react";
-import signUp from "../../css/signUp.module.css";
-import ForgotPassword from "./ForgotPassword";
+import signUp from "../../../css/signUp.module.css";
+import ForgotPassword from "../ForgotPassword";
 import {Button} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import AppleIcon from "@mui/icons-material/Apple";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import CreatePopBox from "./Popbox";
+import CreatePopBox from "./ForgotPasswordPopbox";
 
 
 

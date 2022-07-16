@@ -10,16 +10,7 @@
     justify-content: center;
 }
 
-.signup_container:after{
-    position:absolute;
-    width:50%;
-    height:50%;
-    left:0;
-    top:0;
-    background: no-repeat center;
-    background-size:cover;
-    z-index:-1;
-}
+
 
 .signup_form_container {
     width: 500px;
@@ -125,7 +116,6 @@
     grid-auto-flow:column;
     grid-auto-columns:55%;
 }
-
 
 
 

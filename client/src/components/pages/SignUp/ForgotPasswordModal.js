@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import "../../css/modal.css";
+import "../../../css/modal.css";
 import { useDispatch} from "react-redux"
-import {addGuest} from "./guestSlice";
+import {addGuest} from "../guestSlice";
 import {Button, Checkbox, Container, CssBaseline, FormControlLabel, TextField, Typography} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import PasswordIcon from '@mui/icons-material/Password';
 
 
-export default function Modal({onClose}){
+export default function ForgotPasswordModal({onClose}){
     const dispatch = useDispatch();
     const [Name, setName] = useState("");
     const [Email, setEmail] = useState("");
