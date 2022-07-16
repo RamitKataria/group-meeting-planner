@@ -1,78 +1,98 @@
-import "../../css/signUp.css";
-import React, {useState} from 'react';
-import {Grid, Button, TextField, Typography, Link} from "@mui/material";
-import CreatePopBox from "./Popbox";
-import AvailabilityPage from "./AvailabilityPage";
+// https://github.com/cyber-wolve/AuthInMern/blob/Authentication-In-MERN/client/src/components/Singup/index.jsx
+import { useState } from "react";
+import signUp from "../../css/signUp.module.css";
+import {Button} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
+import AppleIcon from '@mui/icons-material/Apple';
+import FacebookIcon from '@mui/icons-material/Facebook';
 
-export default function SignUp(){
-    const [Name, setName] = useState("");
-    const [Password, setPassword] = useState("");
-    const [cPassword, setcPassword] = useState("");
-    const [email, setEmail] = useState("");
 
-    const validate= (Password, cPassword)=>{
-        if(cPassword === Password){
 
-        }
-    }
+export default function login(){
 
-    const handleSubmit = (event) => {
+
+    const handleChange = (event) => {
         event.preventDefault();
-        if(cPassword === Password){
-            <AvailabilityPage/>
-        } else {
-            return null;
-        }
-    }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+    };
 
     return (
-        <div className="outer-div">
-        <Grid container spacing={2}>
-            <Grid item xs={6}>
-                <form className="aa" onSubmit={handleSubmit} >
-                    <Typography variant="h4" display="inline-box" component="h3"  align="center" sx={{ flex: '1 1 100%', fontWeight: 'bold' }}>
-                        Sign Up
-                    </Typography>
-                    <br></br>
-                    <br></br>
+        <div className={signUp.signup_container}>
+            <div className={signUp.signup_form_container}>
+                <div className={signUp.left}>
+                    <form className={signUp.form_container} onSubmit={handleSubmit}>
+                        <h1>Sign Up</h1>
+                        <input
+                            type="Username"
+                            placeholder="Username"
+                            name="Username"
+                            onChange={handleChange}
 
-                    <TextField input="email" label="Email" variant="outlined"   fullWidth
-                               onChange={(event)=>setEmail(event.target.value)} required/>
-                    <br></br>
-                    <br></br>
+                            required
+                            className={signUp.input}
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            name="email"
+                            onChange={handleChange}
 
-                    <TextField input="password" label="Password" variant="outlined" fullWidth
-                               onChange={(event)=>setPassword(event.target.value)} required/>
-                    <br></br>
-                    <br></br>
-                    <TextField input="password" label="Confirm Password" variant="outlined"   fullWidth
-                               onChange={(event)=>setcPassword(event.target.value)} required/>
-                    <br></br>
-                    <br></br>
+                            required
+                            className={signUp.input}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            onChange={handleChange}
 
+                            required
+                            className={signUp.input}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Confirmed Password"
+                            name="password"
+                            onChange={handleChange}
 
-                    <br></br>
+                            required
+                            className={signUp.input}
+                        />
 
-
-                    <div className="signUp">
-                        <Button variant="contained"  size ="large" type="submit" align="center" type="submit"
-                        >Sign Up
+                        <button type="submit" className={signUp.green_btn}>
+                            Sign Up
+                        </button>
+                        <Button variant="text"
+                                href="./Login" >
+                            Already have an account? Login
                         </Button>
-                        <br></br>
-                        <a href="./Login"> Already have a account? Login</a>
-                    </div>
-                </form>
-            </Grid>
+                    </form>
+                </div>
+                <div className={signUp.right1}>
+                    <button type="submit" className={signUp.white_btn}>
+                        <GoogleIcon /> Continue with Google
+                    </button>
+                    <button type="submit" className={signUp.white_btn}>
+                        <AppleIcon /> Continue with Apple
+                    </button>
+                    <button type="submit" className={signUp.white_btn}>
+                        <FacebookIcon /> Continue with Facebook
+                    </button>
+                    <button type="submit" className={signUp.white_btn}>
+                        <GitHubIcon /> Continue with Github
+                    </button>
 
-            <Grid item xs={6}>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                    <CreatePopBox/>
-            </Grid>
-        </Grid>
+
+                </div>
+            </div>
         </div>
+    );
+};
 
-    )
-}
+

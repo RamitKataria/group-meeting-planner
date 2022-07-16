@@ -9,9 +9,9 @@ export default function CreatePopBox(){
 
     return(
        <div className= "popBox">
-           <Button variant="contained"  size ="large" onClick=
+           <Button variant="text" onClick=
                {()=>{setIsOpen(true)}}>
-             Continued as Guest
+             Forgot Password?
            </Button>
            {isOpen && <Modal onClose={setIsOpen}/>}
        </div>

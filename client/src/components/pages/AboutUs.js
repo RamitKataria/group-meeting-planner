@@ -20,7 +20,7 @@ export default function AboutUs() {
 
 			<div className="section-left" data-aos="fade-left" data-aos-duration="2000">
 				<div className="section-inner-div-left">
-				<img className="right image" src="https://media.giphy.com/media/PgKAsMXyo0vXFp6vj0/giphy.gif"
+				<img className="left image" src="https://media.giphy.com/media/PgKAsMXyo0vXFp6vj0/giphy.gif"
 					 alt="may-gif"/>
 					<h3>May Tang </h3>
 				<p className="right-description">Nulla dignissim, quam at consequat iaculis, risus felis vestibulum augue, eget sodales sapien ante in leo. Pellentesque tincidunt pellentesque augue. Pellentesque vestibulum, elit vitae mattis luctus, ligula nisi mollis enim, non viverra nibh ex eu magna. Cras eu semper neque, non commodo libero. Nunc sit amet volutpat sem, vitae tristique tortor.</p>
@@ -31,8 +31,8 @@ export default function AboutUs() {
 			</div>
 			<div className="section-right" data-aos="fade-right" data-aos-duration="2000">
 				<div className="section-inner-div-right">
-				<img className="left image" src="https://media.giphy.com/media/1jXaP2LfX7eQTErugm/giphy.gif"
-					 alt="ramit-gif"/>
+				<img className="right1 image" src="https://media.giphy.com/media/1jXaP2LfX7eQTErugm/giphy.gif"
+                     alt="ramit-gif"/>
 					<h3>Ramit Kataria</h3>
 				<p className="left-description">Nulla dignissim, quam at consequat iaculis, risus felis vestibulum augue, eget sodales sapien ante in leo. Pellentesque tincidunt pellentesque augue. Pellentesque vestibulum, elit vitae mattis luctus, ligula nisi mollis enim, non viverra nibh ex eu magna. Cras eu semper neque, non commodo libero. Nunc sit amet volutpat sem, vitae tristique tortor.</p>
 				<a href="#" className="icon"><FaLinkedin/></a>
@@ -43,7 +43,7 @@ export default function AboutUs() {
 
 			<div className="section-left" data-aos="fade-left" data-aos-duration="2000">
 				<div className="section-inner-div-left">
-				<img className="right image" src="https://media.giphy.com/media/1wX7raPRBBmIjT4kmS/giphy.gif"
+				<img className="left image" src="https://media.giphy.com/media/1wX7raPRBBmIjT4kmS/giphy.gif"
 					 alt="sophie-gif"/>
 				<h3>Sophie Chai</h3>
 				<p className="right-description">Nulla dignissim, quam at consequat iaculis, risus felis vestibulum augue, eget sodales sapien ante in leo. Pellentesque tincidunt pellentesque augue. Pellentesque vestibulum, elit vitae mattis luctus, ligula nisi mollis enim, non viverra nibh ex eu magna. Cras eu semper neque, non commodo libero. Nunc sit amet volutpat sem, vitae tristique tortor.</p>
@@ -54,8 +54,8 @@ export default function AboutUs() {
 			</div>
 			<div className="section-right" data-aos="fade-right" data-aos-duration="2000">
 				<div className="section-inner-div-right">
-				<img className="left image" src="https://media.giphy.com/media/l0MYIdIrGhCuFqj72/giphy.gif"
-					 alt="tom-gif"/>
+				<img className="right1 image" src="https://media.giphy.com/media/l0MYIdIrGhCuFqj72/giphy.gif"
+                     alt="tom-gif"/>
 				<h3>Tom Mo</h3>
 				<p className="left-description">Nulla dignissim, quam at consequat iaculis, risus felis vestibulum augue, eget sodales sapien ante in leo. Pellentesque tincidunt pellentesque augue. Pellentesque vestibulum, elit vitae mattis luctus, ligula nisi mollis enim, non viverra nibh ex eu magna. Cras eu semper neque, non commodo libero. Nunc sit amet volutpat sem, vitae tristique tortor.</p>
 				<a href="#" className="icon"><FaLinkedin/></a>

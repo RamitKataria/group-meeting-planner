@@ -7,6 +7,7 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const meetingsRouter = require('./routes/meetings');
 const usersRouter = require('./routes/users');
+const emailRouter  = require('./routes/sendEmail')
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/meetings', meetingsRouter);
 app.use('/users', usersRouter);
+app.use('/sendmail',emailRouter);
 
 module.exports = app;

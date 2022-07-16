@@ -2,7 +2,13 @@ import React, {useState} from 'react';
 import "../../css/modal.css";
 import { useDispatch} from "react-redux"
 import {addGuest} from "./guestSlice";
-import {Button, TextField, Typography} from "@mui/material";
+import {Button, Checkbox, Container, CssBaseline, FormControlLabel, TextField, Typography} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Grid from "@mui/material/Grid";
+import Box from '@mui/material/Box';
+import PasswordIcon from '@mui/icons-material/Password';
+
 
 export default function Modal({onClose}){
     const dispatch = useDispatch();
@@ -10,49 +16,72 @@ export default function Modal({onClose}){
     const [Email, setEmail] = useState("");
 
 
-    const handleFormSubmit = (event)=>{
+    const handleSubmit = (event)=>{
         event.preventDefault();
         dispatch(addGuest({Name:Name, Email:Email}));
-		window.location.href = './AvailabilityPage';
+        window.location.href = './AvailabilityPage';
     };
 
     return (
         <div className="background">
             <div className="modalContainer">
-                <div className="title">
-                    <Typography variant = "h4" display="inline-box" component="h3"  align="center">
-                        Continued As Guest
-                    </Typography>
+                <div className="titleCloseBtn">
+                    <button className="X"
+                        onClick={() => {
+                            onClose(false);
+                        }}
+                    >
+                        X
+                    </button>
                 </div>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'black' }}>
+                            <PasswordIcon />
+                            </Avatar>
+
+                        <Typography component="h1" variant="h5">
+                            Reset Password
+                        </Typography>
+                        <Typography component="p" variant="p">
+                            Tell us the  email address associated with your Meeting-Planner account, and we’ll send you an email with a link to reset your password.
+                        </Typography>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Email Address"
+                                        name="email"
+                                        autoComplete="email"
+                                    />
+                                </Grid>
+
+                            </Grid>
+                            <div className= "Reset">
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 0.2 }}
+                                    id="aa">Reset Password
+                                </Button>
+                            </div>
 
 
-                <br></br>
-                <br></br>
-                <div className="body">
-                    <form className="Guest" onSubmit={handleFormSubmit}>
-                        <TextField  label="Name" variant="outlined"  fullWidth
-                                    onChange={(event)=>setName(event.target.value)} required/>
-                        <br></br>
-                        <br></br>
 
-                        <TextField input="email" label="Email" variant="outlined"   fullWidth
-                                   onChange={(event)=>setEmail(event.target.value)}/>
-
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <div className= "footer">
-                            <Button variant="contained"  size ="large" id="cancel"
-                                onClick={()=>onClose(false)}>Cancel
-                            </Button>
-
-                            <Button variant="contained"  size ="large" type="submit"
-                            >Continue
-                            </Button>
-
-                        </div>
-                    </form>
-                </div>
+                        </Box>
+                    </Box>
+                </Container>
 
 
             </div>
@@ -60,4 +89,3 @@ export default function Modal({onClose}){
         </div>
     )
 }
-
