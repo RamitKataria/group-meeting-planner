@@ -1,6 +1,6 @@
 import "../../css/account.css";
-import SignUp from './SignUp.js';
-import Login from './Login.js';
+import SignUp from './SignUp/SignUp.js';
+import Login from './SignUp/Login.js';
 import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';
@@ -18,7 +18,8 @@ import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
 import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
-import {getUserBasedOnUserId} from "../../redux/users/service";
+import { getUserBasedOnUserId } from "../../redux/users/service";
+
 
 export default function Account() {
 	const [inputs, setInputs] = useState({});
