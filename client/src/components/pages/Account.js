@@ -18,7 +18,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
 import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
-import { getUserBasedOnUserId } from "../../redux/users/service";
+import { getUserBasedOnUserId, updateUserBasedOnUserId } from "../../redux/users/service";
 
 
 export default function Account() {
@@ -44,19 +44,25 @@ export default function Account() {
 
 	const submitAccount = async (event) => {
 		event.preventDefault();
-		await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
+		// await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
+		const response = await updateUserBasedOnUserId({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs});
+		setCurrentUser(response);
 		setUpdateAccSucceed(true);
 	};
 
-	const submitIcs = (event) => {
+	const submitIcs = async (event) => {
 		event.preventDefault();
-		dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics}));
+		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics}));
+		const response = await updateUserBasedOnUserId({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics});
+		setCurrentUser(response);
 		setUpdateIcsSucceed(true);
 	};
 
-	const deleteCalendar = (event) => {
+	const deleteCalendar = async (event) => {
 		event.preventDefault();
-		dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}}));
+		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}}));
+		const response = await updateUserBasedOnUserId({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}});
+		setCurrentUser(response);
 		setDeleteIcsSucceed(true);
 	};
 
