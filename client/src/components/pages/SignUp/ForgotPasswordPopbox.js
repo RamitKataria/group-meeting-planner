@@ -1,6 +1,6 @@
-import "../../css/popbox.css";
+import "../../../css/popbox.css";
 import React, {useState} from "react";
-import Modal from "./Modal";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 import {Button} from "@mui/material";
 
 export default function CreatePopBox(){
@@ -9,11 +9,11 @@ export default function CreatePopBox(){
 
     return(
        <div className= "popBox">
-           <Button variant="contained"  size ="large" onClick=
+           <Button variant="text" onClick=
                {()=>{setIsOpen(true)}}>
-             Continued as Guest
+             Forgot Password?
            </Button>
-           {isOpen && <Modal onClose={setIsOpen}/>}
+           {isOpen && <ForgotPasswordModal onClose={setIsOpen}/>}
        </div>
 
     );

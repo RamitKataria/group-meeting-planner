@@ -3,72 +3,68 @@ exports.items = [
 	{
 		userId: "d515b255-0691-4778-9796-cb4f41840136",
 		name: "Ramit Kataria",
-		meetings: [
+		email: "ramitkataria@gmail.com",
+		ics: "https://calendar.google.com/calendar/ical/chaisuefeisophie%40gmail.com/public/basic.ics",
+		meetings: ["de382de9-799b-4351-95ed-1dd92c151263", "fc73754b-00be-4fa4-b02f-1efad9cffe05"],
+		auth: [
 			{
-				meetingId: "de382de9-799b-4351-95ed-1dd92c151263",
-				name: "Hiking Day",
-				dateTimeUpdated: "02-04-2021 07:30:34",
-				createdBy: "Tom Mo",
+				"Service": "internal",
+				"PassowordHash": "ramit-password"
 			},
 			{
-				meetingId: "fc73754b-00be-4fa4-b02f-1efad9cffe05",
-				name: "Boxing Day",
-				dateTimeUpdated: "10-07-2022 11:59:34",
-				createdBy: "Ramit Kataria",
+				"Service": "Google",
+				"token": "kjnsdkjnsvkej"
 			}
 		]
 	},
 	{
 		userId: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9",
 		name: "Tom Mo",
-		meetings: [
+		email: "tommo@gmail.com",
+		ics: "https://calendar.google.com/calendar/ical/chaisuefeisophie%40gmail.com/public/basic.ics",
+		meetings: [""],
+		auth: [
 			{
-				meetingId: "de382de9-799b-4351-95ed-1dd92c151263",
-				name: "Hiking Day",
-				dateTimeUpdated: "02-04-2021 07:30:34",
-				createdBy: "Tom Mo",
+				"Service": "internal",
+				"PassowordHash": "tom-password"
 			},
 			{
-				meetingId: "d6a7c008-3d8d-4230-83fa-2c4aab6628d7",
-				name: "Reading Day",
-				dateTimeUpdated: "25-11-2021 14:30:34",
-				createdBy: "May Tang",
+				"Service": "Google",
+				"token": "kjnsdkjnsvkej"
 			}
 		]
 	},
 	{
 		userId: "81409ec3-deac-41ef-9da2-7c0c1b324321",
 		name: "May Tang",
-		meetings: [
+		email: "maytang@gmail.com",
+		ics: "https://calendar.google.com/calendar/ical/chaisuefeisophie%40gmail.com/public/basic.ics",
+		meetings: [""],
+		auth: [
 			{
-				meetingId: "8d64ba13-33a2-46cb-af4a-8a5b1672a37c",
-				name: "Biking Day",
-				dateTimeUpdated: "25-11-2021 14:30:34",
-				createdBy: "Sophie Chai",
+				"Service": "internal",
+				"PassowordHash": "may-password"
 			},
 			{
-				meetingId: "d6a7c008-3d8d-4230-83fa-2c4aab6628d7",
-				name: "Reading Day",
-				dateTimeUpdated: "25-11-2021 14:30:34",
-				createdBy: "May Tang",
+				"Service": "Google",
+				"token": "kjnsdkjnsvkej"
 			}
 		]
 	},
 	{
 		userId: "baebcdfb-4fc0-411d-9934-0d9ffa57ffe1",
 		name: "Sophie Chai",
-		meetings: [
+		email: "sophiechai@gmail.com",
+		ics: "https://calendar.google.com/calendar/ical/chaisuefeisophie%40gmail.com/public/basic.ics",
+		meetings: [""],
+		auth: [
 			{
-				meetingId: "8d64ba13-33a2-46cb-af4a-8a5b1672a37c",
-				name: "Biking Day",
-				dateTimeUpdated: "25-11-2021 14:30:34",
-				createdBy: "Sophie Chai",
+				"Service": "internal",
+				"PassowordHash": "sophie-password"
 			},
 			{
-				meetingId: "fc73754b-00be-4fa4-b02f-1efad9cffe05",
-				name: "Boxing Day",
-				dateTimeUpdated: "10-07-2022 11:59:34",
-				createdBy: "Ramit Kataria",
+				"Service": "Google",
+				"token": "kjnsdkjnsvkej"
 			}
 		]
 	}

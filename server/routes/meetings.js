@@ -4,38 +4,39 @@ const {v4: uuidv4} = require('uuid');
 
 let meetingsData = require('../data/meetings');
 let items = meetingsData.items;
+const meetingsQueries = require("../queries/meetings");
+const usersQueries = require("../queries/users");
 
-router.delete('/:meetingId', function (req, res) {
-	const index = items.findIndex(item => item.meetingId === req.params['meetingId']);
-	if (index > -1) {
-		items.splice(index, 1);
-		return res.send({message: 'Deleted'});
-	}
-	return res.status(404).send({message: 'Not found'});
+router.delete('/:meetingId', async function (req, res) {
+	const meetings = await meetingsQueries.deleteOneMeeting(req.params['meetingId']);
+
+	return res.send(meetings);
+})
+//
+// router.delete('/', function (req, res) {
+// 	const meetings = await meetingsQueries.deleteAllMeetings({});
+// 	return res.send(meetings);
+// })
+
+router.patch('/:meetingId', async function (req, res) {
+	const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
+
+	const newMeeting = {...meeting, ...req.body, _id: req.params.meetingId};
+	const updatedmeeting = await meetingsQueries.updateOneMeeting(id, newMeeting);
+	return res.send(updatedmeeting);
 })
 
-router.put('/:meetingId', function (req, res) {
-	const index = items.findIndex(item => item.meetingId === req.params['meetingId']);
-	if (index > -1) {
-		items[index] = {...req.body, meetingId: req.params['meetingId']};
-		return res.send({message: 'OK'});
-	}
-	return res.status(404).send({message: 'Not found'});
-})
+router.get('/:meetingId', async function (req, res, next) {
+	const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
 
-router.get('/:meetingId', function (req, res, next) {
-	const item = items.find(item => item.meetingId === req.params['meetingId']);
-	if (item) {
-		return res.send(item);
-	}
-	return res.status(404).send({message: 'Not found'});
+	return res.send(meeting[0]);
 });
 
-router.post('/', function (req, res) {
+router.post('/', async function (req, res) {
 	if (req.body) {
-		const item = {...req.body, meetingId: uuidv4()};
-		items.push(item);
-		return res.send(item);
+		const newMeeting = {...req.body, _id: uuidv4()};
+		await meetingsQueries.insertOneMeeting(newMeeting);
+		return res.send(newMeeting);
 	}
 	return res.status(400).send({message: 'Invalid body'});
 })
