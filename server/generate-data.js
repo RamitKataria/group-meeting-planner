@@ -1,4 +1,5 @@
-const {Meeting, User} = require('./model');
+const Meeting = require('./model/meeting');
+const User = require('./model/user');
 // const User = require('./model');
 const mongoose = require("mongoose");
 const {Types} = require("mongoose");

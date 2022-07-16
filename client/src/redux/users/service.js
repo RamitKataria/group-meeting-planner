@@ -6,7 +6,7 @@ export const getMeetingsBasedOnUserId = async (userId) => {
   return response.json();
 };
 
-const getUserBasedOnUserId = async (userId) => {
+export const getUserBasedOnUserId = async (userId) => {
   const link = 'http://localhost:3001/users/' + userId;
   const response = await fetch(link, {
     method: 'GET'

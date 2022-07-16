@@ -7,7 +7,6 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const meetingsRouter = require('./routes/meetings');
 const usersRouter = require('./routes/users');
-require('dotenv').config();
 const app = express();
 
 app.use(cors());
@@ -18,7 +17,6 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 const mongoose = require('mongoose');
-const queries = require('./queries');
 const generateUsers = require('./generate-data');
 const generateMeetings = require("./generate-data");
 const generateData = require("./generate-data");
@@ -31,7 +29,7 @@ async function main() {
 		{dbName: process.env.DB_NAME});
 	// await mongoose.connect('mongodb://localhost:27017/sandbox');
 
-	await generateData();
+	// await generateData();
 
 }
 
