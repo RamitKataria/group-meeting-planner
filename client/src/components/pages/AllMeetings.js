@@ -243,16 +243,25 @@ export default function EnhancedTable() {
 	const [allMeetings, setAllMeetings] = useState([]);
 	const [update, setUpdate] = useState(0);
 
-	useEffect(() => {
+	useEffect( () => {
+
+	// 	const currentUser = await getMeetingsBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
+	// 	await Promise.all(currentUser.map(async (meeting) => {
+	// 		const response = await getMeeting(meeting);
+	// 		setAllMeetings(current => [...current, response]);
+	// 	}));
+	// }, []);
+		
 		async function populateAllMeetingsList() {
 			const currentUser = await getMeetingsBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
-			await Promise.all(currentUser.map(async (meeting) => {
-				const response = await getMeeting(meeting);
-				setAllMeetings(current => [...current, response]);
-			}));
+			const response = await Promise.all(currentUser.map((meeting) => 
+				getMeeting(meeting)
+			));
+			
+			setAllMeetings(response);
 		}
 		populateAllMeetingsList();
-	}, [update]);
+	}, []);
 
 	// const dispatch = useDispatch();
 
@@ -354,7 +363,7 @@ export default function EnhancedTable() {
 											return (
 												<StyledTableRow
 													hover
-													onClick={(event) => handleClick(event, meeting.meetingId)}
+													onClick={(event) => handleClick(event, meeting._id)}
 													role="checkbox"
 													aria-checked={isItemSelected}
 													tabIndex={-1}
@@ -377,7 +386,7 @@ export default function EnhancedTable() {
 														padding="none"
 														align="right"
 														onClick={(event) => handleRedirectLink(event,
-															meeting.meetingId
+															meeting._id
 														)}
 													>
 														{meeting.name}
@@ -387,7 +396,7 @@ export default function EnhancedTable() {
 													<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
 													<StyledTableCell align="right" numeric="true"
 														// component="a"
-													>{"http://localhost:3000/availability/" + meeting.meetingId}
+													>{"http://localhost:3000/availability/" + meeting._id}
 													</StyledTableCell>
 												</StyledTableRow>
 											);
