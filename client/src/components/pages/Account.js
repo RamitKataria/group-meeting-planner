@@ -18,7 +18,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
 import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
-import { getUserBasedOnUserId } from "../../redux/users/service";
+import { getUserBasedOnUserId, updateUserBasedOnUserId } from "../../redux/users/service";
 
 
 export default function Account() {
