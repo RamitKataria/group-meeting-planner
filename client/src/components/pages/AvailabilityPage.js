@@ -76,7 +76,8 @@ export default function AvailabilityPage() {
 			<div className="availability-picker-div">
 
 				<h2>Choose your availability:</h2>
-				<AvailabilityPicker/>
+				<AvailabilityPicker
+					meetingInfo={meetingInfo}/>
 			</div>
 		</div>
 	);
