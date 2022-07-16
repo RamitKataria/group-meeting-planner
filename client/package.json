@@ -12,10 +12,6 @@
     "@mui/material": "^5.8.3",
     "@natscale/react-calendar": "^0.0.0-beta.24",
     "@reduxjs/toolkit": "^1.8.2",
-    "@sendgrid/mail": "^7.7.0",
-    "aos": "^3.0.0-beta.6",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7",
     "path-browserify": "^1.0.1",
     "react": "^18.1.0",
     "react-calendar": "^3.7.0",
@@ -52,10 +48,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
   }
 }
