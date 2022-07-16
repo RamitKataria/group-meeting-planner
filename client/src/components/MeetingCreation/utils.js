@@ -21,7 +21,7 @@ export function creationSliceToInstance(state) {
     const user = state['currUser'] === "" ? "Guest" : state['currUser'];
     return {
         name: state['name'],
-        description: "Enter Descriptions", // TODO
+        description: "A non-descript event? ", // TODO
         dateTimeCreated: creationTime.getTime(),
         dateTimeUpdated: creationTime.getTime(),
         createdBy: user,
