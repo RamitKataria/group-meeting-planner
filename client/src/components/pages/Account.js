@@ -1,6 +1,6 @@
 import "../../css/account.css";
 import SignUp from './SignUp/SignUp.js';
-import Login from './SignUp/Login.js';
+import SignIn from './SignUp/SignIn.js';
 import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';

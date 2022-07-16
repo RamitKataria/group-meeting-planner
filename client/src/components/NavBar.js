@@ -4,17 +4,27 @@ import NewMeeting from "./pages/NewMeeting";
 import Account from "./pages/Account";
 import AllMeetings from "./pages/AllMeetings";
 import AboutUs from "./pages/AboutUs";
-import Login from "./pages/SignUp/Login";
+import SignIn from "./pages/SignUp/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import Guest from "./pages/Guest";
 import AvailabilityPage from "./pages/AvailabilityPage";
 import { BiBookBookmark, BiHomeAlt, BiPlus, BiListOl, BiInfoCircle, BiUser, BiLogIn } from "react-icons/bi";
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import {useEffect, useState} from "react";
+import {BrowserRouter, Link, Route, Routes} from 'react-router-dom';
+import {useState} from "react";
+import Auth from "../firebaseApp"
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function NavBar() {
+	const [userState, setUserState] = useState(Auth.currentUser);
 
-	const [status, setStatus] = useState(true);
+	onAuthStateChanged(Auth, (user) => {
+		if (user) {
+			setUserState(user);
+		} else {
+			setUserState(null);
+		}
+	})
+
 	return (
 		<div className="">
 			<div className="area"></div>
@@ -33,7 +43,7 @@ export default function NavBar() {
 							<span className="nav-text">Home</span>
 						</Link>
 					</li>
-					{status ? (
+					{userState ? (
 					[<li className="tabs">
 						<Link to="/new-meeting">
 							<BiPlus className="fa"/>
@@ -57,9 +67,9 @@ export default function NavBar() {
 					</li>
 				</ul>
 
-				<ul class="logout">
+				<ul className="logout">
 					<li className="tabs">
-						{status ? (
+						{userState ? (
 
 								<Link to="/account">
 									<BiUser className="fa"/>
@@ -82,7 +92,7 @@ export default function NavBar() {
 					<Route exact path="/home" element={<Home/>}/>
 					<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
-					{status ? (
+					{userState ? (
 						[
 							<Route exact path="/new-meeting" element={<NewMeeting/>}/>,
 							<Route exact path="/all-meetings" element={<AllMeetings/>}/>,
@@ -90,7 +100,7 @@ export default function NavBar() {
 						]) :
 						[
 							<Route exact path="/signup" element={<SignUp/>}/>,
-							<Route exact path="/login" element={<Login/>}/>,
+							<Route exact path="/login" element={<SignIn/>}/>,
 							<Route exact path="/guest" element={<Guest/>}/>
 						]}
 				</Routes>
