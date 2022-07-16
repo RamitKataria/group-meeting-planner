@@ -17,8 +17,8 @@ const addMeeting = async (content) => {
   return data;
 };
 
-const getMeeting = async (meetingId) => {
-  console.log("meetingID: " + meetingId);
+export const getMeeting = async (meetingId) => {
+  // console.log("meetingID: " + meetingId);
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
     method: 'GET'
@@ -43,7 +43,7 @@ const deleteMeeting = async (meetingId) => {
 const updateMeeting = async (meetingId, content) => {
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
-    method: 'PUT',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -55,7 +55,6 @@ const updateMeeting = async (meetingId, content) => {
     const errorMsg = data?.message;
     throw new Error(errorMsg)
   }
-
   return data;
 };
 

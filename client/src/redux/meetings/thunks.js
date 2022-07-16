@@ -5,8 +5,6 @@ import MeetingService from './service';
 export const getMeetingAsync = createAsyncThunk(
     actionTypes.GET_MEETING,
     async (meetingId) => {
-        console.log("in thunks");
-        console.log(meetingId);
         return await MeetingService.getMeeting(meetingId);
     }
 );
