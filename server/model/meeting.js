@@ -13,10 +13,7 @@ const MeetingSchema = new mongoose.Schema({
 	dateTimeCreated: Date,
 	dateTimeUpdated: Date,
 	createdBy: { type: String, ref: 'User' },
-	range: [{
-		startDate: Date,
-		endDate: Date
-	}],
+	range: [[Date]],
 	userAvailability: [{
 		_id : false ,
 		user:  { type: String, ref: 'User' },

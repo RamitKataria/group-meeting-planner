@@ -12,7 +12,7 @@ export const getMeetingAsync = createAsyncThunk(
 export const addMeetingsAsync = createAsyncThunk(
   actionTypes.ADD_MEETING,
   async (meeting) => {
-    return await MeetingService.addMeeting({meeting});
+    return await MeetingService.addMeeting(meeting);
   }
 );
 
