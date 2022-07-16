@@ -8,3 +8,24 @@ export const getMeetingsAsync = createAsyncThunk(
     return await MeetingService.getMeetingsBasedOnUserId(userId);
   }
 );
+
+export const getUserAsync = createAsyncThunk(
+    actionTypes.GET_USER,
+    async (userId) => {
+        return await MeetingService.getUserBasedOnUserId(userId);
+    }
+);
+
+export const updateUserAsync = createAsyncThunk(
+    actionTypes.UPDATE_USER,
+    async (content) => {
+        return await MeetingService.updateUserBasedOnUserId(content);
+    }
+);
+
+export const deleteUserAsync = createAsyncThunk(
+    actionTypes.DELETE_USER,
+    async (userId) => {
+        return await MeetingService.deleteUserBasedOnUserId(userId);
+    }
+);

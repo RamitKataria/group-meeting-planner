@@ -1,4 +1,4 @@
-import "../../css/aboutUs.css";
+import "../../css/about-us.css";
 
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import 'aos/dist/aos.css';

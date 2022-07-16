@@ -25,6 +25,9 @@ import {theme} from '../../theme/color-theme'
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getMeetingsAsync} from "../../redux/users/thunks";
+import {getMeetingAsync} from "../../redux/meetings/thunks";
+import {getMeeting} from "../../redux/meetings/service";
+import {getMeetingsBasedOnUserId} from "../../redux/users/service";
 
 const formatStringToDate = (date) => {
 	const [dateValues, timeValues] = date.split(' ');
@@ -235,12 +238,32 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	const currentMeetings = useSelector((state) => state.usersReducer.list);
+	// const currentUser = useSelector((state) => state.usersReducer.list);
+	// const meetingInfo = useSelector((state) => state.meetingsReducer.list);
+	const [allMeetings, setAllMeetings] = useState([]);
+	const [update, setUpdate] = useState(0);
 
-	useEffect(() => {
-		dispatch(getMeetingsAsync("d515b255-0691-4778-9796-cb4f41840136"));
+	useEffect( () => {
+
+	// 	const currentUser = await getMeetingsBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
+	// 	await Promise.all(currentUser.map(async (meeting) => {
+	// 		const response = await getMeeting(meeting);
+	// 		setAllMeetings(current => [...current, response]);
+	// 	}));
+	// }, []);
+		
+		async function populateAllMeetingsList() {
+			const currentUser = await getMeetingsBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
+			const response = await Promise.all(currentUser.map((meeting) => 
+				getMeeting(meeting)
+			));
+			
+			setAllMeetings(response);
+		}
+		populateAllMeetingsList();
 	}, []);
-	const dispatch = useDispatch();
+
+	// const dispatch = useDispatch();
 
 	const [order, setOrder] = useState("asc");
 	const [orderBy, setOrderBy] = useState("meetingId");
@@ -256,12 +279,16 @@ export default function EnhancedTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			const newSelecteds = currentMeetings.map((n) => n.meetingId);
+			const newSelecteds = allMeetings.map((n) => n.meetingId);
 			setSelected(newSelecteds);
 			return;
 		}
 		setSelected([]);
 	};
+
+	const handleRedirectLink = (event, meetingId) => {
+		window.location.href = "http://localhost:3000/home/" + meetingId;
+	}
 
 	const handleClick = (event, name) => {
 		const selectedIndex = selected.indexOf(name);
@@ -296,94 +323,99 @@ export default function EnhancedTable() {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - currentMeetings.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allMeetings.length) : 0;
 
 	return (
 		<div className="">
-		<ThemeProvider theme={theme}>
-			<Typography
-				sx={{ flex: '1 1 100%', fontWeight: 'bold', margin: "3% 0", "text-align": "center"}}
-				variant="h4"
-				id="tableTitle"
-				component="div"
-			>
-				All Meetings
-			</Typography>
-
-		<Box sx={{ mx: "auto", my: "3%", width: "80%" }}>
-			<Paper sx={{ width: "100%", mb: 2 }}>
-				<EnhancedTableToolbar numSelected={selected.length} />
-				<TableContainer>
-					<Table
-						sx={{ minWidth: 750 }}
-						aria-labelledby="tableTitle"
-					>
-						<EnhancedTableHead
-							numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={currentMeetings.length}
-						/>
-						<TableBody>
-							{stableSort(currentMeetings, getComparator(order, orderBy))
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((meeting, index) => {
-									const isItemSelected = isSelected(meeting.meetingId);
-									const labelId = `enhanced-table-checkbox-${index}`;
-
-									return (
-										<StyledTableRow
-											hover
-											onClick={(event) => handleClick(event, meeting.meetingId)}
-											role="checkbox"
-											aria-checked={isItemSelected}
-											tabIndex={-1}
-											key={meeting.meetingId}
-											selected={isItemSelected}
-										>
-											<StyledTableCell padding="checkbox">
-												<Checkbox
-													color="primary"
-													checked={isItemSelected}
-													inputProps={{
-														"aria-labelledby": labelId
-													}}
-												/>
-											</StyledTableCell>
-											<StyledTableCell
-												component="th"
-												id={labelId}
-												scope="row"
-												padding="none"
-												align="right"
-												component="a"
-												href={"http://localhost:3001/availability/" + meeting.meetingId}
-											>
-												{meeting.name}
-											</StyledTableCell>
-											<StyledTableCell align="right">{meeting.dateTimeUpdated}</StyledTableCell>
-											<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
-											<StyledTableCell align="right" numeric component="a" >{"http://localhost:3001/availability/" + meeting.meetingId}</StyledTableCell>
-										</StyledTableRow>
-									);
-								})}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TablePagination
-					rowsPerPageOptions={[5, 10, 25]}
+			<ThemeProvider theme={theme}>
+				<Typography
+					sx={{flex: '1 1 100%', fontWeight: 'bold', margin: "3% 0", "textAlign": "center"}}
+					variant="h4"
+					id="tableTitle"
 					component="div"
-					count={currentMeetings.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</Paper>
-		</Box>
-		</ThemeProvider>
+				>
+					All Meetings
+				</Typography>
+
+				<Box sx={{mx: "auto", my: "3%", width: "80%"}}>
+					<Paper sx={{width: "100%", mb: 2}}>
+						<EnhancedTableToolbar numSelected={selected.length}/>
+						<TableContainer>
+							<Table
+								sx={{minWidth: 750}}
+								aria-labelledby="tableTitle"
+							>
+								<EnhancedTableHead
+									numSelected={selected.length}
+									order={order}
+									orderBy={orderBy}
+									onSelectAllClick={handleSelectAllClick}
+									onRequestSort={handleRequestSort}
+									rowCount={allMeetings.length}
+								/>
+								<TableBody>
+									{stableSort(allMeetings, getComparator(order, orderBy))
+										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+										.map((meeting, index) => {
+											const isItemSelected = isSelected(meeting.meetingId);
+											const labelId = `enhanced-table-checkbox-${index}`;
+
+											return (
+												<StyledTableRow
+													hover
+													onClick={(event) => handleClick(event, meeting._id)}
+													role="checkbox"
+													aria-checked={isItemSelected}
+													tabIndex={-1}
+													key={index}
+													selected={isItemSelected}
+												>
+													<StyledTableCell padding="checkbox">
+														<Checkbox
+															color="primary"
+															checked={isItemSelected}
+															inputProps={{
+																"aria-labelledby": labelId
+															}}
+														/>
+													</StyledTableCell>
+													<StyledTableCell
+														sx={{textDecoration: 'underline'}}
+														id={labelId}
+														scope="row"
+														padding="none"
+														align="right"
+														onClick={(event) => handleRedirectLink(event,
+															meeting._id
+														)}
+													>
+														{meeting.name}
+													</StyledTableCell>
+													<StyledTableCell
+														align="right">{meeting.dateTimeUpdated}</StyledTableCell>
+													<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
+													<StyledTableCell align="right" numeric="true"
+														// component="a"
+													>{"http://localhost:3000/availability/" + meeting._id}
+													</StyledTableCell>
+												</StyledTableRow>
+											);
+										})}
+								</TableBody>
+							</Table>
+						</TableContainer>
+						<TablePagination
+							rowsPerPageOptions={[5, 10, 25]}
+							component="div"
+							count={allMeetings.length}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							onPageChange={handleChangePage}
+							onRowsPerPageChange={handleChangeRowsPerPage}
+						/>
+					</Paper>
+				</Box>
+			</ThemeProvider>
 		</div>
 	);
 }
