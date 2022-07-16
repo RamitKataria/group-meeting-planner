@@ -78,7 +78,7 @@ export default function NavBar() {
 
 							) :
 
-								<Link to="/login">
+								<Link to="/signin">
 									<BiLogIn className="fa"/>
 									<span className="nav-text">Sign Up / Login</span>
 								</Link>
@@ -100,7 +100,7 @@ export default function NavBar() {
 						]) :
 						[
 							<Route exact path="/signup" element={<SignUp/>}/>,
-							<Route exact path="/login" element={<SignIn/>}/>,
+							<Route exact path="/signin" element={<SignIn/>}/>,
 							<Route exact path="/guest" element={<Guest/>}/>
 						]}
 				</Routes>

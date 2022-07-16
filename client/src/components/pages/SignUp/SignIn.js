@@ -93,7 +93,7 @@ export default function SignIn() {
                             <ForgotPasswordButton/>
                         </Grid>
                         <Grid item>
-                            <Link href="././SignIn" variant="body2">
+                            <Link href="././SignUp" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
