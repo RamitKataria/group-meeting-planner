@@ -6,21 +6,33 @@ import {getMeetingAsync} from "../../redux/meetings/thunks";
 import Paper from '@mui/material/Paper';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AvailabilityPicker from "../AvailabilityPicker";
+import {getMeeting} from "../../redux/meetings/service";
+import {getUserBasedOnUserId} from "../../redux/users/service";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
-	const meetingInfo = useSelector((state) => state.meetingsReducer.list);
+	// const meetingInfo = useSelector((state) => state.meetingsReducer.list);
+	const [meetingInfo, setMeetingInfo] = useState({});
+	const [userInfo, setUserInfo] = useState({});
 
 	useEffect(() => {
-		dispatch(getMeetingAsync(meetingId));
+		// dispatch(getMeetingAsync(meetingId));
+		async function populateMeetingInfo() {
+			const response = await getMeeting(meetingId);
+			setMeetingInfo(response);
+			const response2 = await getUserBasedOnUserId(response.createdBy);
+			setUserInfo(response2);
+		}
+		populateMeetingInfo();
+
 		}, []);
 
 	const dispatch = useDispatch();
 
 	const copyClipboard = () => {
-		navigator.clipboard.writeText(meetingInfo.meetingId)
+		navigator.clipboard.writeText(meetingInfo._id)
 			.then(() => {
-				alert("Copied the text: " + meetingInfo.meetingId);
+				alert("Copied the text: " + meetingInfo._id);
 			})
 			.catch(() => {
 				alert("something went wrong with clipboard");
@@ -39,7 +51,7 @@ export default function AvailabilityPage() {
 							<thead>
 								<tr>
 									<td className="table-header"><strong>Meeting ID: &emsp;</strong><ContentCopyIcon fontSize="small" onClick={copyClipboard}></ContentCopyIcon></td>
-									<td>{meetingInfo.meetingId}</td>
+									<td>{meetingInfo._id}</td>
 								</tr>
 								<tr>
 									<td className="table-header"><strong>Name: </strong></td>
@@ -51,7 +63,7 @@ export default function AvailabilityPage() {
 								</tr>
 								<tr>
 									<td className="table-header"><strong>Created By: </strong></td>
-									<td>{meetingInfo.createdBy}</td>
+									<td>{userInfo.name}</td>
 								</tr>
 							</thead>
 						</table>
