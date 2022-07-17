@@ -8,6 +8,9 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
 import {getUserBasedOnUserId} from "../../redux/users/service";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import * as React from "react";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
@@ -29,10 +32,11 @@ export default function AvailabilityPage() {
 
 	const dispatch = useDispatch();
 
-	const copyClipboard = () => {
-		navigator.clipboard.writeText(meetingInfo._id)
+	const handleCopiedToClipboard = () => {
+		const link = "http://localhost:3000/home/" + meetingInfo._id;
+		navigator.clipboard.writeText(link)
 			.then(() => {
-				alert("Copied the text: " + meetingInfo._id);
+				toast("Copied to clipboard!");
 			})
 			.catch(() => {
 				alert("something went wrong with clipboard");
@@ -47,11 +51,25 @@ export default function AvailabilityPage() {
 					<div style={{marginTop: '20px', padding: '10px 30px'}}>
 						{/*<br/>*/}
 						<h2>Meeting Summary</h2>
+						<ToastContainer
+							position="top-right"
+							autoClose={1000}
+							hideProgressBar
+							newestOnTop={false}
+							closeOnClick
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+						/>
 						<table>
 							<thead>
 								<tr>
-									<td className="table-header"><strong>Meeting ID: &emsp;</strong><ContentCopyIcon fontSize="small" onClick={copyClipboard}></ContentCopyIcon></td>
-									<td>{meetingInfo._id}</td>
+									<td className="table-header">
+										<strong>Meeting Link: &emsp;</strong>
+										<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={handleCopiedToClipboard}></ContentCopyIcon>
+									</td>
+									<td>{"http://localhost:3000/home/" + meetingInfo._id}</td>
 								</tr>
 								<tr>
 									<td className="table-header"><strong>Name: </strong></td>
