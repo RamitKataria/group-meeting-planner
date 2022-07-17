@@ -21,6 +21,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import {theme} from '../../theme/color-theme'
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import {useEffect, useState} from "react";
@@ -277,7 +279,7 @@ export default function EnhancedTable() {
 	};
 
 	const handleRedirectLink = (event, meetingId) => {
-		window.location.href = "http://localhost:3000/home/" + meetingId;
+		navigate("../home/" + meetingId);
 	}
 
 	const handleClick = (event, name) => {
@@ -316,6 +318,18 @@ export default function EnhancedTable() {
 		setPage(0);
 	};
 
+	const handleCopiedToClipboard = (id) => {
+
+		const link = "http://localhost:3000/home/" + id;
+		navigator.clipboard.writeText(link)
+			.then(() => {
+				toast("Copied to clipboard!");
+			})
+			.catch(() => {
+				alert("something went wrong with clipboard");
+			});
+	}
+
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -337,6 +351,17 @@ export default function EnhancedTable() {
 				<Box sx={{mx: "auto", my: "3%", width: "80%"}}>
 					<Paper sx={{width: "100%", mb: 2}}>
 						<EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete}/>
+						<ToastContainer
+							position="top-right"
+							autoClose={1000}
+							hideProgressBar
+							newestOnTop={false}
+							closeOnClick
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+						/>
 						<TableContainer>
 							<Table
 								sx={{minWidth: 750}}
@@ -377,10 +402,9 @@ export default function EnhancedTable() {
 														/>
 													</StyledTableCell>
 													<StyledTableCell
-														sx={{textDecoration: 'underline'}}
+														sx={{textDecoration: 'underline', cursor: 'pointer'}}
 														id={labelId}
 														scope="row"
-														padding="none"
 														align="right"
 														onClick={(event) => handleRedirectLink(event,
 															meeting._id
@@ -391,9 +415,12 @@ export default function EnhancedTable() {
 													<StyledTableCell
 														align="right">{meeting.dateTimeUpdated}</StyledTableCell>
 													<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
-													<StyledTableCell align="right" numeric="true"
-														// component="a"
-													>{"http://localhost:3000/availability/" + meeting._id}
+													<StyledTableCell
+														sx={{textDecoration: 'underline', cursor: 'pointer'}}
+														align="right"
+														onClick={(event) => handleCopiedToClipboard(meeting._id)}
+													>
+														{"http://localhost:3000/home/" + meeting._id}
 													</StyledTableCell>
 												</StyledTableRow>
 											);
