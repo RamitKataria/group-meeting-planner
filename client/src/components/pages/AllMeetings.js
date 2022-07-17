@@ -28,7 +28,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {getMeeting} from "../../redux/meetings/service";
-import {getMeetingsBasedOnUserId, updateUserBasedOnUserId, deleteUserBasedOnUserId} from "../../redux/users/service";
+import {
+	getMeetingsBasedOnUserId,
+	updateUserBasedOnUserId,
+	getUserBasedOnUserId
+} from "../../redux/users/service";
 
 const formatStringToDate = (date) => {
 	const [dateValues, timeValues] = date.split(' ');
@@ -235,7 +239,9 @@ export default function EnhancedTable() {
 	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136"); // temporary
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
 	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
-	const [selected, setSelected] = useState([]); // all selected meetingsID
+	const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
+	const [allCreators, setAllCreators] = useState([]); // users (creators) info of all meetings
+	const [selected, setSelected] = useState([]); // all selected meetingsID for deletion
 	const [update, setUpdate] = useState(false); // for useEffect update after deletion
 
 	const [order, setOrder] = useState("asc");
@@ -248,15 +254,38 @@ export default function EnhancedTable() {
 	useEffect( () => {
 		async function populateAllMeetingsList() {
 			const currentUserMeetingsID = await getMeetingsBasedOnUserId(currentUserID);
-			const response = await Promise.all(currentUserMeetingsID.map((meeting) =>
-				getMeeting(meeting)
-			));
-
-			setAllMeetings(response);
 			setAllMeetingsID(currentUserMeetingsID);
+
+			const response = await Promise.all(currentUserMeetingsID.map((meetingID) => {
+				setMeetingIDToCreatorMap(map => new Map(map.set(meetingID, "")));
+				return getMeeting(meetingID);
+			}));
+			setAllMeetings(response);
 		}
 		populateAllMeetingsList();
 	}, [update]);
+
+	useEffect( () => {
+		async function populateAllCreatorsList() {
+			const response2 = await Promise.all(allMeetings.map((meeting) => {
+				setMeetingIDToCreatorMap(map => new Map(map.set(meeting._id, meeting.createdBy)));
+				return getUserBasedOnUserId(meeting.createdBy);
+			}));
+			setAllCreators(response2);
+		}
+		populateAllCreatorsList();
+	}, [allMeetings]);
+
+	const returnCreatorName = (meetingID) => {
+		const creatorID = meetingIDToCreatorMap.get(meetingID);
+		if (allCreators.length > 0) {
+			const foundCreator = allCreators.find(obj => {
+				return obj._id === creatorID;
+			})
+			return foundCreator.name;
+		}
+		return "";
+	}
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -298,7 +327,9 @@ export default function EnhancedTable() {
 	};
 
 	const handleDelete = async () => {
+		// remove ids in selected from allMeetingsID
 		const meetingsIDAfterDelete = allMeetingsID.filter( ( el ) => !selected.includes( el ) );
+		// update meetings field in user to meetingsIDAfterDelete
 		await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"meetings": meetingsIDAfterDelete}});
 		setUpdate(!update);
 		setSelected([]);
@@ -413,13 +444,14 @@ export default function EnhancedTable() {
 														{meeting.name}
 													</StyledTableCell>
 													<StyledTableCell
-														
+
 													align="right">{formatDateToString(meeting.dateTimeUpdated)}</StyledTableCell>
-													<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
+													<StyledTableCell align="right">{returnCreatorName(meeting._id)}</StyledTableCell>
+
 													<StyledTableCell
 														sx={{textDecoration: 'underline', cursor: 'pointer'}}
 														align="right"
-														onClick={(event) => handleCopiedToClipboard(meeting._id)}
+														onClick={() => handleCopiedToClipboard(meeting._id)}
 													>
 														{"http://localhost:3000/home/" + meeting._id}
 													</StyledTableCell>
