@@ -38,11 +38,6 @@ const formatStringToDate = (date) => {
 	return new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
 }
 
-const formatDateToString = (date) => {
-	return String(date.getMonth()).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0') + "-"
-		+ date.getFullYear() + " " + String(date.getHours()).padStart(2, '0') + ":" + String(date.getMinutes()).padStart(2, '0');
-}
-
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
 		return -1;
@@ -319,7 +314,6 @@ export default function EnhancedTable() {
 	};
 
 	const handleCopiedToClipboard = (id) => {
-
 		const link = "http://localhost:3000/home/" + id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
@@ -328,6 +322,12 @@ export default function EnhancedTable() {
 			.catch(() => {
 				alert("something went wrong with clipboard");
 			});
+	}
+
+	const formatDateToString = (dateString) => {
+		let date = dateString.slice(0, 10);
+		let time = dateString.slice(11, 19);
+		return date + " " + time;
 	}
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -413,7 +413,8 @@ export default function EnhancedTable() {
 														{meeting.name}
 													</StyledTableCell>
 													<StyledTableCell
-														align="right">{meeting.dateTimeUpdated}</StyledTableCell>
+														
+													align="right">{formatDateToString(meeting.dateTimeUpdated)}</StyledTableCell>
 													<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
 													<StyledTableCell
 														sx={{textDecoration: 'underline', cursor: 'pointer'}}
