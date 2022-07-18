@@ -1,21 +1,8 @@
-    /* div.date-selection {
-        padding: 5% 5%;
-        margin-top: 2.5em;
-    } */
 
 .rc_root {
-    /* max-width: 110%; */
     color: #222;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     line-height: 1.125em;
-}
-
-.date-selection-switch {
-    margin-left: 0.5em;
-}
-
-div#date-selection-text {
-    text-align: center;
 }
 
 /*** Calendar Styling ***/
@@ -34,7 +21,7 @@ div.rc_body-days-of-month .rc_body-cell .rc_body-cell_value:hover {
 
 /* no radius when hovering over in-range */
 div.rc_body-days-of-month .rc_body-cell.rc_in_range .rc_body-cell_value:hover {
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 /* Make all selected dates round */

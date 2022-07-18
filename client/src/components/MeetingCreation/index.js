@@ -4,6 +4,7 @@ import '../../css/EventCreation/index.css'
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeMeetingName, resetAddMeeting} from '../../redux/meetingCreation';
@@ -14,6 +15,7 @@ import { REQUEST_STATE } from "../../redux/utils";
 import {useNavigate} from "react-router-dom";
 import {Typography} from "@mui/material";
 import React from "react";
+import Box from "@mui/material/Box";
 
 function MeetingCreation() {
     const meetingCreationSlice = useSelector(state => state.meetingCreation)
@@ -49,39 +51,32 @@ function MeetingCreation() {
             >
                 Schedule A Meeting
             </Typography>
-            <Grid container spacing={2}
-                columns={12}>
-                <Grid item className="padding-left" xs={3}></Grid>
-                <Grid item className="name-field" xs={6}>
-                    <div className="input">
-                        <div className="input item padding "></div>
-                            <Input
-                            value={meetingCreationSlice['name']}
-                            onChange={handleNameChange}
-                            className="input item"
-                            label="name"
-                            placeholder="Enter Meeting Name"></Input>
-                        <div className="input item padding"></div>
-                    </div>
+            <Box sx={{mx: "auto", my: 5, width: "80%"}}>
+                <Grid container spacing={2} columns={12} alignItems="flex-start" justifyContent="space-around">
+                    <Grid item xs={3}></Grid>
+                    <Grid item xs={6}>
+                        <div className="input">
+                            <div className="input item padding "></div>
+                                <Input
+                                value={meetingCreationSlice['name']}
+                                onChange={handleNameChange}
+                                className="input item"
+                                label="name"
+                                placeholder="Enter Meeting Name"></Input>
+                            <div className="input item padding"></div>
+                        </div>
 
-                </Grid>
-                <Grid item className="padding-right" xs={3}></Grid>
+                    </Grid>
+                    <Grid item xs={3}></Grid>
 
-                <Grid item className="padding-left" md={2} xs={2}></Grid>
-                <Grid item md={4} xs={8} >
-                    <div className="inner-flex">
-                        <div className="item"></div>
+                    <Grid item xs={12} lg={6}>
+                        <Box display="flex" justifyContent="center" alignItems="center">
+                            <DatePicker/>
+                        </Box>
+                    </Grid>
 
-                        <DatePicker/>
-                        <div className="item"></div>
-                    </div>
-                </Grid>
-                <Grid item className="padding-right-single-column"  md={0.1} xs={2}> </Grid>
-                <Grid item className="padding-left-single-column"  md={0.1} xs={2} ></Grid>
-                <Grid item id="time-range-picker-and-btn" md={4} xs={8}>
-
-                    <div className="inner-flex">
-                        <div className="item"></div>
+                    <Grid item xs={12} lg={6}>
+                        <Box display="flex" justifyContent="center" alignItems="center">
                             <div className="picker-and-btn">
                                 <TimeRangePicker/>
                                 <CreateMeetingBtn
@@ -89,29 +84,20 @@ function MeetingCreation() {
                                     loading={addMeeting.state === REQUEST_STATE.PENDING}
                                 />
                             </div>
-                        <div className="item"></div>
-                    </div>
+                        </Box>
+                    </Grid>
                 </Grid>
-                <Grid item className="padding-right" md={1.6} xs={2}></Grid>
-
-                <Grid className="padding-left" item xs={6}></Grid>
-                <Grid item xs={4}>
-
-                </Grid>
-                <Grid className="padding-right" item xs={2}></Grid>
-            </Grid>
+            </Box>
         </div>)
 }
 
 function CreateMeetingBtn(props) {
     return (
         <div id='confirm'>
-            <Button variant='contained' 
-            id='confirm' 
-            sx={{borderRadius:'2em'}}
-            onClick={props.handleClick}
-            disabled={props.loading}
-            >Create Meeting</Button>
+            <Button variant="contained" sx={{mt: 5}} startIcon={<BorderColorIcon />} onClick={props.handleClick} disabled={props.loading}>
+                Create Meeting
+            </Button>
+
             {props.loading && (
                 <CircularProgress
                     size={24}

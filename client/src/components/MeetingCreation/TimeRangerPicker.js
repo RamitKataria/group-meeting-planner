@@ -4,6 +4,8 @@ import TimeSlider from './TimeSlider';
 import {storeStartTime, storeEndTime} from '../../redux/meetingCreation'
 import { useSelector, useDispatch } from 'react-redux';
 import { sliderTimeToString, sliderTime, roundToHour } from './utils';
+import Paper from '@mui/material/Paper';
+import Box from "@mui/material/Box";
 
 const sliderMarks = [
     {value: 9, label: '09:00'},
@@ -47,32 +49,35 @@ function TimeRangePicker() {
     }
 
     return (
-        <div id='time-of-day'>
+        <Box sx={{minHeight: 400, minWidth: 350}}>
             <h2>What time might work? </h2>
-            <div className='pick-time-range' id='pick-time-range'>
-                <div className='time-field'>
-                    <label>No Earlier Than: </label>
-                    <input type='time' value={startTime} 
-                        onChange={handleStartTimeChange}
-                        step={3600} />
-                    {/* <TimePicker value={startTime} onChange={setStartTime} disableClock={true}/> */}
+            <Box sx={{minHeight: 35}}></Box>
+            <Paper elevation={8}>
+                <div className='pick-time-range' id='pick-time-range'>
+                    <div className='time-field'>
+                        <label className="time-label">No Earlier Than: </label>
+                        <input type='time' value={startTime}
+                            onChange={handleStartTimeChange}
+                            step={3600} />
+                        {/* <TimePicker value={startTime} onChange={setStartTime} disableClock={true}/> */}
+                    </div>
+                    <div className='time-field'>
+                        <label className="time-label">No Later Than: </label>
+                        <input type='time' value={endTime}
+                            onChange={handleEndTimeChange}
+                            step={3600} />
+                        {/* <TimePicker value={endTime} onChange={setEndTime} disableClock={true}/> */}
+                    </div>
+                    <TimeSlider
+                    sliderNums = {sliderNums}
+                    handleSliderChange={handleSliderChange}
+                    sliderMarks = {sliderMarks}/>
                 </div>
-                <div className='time-field'>
-                    <label>No Later Than: </label>
-                    <input type='time' value={endTime} 
-                        onChange={handleEndTimeChange}
-                        step={3600} />
-                    {/* <TimePicker value={endTime} onChange={setEndTime} disableClock={true}/> */}
-                </div>
-                <TimeSlider
-                sliderNums = {sliderNums}
-                handleSliderChange={handleSliderChange}
-                sliderMarks = {sliderMarks}/>
-            </div>
+            </Paper>
             <TimeRangeText
             startTime={startTime}
             endTime={endTime}/>
-        </div>
+        </Box>
     );
 }
 
