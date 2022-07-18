@@ -51,7 +51,7 @@ export default function AvailabilityPage() {
 				</Typography>
 				<div className="meeting-summary-div">
 					<Paper elevation={8} style={{borderRadius: 15}}>
-						<div style={{marginTop: '20px', padding: '10px 30px'}}>
+						<div sx={{mt: 20, p: '10px 30px'}}>
 							<h2>Meeting Summary</h2>
 							<table>
 								<thead>
