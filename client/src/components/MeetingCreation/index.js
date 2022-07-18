@@ -12,6 +12,8 @@ import { creationSliceToInstance } from "./utils";
 import { useEffect } from "react";
 import { REQUEST_STATE } from "../../redux/utils";
 import {useNavigate} from "react-router-dom";
+import {Typography} from "@mui/material";
+import React from "react";
 
 function MeetingCreation() {
     const meetingCreationSlice = useSelector(state => state.meetingCreation)
@@ -38,60 +40,67 @@ function MeetingCreation() {
         }
     }, [addMeeting, dispatch, navigate])
 
-    return (<div className="meeting-creation">
-        <Grid container spacing={2}
-            columns={12}>
-            <Grid item className="padding-left" xs={3}></Grid>
-            <Grid item className="name-field" xs={6}>
-                <h1>Schedule A Meeting</h1>
-                <div className="input">
-                    <div className="input item padding "></div>
-                        <Input 
-                        value={meetingCreationSlice['name']}
-                        onChange={handleNameChange}
-                        className="input item"
-                        label="name" 
-                        placeholder="Enter Meeting Name"></Input>
-                    <div className="input item padding"></div>
-                </div>
-                
-            </Grid>
-            <Grid item className="padding-right" xs={3}></Grid>
+    return (
+        <div>
+            <Typography
+                sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
+                variant="h4"
+                component="div"
+            >
+                Schedule A Meeting
+            </Typography>
+            <Grid container spacing={2}
+                columns={12}>
+                <Grid item className="padding-left" xs={3}></Grid>
+                <Grid item className="name-field" xs={6}>
+                    <div className="input">
+                        <div className="input item padding "></div>
+                            <Input
+                            value={meetingCreationSlice['name']}
+                            onChange={handleNameChange}
+                            className="input item"
+                            label="name"
+                            placeholder="Enter Meeting Name"></Input>
+                        <div className="input item padding"></div>
+                    </div>
 
-            <Grid item className="padding-left" md={2} xs={2}></Grid>
-            <Grid item md={4} xs={8} >
-                <div className="inner-flex">
-                    <div className="item"></div>
-                    
-                    <DatePicker/>
-                    <div className="item"></div>
-                </div>
+                </Grid>
+                <Grid item className="padding-right" xs={3}></Grid>
+
+                <Grid item className="padding-left" md={2} xs={2}></Grid>
+                <Grid item md={4} xs={8} >
+                    <div className="inner-flex">
+                        <div className="item"></div>
+
+                        <DatePicker/>
+                        <div className="item"></div>
+                    </div>
+                </Grid>
+                <Grid item className="padding-right-single-column"  md={0.1} xs={2}> </Grid>
+                <Grid item className="padding-left-single-column"  md={0.1} xs={2} ></Grid>
+                <Grid item id="time-range-picker-and-btn" md={4} xs={8}>
+
+                    <div className="inner-flex">
+                        <div className="item"></div>
+                            <div className="picker-and-btn">
+                                <TimeRangePicker/>
+                                <CreateMeetingBtn
+                                    handleClick={handleCreateMeeting}
+                                    loading={addMeeting.state === REQUEST_STATE.PENDING}
+                                />
+                            </div>
+                        <div className="item"></div>
+                    </div>
+                </Grid>
+                <Grid item className="padding-right" md={1.6} xs={2}></Grid>
+
+                <Grid className="padding-left" item xs={6}></Grid>
+                <Grid item xs={4}>
+
+                </Grid>
+                <Grid className="padding-right" item xs={2}></Grid>
             </Grid>
-            <Grid item className="padding-right-single-column"  md={0.1} xs={2}> </Grid>
-            <Grid item className="padding-left-single-column"  md={0.1} xs={2} ></Grid>
-            <Grid item id="time-range-picker-and-btn" md={4} xs={8}>
-            
-                <div className="inner-flex">
-                    <div className="item"></div>
-                        <div className="picker-and-btn">
-                            <TimeRangePicker/>
-                            <CreateMeetingBtn
-                                handleClick={handleCreateMeeting}
-                                loading={addMeeting.state === REQUEST_STATE.PENDING}
-                            />
-                        </div>
-                    <div className="item"></div>
-                </div>
-            </Grid>
-            <Grid item className="padding-right" md={1.6} xs={2}></Grid>
-            
-            <Grid className="padding-left" item xs={6}></Grid>
-            <Grid item xs={4}>
-                
-            </Grid>
-            <Grid className="padding-right" item xs={2}></Grid>
-        </Grid>        
-    </div>)
+        </div>)
 }
 
 function CreateMeetingBtn(props) {

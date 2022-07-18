@@ -19,6 +19,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import {useDispatch, useSelector} from "react-redux";
 import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
 import { getUserBasedOnUserId, updateUserBasedOnUserId } from "../../redux/users/service";
+import Box from "@mui/material/Box";
 
 
 export default function Account() {
@@ -90,153 +91,156 @@ export default function Account() {
 	const dispatch = useDispatch();
 
 	return (
-		<div className="outer-div">
-			{/*<Login/>*/}
-			<Typography variant="h4" display="inline-box" component="h3"  align="center" sx={{ flex: '1 1 100%', fontWeight: 'bold', marginBottom: '20px'}}>
+		<div>
+			<Typography
+				sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
+				variant="h4"
+				component="div"
+			>
 				Account Settings
 			</Typography>
 
-			<div className="account-info">
-			<Paper elevation={8}>
-				<div className="left-div">
-				<form className="form-account">
-				<label htmlFor="name">Name</label>
-				<input
-					name="name"
-					defaultValue={currentUser.name}
-					type="text"
-					onChange={handleAccountChange}
-					required
-				/>
+			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+				<div className="account-info">
+					<Paper elevation={8}>
+						<div className="left-div">
+							<form className="form-account">
+								<label htmlFor="name">Name</label>
+								<input
+									name="name"
+									defaultValue={currentUser.name}
+									type="text"
+									onChange={handleAccountChange}
+									required
+								/>
 
-				<label htmlFor="email">Email</label>
-				<input
-					name="email"
-					defaultValue={currentUser.email}
-					type="email"
-					onChange={handleAccountChange}
-					required
-				/>
+								<label htmlFor="email">Email</label>
+								<input
+									name="email"
+									defaultValue={currentUser.email}
+									type="email"
+									onChange={handleAccountChange}
+									required
+								/>
 
-				<label htmlFor="oldPassword">Old Password</label>
-				<input
-					name="oldPassword"
-					// defaultValue={currentUser.oldPassword}
-					placeholder="old password"
-					type="password"
-					// onChange={handleAccountChange}
-					required
-				/>
+								<label htmlFor="oldPassword">Old Password</label>
+								<input
+									name="oldPassword"
+									// defaultValue={currentUser.oldPassword}
+									placeholder="old password"
+									type="password"
+									// onChange={handleAccountChange}
+									required
+								/>
 
-				<label htmlFor="newPassword">New Password</label>
-				<input
-					name="newPassword"
-					// defaultValue={currentUser.newPassword}
-					placeholder="new password"
-					type="password"
-					// onChange={handleAccountChange}
-					required
-				/>
-				<br/>
-					{/*<div className="message-warning">*/}
-					{/*	Incorrect Old Password.*/}
-					{/*</div>*/}
+								<label htmlFor="newPassword">New Password</label>
+								<input
+									name="newPassword"
+									// defaultValue={currentUser.newPassword}
+									placeholder="new password"
+									type="password"
+									// onChange={handleAccountChange}
+									required
+								/>
+								<br/>
+								{/*<div className="message-warning">*/}
+								{/*	Incorrect Old Password.*/}
+								{/*</div>*/}
 
-					<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount}>
-						Update
-					</Button>
+								<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount}>
+									Update
+								</Button>
 
-					{updateAccSucceed ? (
-						<div className="message-success">
-							Your account is updated!<br/>
+								{updateAccSucceed ? (
+									<div className="message-success">
+										Your account is updated!<br/>
+									</div>
+								) : null}
+
+							</form>
 						</div>
-					) : null}
-
-
-			</form>
+					</Paper>
 				</div>
-			</Paper>
-			</div>
 
-			<div className="ics-div">
-				<Paper elevation={8}>
-					<div className="right-top-div">
-						<form className="form-ics" >
-						<label htmlFor="ics">ICS Link</label>
-						<input
-							name="ics"
-							defaultValue={currentUser.ics}
-							type="text"
-							onChange={handleIcsChange}
-							required
-						/>
+				<div className="ics-div">
+					<Paper elevation={8}>
+						<div className="right-top-div">
+							<form className="form-ics" >
+							<label htmlFor="ics">ICS Link</label>
+							<input
+								name="ics"
+								defaultValue={currentUser.ics}
+								type="text"
+								onChange={handleIcsChange}
+								required
+							/>
+								<br/>
+
+								<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs}>
+									Update
+								</Button>
+								{updateIcsSucceed ? (
+									<span className="message-success">
+										Your ICS Calendar is updated!<br/>
+									</span>
+								) : null}
+							</form>
+						</div>
+					</Paper>
 							<br/>
+					<Paper elevation={8}>
+						<div className="right-bottom-div">
+							<br/>
+							<form>
+							<Stack
+								direction="column"
+								justifyContent="center"
+								alignItems="center"
+								spacing={2}
+							>
+								<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
+									Delete Calendar
+								</Button>
+								<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
+									Delete Account
+								</Button>
 
-							<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs}>
-								Update
-							</Button>
-							{updateIcsSucceed ? (
+								<Dialog
+									open={dialogOpen}
+									onClose={() => setDialogOpen(false)}
+									aria-labelledby="alert-dialog-title"
+									aria-describedby="alert-dialog-description"
+								>
+									<DialogTitle id="alert-dialog-title">
+										{"Are you sure you want to delete this account?"}
+									</DialogTitle>
+									<DialogContent>
+										<DialogContentText id="alert-dialog-description">
+											There's no turning back !
+										</DialogContentText>
+									</DialogContent>
+									<DialogActions>
+										<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+										<Button onClick={deleteAccount} autoFocus>
+											Delete
+										</Button>
+									</DialogActions>
+								</Dialog>
+
+							</Stack>
+
+							{deleteIcsSucceed ? (
 								<span className="message-success">
-									Your ICS Calendar is updated!<br/>
+									Calendar Deleted!
 								</span>
 							) : null}
-						</form>
-					</div>
-				</Paper>
-						<br/>
-				<Paper elevation={8}>
-					<div className="right-bottom-div">
-						<br/>
-						<form>
-						<Stack
-							direction="column"
-							justifyContent="center"
-							alignItems="center"
-							spacing={2}
-						>
-							<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
-								Delete Calendar
-							</Button>
-							<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
-								Delete Account
-							</Button>
 
-							<Dialog
-								open={dialogOpen}
-								onClose={() => setDialogOpen(false)}
-								aria-labelledby="alert-dialog-title"
-								aria-describedby="alert-dialog-description"
-							>
-								<DialogTitle id="alert-dialog-title">
-									{"Are you sure you want to delete this account?"}
-								</DialogTitle>
-								<DialogContent>
-									<DialogContentText id="alert-dialog-description">
-										There's no turning back !
-									</DialogContentText>
-								</DialogContent>
-								<DialogActions>
-									<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-									<Button onClick={deleteAccount} autoFocus>
-										Delete
-									</Button>
-								</DialogActions>
-							</Dialog>
+							</form>
+						</div>
+					</Paper>
 
-						</Stack>
-
-						{deleteIcsSucceed ? (
-							<span className="message-success">
-								Calendar Deleted!
-							</span>
-						) : null}
-
-						</form>
-					</div>
-				</Paper>
-
-			</div>
-
+				</div>
+			</Box>
 		</div>
 
 	);
