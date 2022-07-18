@@ -69,6 +69,19 @@ function MeetingCreation() {
                     </Grid>
                     <Grid item xs={3}></Grid>
 
+                    <Grid item xs={12}>
+                        <div className="input">
+                            <div className="input item padding "></div>
+                            <Input
+                                // value={meetingCreationSlice['name']}
+                                // onChange={handleNameChange}
+                                className="input item"
+                                label="name"
+                                placeholder="A brief description.."></Input>
+                            <div className="input item padding"></div>
+                        </div>
+                    </Grid>
+
                     <Grid item xs={12} lg={6}>
                         <Box display="flex" justifyContent="center" alignItems="center">
                             <DatePicker/>
