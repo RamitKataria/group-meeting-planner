@@ -111,55 +111,58 @@ export default function NavBar2() {
 						open={open}
 						onMouseOver={openDrawer}
 						onMouseLeave={closeDrawer}
+						PaperProps={{ sx: {
+								backgroundColor: "black"
+							} }}
 				>
 					<List component="nav">
 						<ListItemButton onClick={() => navigateToPage("home")}>
 							<ListItemIcon>
-								<FactCheckRoundedIcon style={{ color: "purple", fontSize: "40px"}}/>
+								<FactCheckRoundedIcon sx={{ color: "white", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="Meeting Planner"
-										  primaryTypographyProps={{fontSize: '24px', fontWeight: "bold", lineHeight: 3.5}} />
+										  primaryTypographyProps={{fontSize: '24px', fontWeight: "bold", lineHeight: 3.5, color: "white"}} />
 						</ListItemButton>
 						<ListItemButton onClick={() => navigateToPage("home")}>
 							<ListItemIcon>
-								<HomeRoundedIcon style={{ color: "black", fontSize: "40px"}}/>
+								<HomeRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="Home"
-										  primaryTypographyProps={{lineHeight: '2.5'}}/>
+										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
 						<ListItemButton onClick={(event) => navigateToPage("new-meeting")}>
 							<ListItemIcon>
-								<AddCircleOutlineRoundedIcon style={{ color: "black", fontSize: "40px"}}/>
+								<AddCircleOutlineRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="Create Meeting"
-										  primaryTypographyProps={{lineHeight: '2.5'}}/>
+										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
 						<ListItemButton onClick={() => navigateToPage("all-meetings")}>
 							<ListItemIcon>
-								<FormatListBulletedRoundedIcon style={{ color: "black", fontSize: "40px"}}/>
+								<FormatListBulletedRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="All Meetings"
-										  primaryTypographyProps={{lineHeight: '2.5'}}/>
+										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
 
-						<Divider sx={{ my: 1 }} />
+						<Divider sx={{ my: 1, borderColor: "white" }} />
 
-						<ListSubheader component="div" inset>
-							Saved reports
-						</ListSubheader>
+						{/*<ListSubheader component="div" inset>*/}
+						{/*	Saved reports*/}
+						{/*</ListSubheader>*/}
 						<ListItemButton onClick={() => navigateToPage("about-us")}>
 							<ListItemIcon>
-								<InfoRoundedIcon style={{ color: "black", fontSize: "40px"}}/>
+								<InfoRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="About Us"
-										  primaryTypographyProps={{lineHeight: '2.5'}}/>
+										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
 						<ListItemButton onClick={() => navigateToPage("account")}>
 							<ListItemIcon>
-								< PersonRoundedIcon style={{ color: "black", fontSize: "40px"}}/>
+								<PersonRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="Account"
-										  primaryTypographyProps={{lineHeight: '2.5'}}/>
+										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
 					</List>
 				</Drawer>
@@ -173,14 +176,16 @@ export default function NavBar2() {
 						flexGrow: 1,
 						height: '100vh',
 						overflow: 'auto',
-						px: '8',
+						p: '0',
+						m: '0',
+						// alignItems:"flex-start",
 					}}
 				>
 					<Routes>
-					<Route exact path="/" element={<Home/>}/>
-					<Route exact path="/about-us" element={<AboutUs/>}/>
-					<Route exact path="/home" element={<Home/>}/>
-					<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
+						<Route exact path="/" element={<Home/>}/>
+						<Route exact path="/about-us" element={<AboutUs/>}/>
+						<Route exact path="/home" element={<Home/>}/>
+						<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
 					{userState ? (
 							[
@@ -195,9 +200,9 @@ export default function NavBar2() {
 						]}
 					</Routes>
 
-					<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-						<Copyright sx={{ pt: 4 }} />
-					</Container>
+					{/*<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>*/}
+					{/*	<Copyright sx={{ pt: 4 }} />*/}
+					{/*</Container>*/}
 				</Box>
 			</Box>
 		</ThemeProvider>
