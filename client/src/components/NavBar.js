@@ -1,5 +1,5 @@
 import "../css/navbar.css";
-import Home from "./pages/Home";
+import GuestHome from "./pages/GuestHome";
 import NewMeeting from "./pages/NewMeeting";
 import Account from "./pages/Account";
 import AllMeetings from "./pages/AllMeetings";
@@ -87,9 +87,9 @@ export default function NavBar() {
 				</ul>
 			</nav>
 				<Routes>
-					<Route exact path="/" element={<Home/>}/>
+					<Route exact path="/" element={<GuestHome/>}/>
 					<Route exact path="/about-us" element={<AboutUs/>}/>
-					<Route exact path="/home" element={<Home/>}/>
+					<Route exact path="/home" element={<GuestHome/>}/>
 					<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
 					{userState ? (

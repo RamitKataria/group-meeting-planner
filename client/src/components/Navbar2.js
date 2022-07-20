@@ -17,7 +17,8 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
 import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
-import Home from "./pages/Home";
+import GuestHome from "./pages/GuestHome";
+import RegisteredHome from "./pages/RegisteredHome";
 import AboutUs from "./pages/AboutUs";
 import AvailabilityPage from "./pages/AvailabilityPage";
 import NewMeeting from "./pages/NewMeeting";
@@ -182,9 +183,9 @@ export default function NavBar2() {
 					}}
 				>
 					<Routes>
-						<Route exact path="/" element={<Home/>}/>
+						<Route exact path="/" element={<GuestHome/>}/>
 						<Route exact path="/about-us" element={<AboutUs/>}/>
-						<Route exact path="/home" element={<Home/>}/>
+						<Route exact path="/home" element={<RegisteredHome/>}/>
 						<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
 					{userState ? (

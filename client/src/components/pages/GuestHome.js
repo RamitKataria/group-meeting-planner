@@ -17,7 +17,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-export default function Home() {
+export default function GuestHome() {
 	const navigate = useNavigate();
 	const [meetingID, setMeetingID] = useState("");
 
