@@ -13,41 +13,31 @@ import {Typography} from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { getUserBasedOnUserId, getMeetingsBasedOnUserId, } from "../../redux/users/service";
 import {getMeeting} from "../../redux/meetings/service";
 
-function MeetingCard(props) {
-	return (
-		<Card elevation={2} sx={{ minWidth: 275,  mb: 3}}>
-			<CardContent>
-				<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-					{props.meeting.dateTimeUpdated}
-				</Typography>
-				<Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
-					{props.meeting.name}
-				</Typography>
-				{/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
-				{/*	adjective*/}
-				{/*</Typography>*/}
-				<Typography variant="body2" color="text.secondary">
-					{props.meeting.description}
-				</Typography>
-			</CardContent>
-			<CardActions>
-				<Button size="small">Go to Meeting</Button>
-			</CardActions>
-		</Card>
-	);
+const handleCopiedToClipboard = (id) => {
+	const link = "http://localhost:3000/home/" + id;
+	navigator.clipboard.writeText(link)
+		.then(() => {
+			toast("Copied to clipboard!");
+		})
+		.catch(() => {
+			alert("something went wrong with clipboard");
+		});
 }
 
 export default function RegisteredHome() {
 	const navigate = useNavigate();
-	const [meetingID, setMeetingID] = useState("");
+	const [linkMeetingID, setLinkMeetingID] = useState("");
 	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136"); // temporary
 	const [currentUser, setCurrentUser] = useState({}); // user info
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
@@ -79,15 +69,51 @@ export default function RegisteredHome() {
 	}, []);
 
 	const handleRedirectLink = (page) => {
-		if(page === "")
-			navigate("./" + meetingID);
-		else
-			navigate("../" + page);
+		navigate(page);
 	}
 
 	const handleInputChange = (event) => {
-		setMeetingID(event.target.value);
+		setLinkMeetingID(event.target.value);
 	};
+
+	function MeetingCard(props) {
+		return (
+			<Card elevation={2} sx={{ minWidth: 275,  mb: 3}}>
+				<CardContent>
+					<ToastContainer
+						position="top-right"
+						autoClose={1000}
+						hideProgressBar
+						newestOnTop={false}
+						closeOnClick
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+					/>
+					<Box sx={{justifyContent: 'space-between', display: 'flex'}}>
+						<Typography sx={{ fontSize: 14,}} color="text.secondary" gutterBottom>
+							{props.meeting.dateTimeUpdated}
+						</Typography>
+						<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={() => handleCopiedToClipboard(props.meeting._id)}></ContentCopyIcon>
+					</Box>
+
+					<Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
+						{props.meeting.name}
+					</Typography>
+					{/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
+					{/*	adjective*/}
+					{/*</Typography>*/}
+					<Typography variant="body2" color="text.secondary">
+						{props.meeting.description}
+					</Typography>
+				</CardContent>
+				<CardActions>
+					<Button size="small" onClick={() => handleRedirectLink("./" + props.meeting._id)}>Go to Meeting</Button>
+				</CardActions>
+			</Card>
+		);
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -140,7 +166,7 @@ export default function RegisteredHome() {
 									>
 
 										<Button variant="contained" sx={{minWidth:250}} startIcon={<BorderColorIcon/>}
-												onClick={() => handleRedirectLink("new-meeting")} >
+												onClick={() => handleRedirectLink("../new-meeting")} >
 											Create New Meeting
 										</Button>
 
@@ -173,7 +199,7 @@ export default function RegisteredHome() {
 									/>
 
 									<Box sx={{mt: 5, justifyContent: 'flex-end', display: 'flex'}}>
-										<Button variant="contained" endIcon={<ArrowForwardIcon/>} onClick={() => handleRedirectLink("")}>
+										<Button variant="contained" endIcon={<ArrowForwardIcon/>} onClick={() => handleRedirectLink("./" + linkMeetingID)}>
 											Go!
 										</Button>
 									</Box>
@@ -201,7 +227,7 @@ export default function RegisteredHome() {
 										<MeetingCard meeting={allMeetings[1]}></MeetingCard>]
 									) : null}
 									<Box sx={{justifyContent: 'flex-end', display: 'flex'}}>
-										<Button onClick={() => handleRedirectLink("all-meetings")}>Show All Meetings</Button>
+										<Button onClick={() => handleRedirectLink("../all-meetings")}>Show All Meetings</Button>
 									</Box>
 								</Box>
 							</Paper>
