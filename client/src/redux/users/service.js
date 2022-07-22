@@ -14,7 +14,7 @@ export const getUserBasedOnUserId = async (userId) => {
   return response.json();
 };
 
-const deleteUserBasedOnUserId = async (userId) => {
+export const deleteUserBasedOnUserId = async (userId) => {
   const link = 'http://localhost:3001/users/' + userId;
   const response = await fetch(link, {
     method: 'DELETE'

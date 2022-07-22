@@ -29,6 +29,7 @@ export default function Account() {
 	const [deleteIcsSucceed, setDeleteIcsSucceed] = useState(false);
 	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136");
 
 	const handleAccountChange = (event) => {
 		const name = event.target.name;
@@ -45,7 +46,7 @@ export default function Account() {
 	const submitAccount = async (event) => {
 		event.preventDefault();
 		// await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
-		const response = await updateUserBasedOnUserId({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs});
+		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": inputs});
 		setCurrentUser(response);
 		setUpdateAccSucceed(true);
 	};
@@ -53,7 +54,7 @@ export default function Account() {
 	const submitIcs = async (event) => {
 		event.preventDefault();
 		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics}));
-		const response = await updateUserBasedOnUserId({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics});
+		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": ics});
 		setCurrentUser(response);
 		setUpdateIcsSucceed(true);
 	};
@@ -61,14 +62,14 @@ export default function Account() {
 	const deleteCalendar = async (event) => {
 		event.preventDefault();
 		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}}));
-		const response = await updateUserBasedOnUserId({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}});
+		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"ics": ""}});
 		setCurrentUser(response);
 		setDeleteIcsSucceed(true);
 	};
 
 	const deleteAccount = () => {
 		setDialogOpen(false);
-		dispatch(deleteUserAsync("d515b255-0691-4778-9796-cb4f41840136"));
+		dispatch(deleteUserAsync(currentUserID));
 		window.location.href = "http://localhost:3000/about-us";
 	};
 
@@ -81,7 +82,7 @@ export default function Account() {
 		// setCurrentUser(response);
 
 		async function populateAccountInfo() {
-			const response = await getUserBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
+			const response = await getUserBasedOnUserId(currentUserID);
 			setCurrentUser(response);
 		}
 		populateAccountInfo();
