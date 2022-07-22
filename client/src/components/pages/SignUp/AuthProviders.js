@@ -37,6 +37,8 @@ export default function AuthProviders() {
         signInWithRedirect(Auth, provider);
     }
 
+
+
     return (
     <Box sx={{
         display: 'flex',
@@ -44,11 +46,20 @@ export default function AuthProviders() {
         alignItems: 'center',
         width: 0.45,
         margin: 'auto',
+
     }}>
-        <Button onClick={handleGoogleSignIn} sx={{backgroundColor: 'white', minHeight: 50}} fullWidth>
+        <Button onClick={handleGoogleSignIn} sx={{backgroundColor: 'white', minHeight: 50,
+            mt:3,
+            mb:2,
+            color: 'black'
+            }} >
             <GoogleIcon/> Continue with Google
         </Button>
-        <Button onClick={() => {navigate('/')}} sx={{backgroundColor: '#333333', minHeight: 50}} fullWidth>
+        <Button onClick={() => {navigate('/')}} sx={{backgroundColor: 'white', minHeight: 50,
+            mt:2,
+            mb:2,
+            color: 'black'
+        }} >
             <GitHubIcon/> Continue with GitHub
         </Button>
     </Box>

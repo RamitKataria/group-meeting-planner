@@ -13,6 +13,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../../redux/user";
 import AuthProviders from "./AuthProviders";
+import "./signUp.css";
 
 
 export default function SignIn() {
@@ -45,76 +46,94 @@ export default function SignIn() {
     };
 
     return (
-        <Container component="main" maxWidth="md"
-                   sx={{display: 'flex', flexDirection: 'row'}}>
-            <CssBaseline/>
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    width: 0.45
-                }}
-            >
-                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                    <LockOutlinedIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                autoComplete="name"
-                                name="name"
-                                required
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                autoFocus
-                            />
+        <div className = "body">
+            <div className = "split-screen">
+
+
+
+                <div className = "right">
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        mt: 10,
+                        ml: 5,
+                        mr:5
+                    }}>
+                        <Typography component="h1" variant="h5"
+                                    sx={{
+                                            mb: 5,
+                                            ml: 5,
+                                            mr:5 }}>
+                            Sign up
+                        </Typography>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    autoComplete="name"
+                                    name="name"
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    name="password"
+                                    fullWidth
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="new-password"
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Link href="././SignIn" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Box>
-            <AuthProviders/>
-        </Container>)
+                        <Button
+                            fullWidth
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 ,
+                                backgroundColor: 'black'}}
+                        >
+                            Sign Up
+                        </Button>
+                        <Button variant = 'text'
+                                href='././SignIn.js'
+                                sx={{color: 'black'}}>
+                            Already have an account? Sign In
+                        </Button>
+                    </Box>
+
+                </div>
+
+                <div className = "left">
+                    <AuthProviders/>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+    )
 }
+
