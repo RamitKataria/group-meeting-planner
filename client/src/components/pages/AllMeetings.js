@@ -348,7 +348,7 @@ export default function EnhancedTable() {
 		const link = "http://localhost:3000/home/" + id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
-				toast("Copied to clipboard!");
+				toast("🗒️ Copied to clipboard!");
 			})
 			.catch(() => {
 				alert("something went wrong with clipboard");

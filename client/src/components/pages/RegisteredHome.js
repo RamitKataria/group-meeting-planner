@@ -28,7 +28,7 @@ const handleCopiedToClipboard = (id) => {
 	const link = "http://localhost:3000/home/" + id;
 	navigator.clipboard.writeText(link)
 		.then(() => {
-			toast("Copied to clipboard!");
+			toast("🗒️ Copied to clipboard!");
 		})
 		.catch(() => {
 			alert("something went wrong with clipboard");
@@ -129,7 +129,6 @@ export default function RegisteredHome() {
 				}}
 			>
 				<Box sx={{mx: "auto", my: 5, width: "80%"}}>
-					{/*<CssBaseline />*/}
 					<Grid
 						container
 						sx={{py: 10}}
