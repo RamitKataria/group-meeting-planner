@@ -1,10 +1,11 @@
 import "../../css/account.css";
-import SignUp from './SignUp/SignUp.js';
-import SignIn from './SignUp/SignIn.js';
 import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,22 +13,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import LogoutIcon from '@mui/icons-material/Logout';
 import Stack from "@mui/material/Stack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
-import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
-import { getUserBasedOnUserId, updateUserBasedOnUserId } from "../../redux/users/service";
-import Box from "@mui/material/Box";
-
+import { getUserBasedOnUserId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
 
 export default function Account() {
 	const [inputs, setInputs] = useState({});
 	const [ics, setIcs] = useState({});
-	const [updateAccSucceed, setUpdateAccSucceed] = useState(false);
-	const [updateIcsSucceed, setUpdateIcsSucceed] = useState(false);
-	const [deleteIcsSucceed, setDeleteIcsSucceed] = useState(false);
 	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136");
@@ -46,38 +42,38 @@ export default function Account() {
 
 	const submitAccount = async (event) => {
 		event.preventDefault();
-		// await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": inputs});
 		setCurrentUser(response);
-		setUpdateAccSucceed(true);
+		toast("👤 Account Updated!");
 	};
 
 	const submitIcs = async (event) => {
 		event.preventDefault();
-		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics}));
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": ics});
 		setCurrentUser(response);
-		setUpdateIcsSucceed(true);
+		toast("📅 Calendar Updated!");
 	};
 
 	const deleteCalendar = async (event) => {
 		event.preventDefault();
-		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}}));
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"ics": ""}});
 		setCurrentUser(response);
-		setDeleteIcsSucceed(true);
+		toast("🗑️ Calendar Deleted!");
 	};
 
-	const deleteAccount = () => {
+	const deleteAccount = async () => {
 		setDialogOpen(false);
-		dispatch(deleteUserAsync(currentUserID));
-		window.location.href = "http://localhost:3000/about-us";
+		await deleteUserBasedOnUserId(currentUserID);
+		alert("Account Deleted!");
 	};
+
+	const handleLogout = () => {
+		alert("logout!");
+	}
 
 	const [currentUser, setCurrentUser] = useState({});
 
 	useEffect(() => {
-
 		async function populateAccountInfo() {
 			const response = await getUserBasedOnUserId(currentUserID);
 			setCurrentUser(response);
@@ -96,11 +92,22 @@ export default function Account() {
 			>
 				Account Settings
 			</Typography>
+			<ToastContainer
+				position="top-right"
+				autoClose={3000}
+				hideProgressBar
+				newestOnTop
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 
 			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
 				<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 					<Paper elevation={8} sx={{ width: '45%' }}>
-						<Box sx={{pt: 3, pb: 7, px: 5}}>
+						<Box sx={{pt: 3, pb: 10, px: 5}}>
 							<form className="form-account">
 								<label htmlFor="name">Name</label>
 								<input
@@ -148,19 +155,13 @@ export default function Account() {
 									Update
 								</Button>
 
-								{updateAccSucceed ? (
-									<div className="message-success">
-										Your account is updated!<br/>
-									</div>
-								) : null}
-
 							</form>
 						</Box>
 					</Paper>
 
 					<Box sx={{ justifyContent: 'space-between', display: "flex", flexDirection: "column", width: '45%' }}>
 						<Paper elevation={8}>
-							<Box sx={{pt: 3, pb: 7, px: 5}}>
+							<Box sx={{pt: 3, pb: 10, px: 5}}>
 								<form className="form-ics" >
 									<label htmlFor="ics">ICS Link</label>
 									<input
@@ -170,14 +171,20 @@ export default function Account() {
 										onChange={handleIcsChange}
 										required
 									/>
-									<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs} sx={{mt: 5}}>
-										Update
-									</Button>
-									{updateIcsSucceed ? (
-										<span className="message-success">
-											Your ICS Calendar is updated!<br/>
-										</span>
-									) : null}
+									<Stack
+										direction="column"
+										justifyContent="center"
+										alignItems="center"
+										spacing={2}
+									>
+										<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs} sx={{mt: 5}}>
+											Update
+										</Button>
+										<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
+											Delete Calendar
+										</Button>
+									</Stack>
+
 								</form>
 							</Box>
 						</Paper>
@@ -190,8 +197,8 @@ export default function Account() {
 										alignItems="center"
 										spacing={2}
 									>
-										<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar} sx={{mt: 5}}>
-											Delete Calendar
+										<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={handleLogout} sx={{mt: 5}}>
+											Log out
 										</Button>
 										<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
 											Delete Account
@@ -220,12 +227,6 @@ export default function Account() {
 										</Dialog>
 
 									</Stack>
-
-									{deleteIcsSucceed ? (
-										<span className="message-success">
-											Calendar Deleted!
-										</span>
-									) : null}
 
 								</form>
 							</Box>
