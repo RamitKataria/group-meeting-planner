@@ -7,9 +7,9 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
 import {getUserBasedOnUserId} from "../../redux/users/service";
-import Box from "@mui/material/Box";
-import {Typography} from "@mui/material";
-import React from "react";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import * as React from "react";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
@@ -29,10 +29,11 @@ export default function AvailabilityPage() {
 
 	const dispatch = useDispatch();
 
-	const copyClipboard = () => {
-		navigator.clipboard.writeText(meetingInfo._id)
+	const handleCopiedToClipboard = () => {
+		const link = "http://localhost:3000/home/" + meetingInfo._id;
+		navigator.clipboard.writeText(link)
 			.then(() => {
-				alert("Copied the text: " + meetingInfo._id);
+				toast("Copied to clipboard!");
 			})
 			.catch(() => {
 				alert("something went wrong with clipboard");
@@ -40,7 +41,7 @@ export default function AvailabilityPage() {
 	}
 
 	return (
-		<div>
+		<div >
 			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
 				<Typography
 					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
@@ -53,24 +54,38 @@ export default function AvailabilityPage() {
 					<Paper elevation={8} style={{borderRadius: 15}}>
 						<div sx={{mt: 20, p: '10px 30px'}}>
 							<h2>Meeting Summary</h2>
+							<ToastContainer
+								position="top-right"
+								autoClose={1000}
+								hideProgressBar
+								newestOnTop={false}
+								closeOnClick
+								rtl={false}
+								pauseOnFocusLoss
+								draggable
+								pauseOnHover
+							/>
 							<table>
 								<thead>
-									<tr>
-										<td className="table-header"><strong>Meeting ID: &emsp;</strong><ContentCopyIcon fontSize="small" onClick={copyClipboard}></ContentCopyIcon></td>
-										<td>{meetingInfo._id}</td>
-									</tr>
-									<tr>
-										<td className="table-header"><strong>Name: </strong></td>
-										<td>{meetingInfo.name}</td>
-									</tr>
-									<tr>
-										<td className="table-header"><strong>Description: </strong></td>
-										<td>{meetingInfo.description}</td>
-									</tr>
-									<tr>
-										<td className="table-header"><strong>Created By: </strong></td>
-										<td>{userInfo.name}</td>
-									</tr>
+								<tr>
+									<td className="table-header">
+										<strong>Meeting Link: &emsp;</strong>
+										<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={handleCopiedToClipboard}></ContentCopyIcon>
+									</td>
+									<td>{"http://localhost:3000/home/" + meetingInfo._id}</td>
+								</tr>
+								<tr>
+									<td className="table-header"><strong>Name: </strong></td>
+									<td>{meetingInfo.name}</td>
+								</tr>
+								<tr>
+									<td className="table-header"><strong>Description: </strong></td>
+									<td>{meetingInfo.description}</td>
+								</tr>
+								<tr>
+									<td className="table-header"><strong>Created By: </strong></td>
+									<td>{userInfo.name}</td>
+								</tr>
 								</thead>
 							</table>
 						</div>
