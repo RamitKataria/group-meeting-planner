@@ -10,6 +10,7 @@ import {getUserBasedOnUserId} from "../../redux/users/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
+import {Typography, Box} from "@mui/material";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();

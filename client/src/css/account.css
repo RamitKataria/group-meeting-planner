@@ -31,34 +31,6 @@
     box-shadow:0 0 4px rgba(0,0,0,0.7);
 }
 
-.account-info {
-    float: left;
-    width: 50%;
-    /*margin: 5% 0;*/
-}
-
-.ics-div {
-    float: right;
-    width: 45%;
-    /*margin: 5% 0;*/
-}
-
-.left-div {
-    padding: 10px 30px;
-    min-height: 550px;
-}
-
-.right-top-div {
-    padding: 10px 30px;
-    min-height: 300px;
-}
-
-.right-bottom-div {
-    padding: 10px 30px;
-    min-height: 200px;
-}
-
-
 input[type="submit"] {
     width: 80px;
     background: #016ABC;
