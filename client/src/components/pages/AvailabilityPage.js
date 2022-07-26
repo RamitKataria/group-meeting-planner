@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
@@ -34,7 +35,7 @@ export default function AvailabilityPage() {
 		const link = "http://localhost:3000/home/" + meetingInfo._id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
-				toast("Copied to clipboard!");
+				toast("🗒️ Copied to clipboard!");
 			})
 			.catch(() => {
 				alert("something went wrong with clipboard");
@@ -51,52 +52,56 @@ export default function AvailabilityPage() {
 				>
 					Choose Your Availability
 				</Typography>
-				<div className="meeting-summary-div">
-					<Paper elevation={8} style={{borderRadius: 15}}>
-						<div sx={{mt: 20, p: '10px 30px'}}>
-							<h2>Meeting Summary</h2>
-							<ToastContainer
-								position="top-right"
-								autoClose={1000}
-								hideProgressBar
-								newestOnTop={false}
-								closeOnClick
-								rtl={false}
-								pauseOnFocusLoss
-								draggable
-								pauseOnHover
-							/>
-							<table>
-								<thead>
-								<tr>
-									<td className="table-header">
-										<strong>Meeting Link: &emsp;</strong>
-										<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={handleCopiedToClipboard}></ContentCopyIcon>
-									</td>
-									<td>{"http://localhost:3000/home/" + meetingInfo._id}</td>
-								</tr>
-								<tr>
-									<td className="table-header"><strong>Name: </strong></td>
-									<td>{meetingInfo.name}</td>
-								</tr>
-								<tr>
-									<td className="table-header"><strong>Description: </strong></td>
-									<td>{meetingInfo.description}</td>
-								</tr>
-								<tr>
-									<td className="table-header"><strong>Created By: </strong></td>
-									<td>{userInfo.name}</td>
-								</tr>
-								</thead>
-							</table>
-						</div>
-					</Paper>
-				</div>
+				<Grid
+					container
+					spacing={8}
+				>
 
-				<div className="availability-picker-div">
-					<AvailabilityPicker
-						meetingInfo={meetingInfo}/>
-				</div>
+					<Grid item lg={6} sm={12} >
+						<Paper elevation={8}>
+							<Box sx={{py: 3, px: 5}}>
+								<h2>Meeting Summary</h2>
+								<ToastContainer
+									position="top-right"
+									autoClose={1000}
+									hideProgressBar
+									newestOnTop={false}
+									closeOnClick
+									rtl={false}
+									pauseOnFocusLoss
+									draggable
+									pauseOnHover
+								/>
+								<table>
+									<thead>
+									<tr>
+										<td className="table-header">
+											<strong>Link: &emsp;</strong>
+											<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={handleCopiedToClipboard}></ContentCopyIcon>
+										</td>
+										<td>{"http://localhost:3000/home/" + meetingInfo._id}</td>
+									</tr>
+									<tr>
+										<td className="table-header"><strong>Name: </strong></td>
+										<td>{meetingInfo.name}</td>
+									</tr>
+									<tr>
+										<td className="table-header"><strong>Description: </strong></td>
+										<td>{meetingInfo.description}</td>
+									</tr>
+									<tr>
+										<td className="table-header"><strong>Created By: </strong></td>
+										<td>{userInfo.name}</td>
+									</tr>
+									</thead>
+								</table>
+							</Box>
+						</Paper>
+					</Grid>
+					<Grid item lg={6} sm={12} >
+						<AvailabilityPicker meetingInfo={meetingInfo}/>
+					</Grid>
+				</Grid>
 			</Box>
 		</div>
 	);

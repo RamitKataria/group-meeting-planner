@@ -4,6 +4,7 @@ import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Grid from '@mui/material/Grid';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Dialog from '@mui/material/Dialog';
@@ -105,134 +106,146 @@ export default function Account() {
 			/>
 
 			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
-				<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-					<Paper elevation={8} sx={{ width: '45%' }}>
-						<Box sx={{pt: 3, pb: 10, px: 5}}>
-							<form className="form-account">
-								<label htmlFor="name">Name</label>
-								<input
-									name="name"
-									defaultValue={currentUser.name}
-									type="text"
-									onChange={handleAccountChange}
-									required
-								/>
+				<Grid
+					container
+					spacing={4}
+					justifyContent="space-between"
+					alignItems="center"
+				>
 
-								<label htmlFor="email">Email</label>
-								<input
-									name="email"
-									defaultValue={currentUser.email}
-									type="email"
-									onChange={handleAccountChange}
-									required
-								/>
-
-								<label htmlFor="oldPassword">Old Password</label>
-								<input
-									name="oldPassword"
-									// defaultValue={currentUser.oldPassword}
-									placeholder="old password"
-									type="password"
-									// onChange={handleAccountChange}
-									required
-								/>
-
-								<label htmlFor="newPassword">New Password</label>
-								<input
-									name="newPassword"
-									// defaultValue={currentUser.newPassword}
-									placeholder="new password"
-									type="password"
-									// onChange={handleAccountChange}
-									required
-								/>
-								<br/>
-								{/*<div className="message-warning">*/}
-								{/*	Incorrect Old Password.*/}
-								{/*</div>*/}
-
-								<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount} sx={{mt: 2}}>
-									Update
-								</Button>
-
-							</form>
-						</Box>
-					</Paper>
-
-					<Box sx={{ justifyContent: 'space-between', display: "flex", flexDirection: "column", width: '45%' }}>
-						<Paper elevation={8}>
+					<Grid item lg={6} sm={12} >
+						<Paper elevation={8} >
 							<Box sx={{pt: 3, pb: 10, px: 5}}>
-								<form className="form-ics" >
-									<label htmlFor="ics">ICS Link</label>
+								<form className="form-account">
+									<label htmlFor="name">Name</label>
 									<input
-										name="ics"
-										defaultValue={currentUser.ics}
+										name="name"
+										defaultValue={currentUser.name}
 										type="text"
-										onChange={handleIcsChange}
+										onChange={handleAccountChange}
 										required
 									/>
-									<Stack
-										direction="column"
-										justifyContent="center"
-										alignItems="center"
-										spacing={2}
-									>
-										<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs} sx={{mt: 5}}>
-											Update
-										</Button>
-										<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
-											Delete Calendar
-										</Button>
-									</Stack>
+
+									<label htmlFor="email">Email</label>
+									<input
+										name="email"
+										defaultValue={currentUser.email}
+										type="email"
+										onChange={handleAccountChange}
+										required
+									/>
+
+									<label htmlFor="oldPassword">Old Password</label>
+									<input
+										name="oldPassword"
+										// defaultValue={currentUser.oldPassword}
+										placeholder="old password"
+										type="password"
+										// onChange={handleAccountChange}
+										required
+									/>
+
+									<label htmlFor="newPassword">New Password</label>
+									<input
+										name="newPassword"
+										// defaultValue={currentUser.newPassword}
+										placeholder="new password"
+										type="password"
+										// onChange={handleAccountChange}
+										required
+									/>
+									<br/>
+									{/*<div className="message-warning">*/}
+									{/*	Incorrect Old Password.*/}
+									{/*</div>*/}
+
+									<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount} sx={{mt: 2}}>
+										Update
+									</Button>
 
 								</form>
 							</Box>
 						</Paper>
-						<Paper elevation={8}>
-							<Box sx={{pt: 3, pb: 7, px: 5}}>
-								<form>
-									<Stack
-										direction="column"
-										justifyContent="center"
-										alignItems="center"
-										spacing={2}
-									>
-										<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={handleLogout} sx={{mt: 5}}>
-											Log out
-										</Button>
-										<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
-											Delete Account
-										</Button>
-
-										<Dialog
-											open={dialogOpen}
-											onClose={() => setDialogOpen(false)}
-											aria-labelledby="alert-dialog-title"
-											aria-describedby="alert-dialog-description"
+					</Grid>
+					<Grid item lg={6} sm={12}>
+						<Stack
+							direction="column"
+							justifyContent="space-between"
+							spacing={4}
+						>
+							<Paper elevation={8}>
+								<Box sx={{pt: 3, pb: 10, px: 5}}>
+									<form className="form-ics" >
+										<label htmlFor="ics">ICS Link</label>
+										<input
+											name="ics"
+											defaultValue={currentUser.ics}
+											type="text"
+											onChange={handleIcsChange}
+											required
+										/>
+										<Stack
+											direction="column"
+											justifyContent="center"
+											alignItems="center"
+											spacing={2}
 										>
-											<DialogTitle id="alert-dialog-title">
-												{"Are you sure you want to delete this account?"}
-											</DialogTitle>
-											<DialogContent>
-												<DialogContentText id="alert-dialog-description">
-													There's no turning back !
-												</DialogContentText>
-											</DialogContent>
-											<DialogActions>
-												<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-												<Button onClick={deleteAccount} autoFocus>
-													Delete
-												</Button>
-											</DialogActions>
-										</Dialog>
+											<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs} sx={{mt: 5}}>
+												Update
+											</Button>
+											<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
+												Delete Calendar
+											</Button>
+										</Stack>
 
-									</Stack>
+									</form>
+								</Box>
+							</Paper>
+							<Paper elevation={8}>
+								<Box sx={{pt: 3, pb: 7, px: 5}}>
+									<form>
+										<Stack
+											direction="column"
+											justifyContent="center"
+											alignItems="center"
+											spacing={2}
+										>
+											<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={handleLogout} sx={{mt: 5}}>
+												Log out
+											</Button>
+											<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
+												Delete Account
+											</Button>
 
-								</form>
-							</Box>
-						</Paper>
-					</Box>
-				</Box>
+											<Dialog
+												open={dialogOpen}
+												onClose={() => setDialogOpen(false)}
+												aria-labelledby="alert-dialog-title"
+												aria-describedby="alert-dialog-description"
+											>
+												<DialogTitle id="alert-dialog-title">
+													{"Are you sure you want to delete this account?"}
+												</DialogTitle>
+												<DialogContent>
+													<DialogContentText id="alert-dialog-description">
+														There's no turning back !
+													</DialogContentText>
+												</DialogContent>
+												<DialogActions>
+													<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+													<Button onClick={deleteAccount} autoFocus>
+														Delete
+													</Button>
+												</DialogActions>
+											</Dialog>
+
+										</Stack>
+									</form>
+								</Box>
+							</Paper>
+						</Stack>
+					</Grid>
+				</Grid>
 			</Box>
 		</div>
 
