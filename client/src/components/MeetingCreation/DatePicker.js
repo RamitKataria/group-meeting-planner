@@ -6,6 +6,7 @@ import '@natscale/react-calendar/dist/main.css';
 import ViewSwitch from './ViewSwitch';
 import {storeDates} from '../../redux/meetingCreation'
 import { useDispatch } from 'react-redux';
+import Box from "@mui/material/Box";
 
 export default function DatePicker() {
     const [rangeDates, setRangeDates] = useState([]);
@@ -46,23 +47,25 @@ export default function DatePicker() {
     return (
         <div className="date-selection">
             <h2>What days might work? </h2>
-            <div class='date-selection-switch'>
+            <Box sx={{minHeight: 35}}>
                 <ViewSwitch
                 checked = {multiDateView}
                 handleSwitch = {onSwitch}
                 />
-            </div>
-            <Calendar size={360} 
+            </Box>
+            <Calendar size={360}
             fontSize={18}
             isRangeSelector={!multiDateView}
             noPadRangeCell={!multiDateView}
             isMultiSelector={multiDateView}
             value={multiDateView ? multiDates : rangeDates} onChange={multiDateView ? onMultiDateChange : onRangeChange} />
-            <DateSelectionText
-            multiDateView={multiDateView}
-            rangeDates={rangeDates}
-            multiDates={multiDates}
-            />
+            <Box sx={{minHeight: 20}}>
+                <DateSelectionText
+                    multiDateView={multiDateView}
+                    rangeDates={rangeDates}
+                    multiDates={multiDates}
+                />
+            </Box>
         </div>
     );
 }
@@ -98,7 +101,7 @@ function DateSelectionText(props) {
     const range = multiDatesToRange(props.multiDates);
 
     return (
-        <div id="date-selection-text">
+        <div>
             { (props.multiDates.length > 1) ? (
                 <div>
                     <p>Between <strong>{range[0].toDateString()}</strong> and <strong>{range[1].toDateString()}</strong></p>

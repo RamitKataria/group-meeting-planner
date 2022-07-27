@@ -6,19 +6,6 @@ div{
     text-align: left;
 }
 
-h1{
-    text-align: center;
-    padding: 0;
-}
-
-text{
-    padding-bottom: 0.5em;
-}
-
-button#confirm{
-    margin-top: 2.5em;
-}
-
 #time-range-picker-and-btn{
         /* Center the form on the page */
         min-width: 25em;
