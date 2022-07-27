@@ -51,7 +51,7 @@ export default function SignIn() {
         <ThemeProvider theme={theme}>
             <Box sx={{mx: "auto", my: 5, width: "80%"}}>
                 <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
-                    <Paper elevation={8} sx={{maxWidth: 500}}>
+                    <Paper elevation={8} sx={{width: 500}}>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{px:7, py: 7}}>
                             <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
                                 <Avatar sx={{bgcolor: 'black'}}>
@@ -120,7 +120,7 @@ export default function SignIn() {
                                 </Link>
                             </Box>
 
-                            <Divider style={{width:'100%', backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5, mt: 3, mb: 2 }}/>
+                            <Divider style={{width:'100%', backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5, my: 3 }}/>
                             <AuthProviders/>
 
                         </Box>
