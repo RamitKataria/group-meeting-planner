@@ -1,9 +1,14 @@
 import {Button, Container, CssBaseline, Divider, FormControlLabel, Link, TextField} from "@mui/material";
-import ForgotPasswordButton from "./ForgotPasswordButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Avatar from "@mui/material/Avatar";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleIcon from "@mui/icons-material/Google";
@@ -14,12 +19,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../../redux/user";
 import AuthProviders from "./AuthProviders";
 import styles from './styles.module.css';
-
-
+import React, {useState} from "react";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { ThemeProvider } from "@mui/material/styles";
+import {theme} from '../../../theme/color-theme'
 
 export default function SignIn() {
     const dispatch = useDispatch();
-
+    const [showPassword, setShowPassword] = useState(false);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
@@ -46,32 +54,35 @@ export default function SignIn() {
             });
     };
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
-        <div className = {styles.body}>
-            <div className = {styles.splitscreen}>
+        <ThemeProvider theme={theme}>
+            <Box sx={{mx: "auto", my: 5, width: "80%"}}>
+                <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
+                <Paper elevation={8} sx={{maxWidth: 500}}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{px:7, py: 7}}>
+                        <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
+                            <Avatar sx={{bgcolor: 'black'}}>
+                                <LockOutlinedIcon />
+                            </Avatar>
+                        </Box>
+                        <Typography
+                            sx={{flex: '1 1 100%', fontWeight: 'bold', mb: 5, textAlign: "center"}}
+                            variant="h4"
+                            component="h1"
+                        >
+                            Sign Up !
+                        </Typography>
 
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{
-
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    mt:5,
-                    ml: 5,
-                    mr:5,
-                    mb: 5
-                }}>
-                    <Avatar sx={{ m: 1, bgcolor: 'black' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5"
-                                sx={{
-                                    mb: 5,
-                                    ml: 5,
-                                    mr:5 }}>
-                        Sign up
-                    </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
+                        <Stack
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            spacing={2}
+                        >
                             <TextField
                                 autoComplete="name"
                                 name="name"
@@ -80,8 +91,6 @@ export default function SignIn() {
                                 label="Name"
                                 autoFocus
                             />
-                        </Grid>
-                        <Grid item xs={12}>
                             <TextField
                                 required
                                 fullWidth
@@ -90,48 +99,47 @@ export default function SignIn() {
                                 name="email"
                                 autoComplete="email"
                             />
-                        </Grid>
-                        <Grid item xs={12}>
                             <TextField
                                 required
+                                id="password"
                                 name="password"
                                 fullWidth
                                 label="Password"
-                                type="password"
-                                id="password"
+                                type={showPassword ? 'text' : 'password'}
                                 autoComplete="new-password"
+                                InputProps={{
+                                    endAdornment:(
+                                    <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    edge="end"
+                                    >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                             />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        fullWidth
-                        type="submit"
-                        sx={{ mt: 3, mb: 2 ,
-                            backgroundColor: 'black',
-                            color: 'white',
-                            '&:hover': {
-                                backgroundColor: 'black',
-                            }
+                        </Stack>
 
-                        }}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container direction="row" justifyContent="end">
-                        <Link href="././signin" variant="body2" sx={{color: 'black',textDecoration: 'none'}}>
-                            {"Already have an account? Sign In"}
-                        </Link>
-                    </Grid>
+                        <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
+                            Sign Up
+                        </Button>
 
+                        <Box display="flex" justifyContent="end" sx={{mt: 2}}>
+                            <Link href="././signin" variant="body2" >
+                                Already have an account?
+                            </Link>
+                        </Box>
 
-                    <br></br>
-                    <Divider style={{width:'100%', backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5,mb: 2 }}/>
-                    <AuthProviders/>
+                        <Divider style={{width:'100%', backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5, mt: 3, mb: 2 }}/>
+                        <AuthProviders/>
 
+                    </Box>
+                </Paper>
                 </Box>
-            </div>
-        </div>
-
-
+            </Box>
+        </ThemeProvider>
     )
 }
