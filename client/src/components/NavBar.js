@@ -32,7 +32,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import {useEffect, useState} from "react";
-import {onAuthStateChanged} from "firebase/auth";
+import {onAuthStateChanged, signOut} from "firebase/auth";
 import Auth from "../firebaseApp";
 
 function Copyright(props) {
@@ -109,7 +109,15 @@ export default function NavBar() {
 	}
 
 	const handleLogout = () => {
-		alert("logout!");
+		signOut(Auth).then(() => {
+			alert("Log out successfully");
+			navigate('../');
+		}).catch((error) => {
+			// An error happened.
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			alert(`${errorCode}: ${errorMessage}`);
+		});
 	}
 
 	return (
