@@ -221,9 +221,9 @@ export default function RegisteredHome() {
 									</Typography>
 
 									{allMeetings.length !== 0 ? ([
-										<MeetingCard meeting={allMeetings[0]}></MeetingCard>,
+										<MeetingCard key="first-card" meeting={allMeetings[0]}></MeetingCard>,
 
-										<MeetingCard meeting={allMeetings[1]}></MeetingCard>]
+										<MeetingCard key="second-card" meeting={allMeetings[1]}></MeetingCard>]
 									) : null}
 									<Box sx={{justifyContent: 'flex-end', display: 'flex'}}>
 										<Button onClick={() => handleRedirectLink("../all-meetings")}>Show All Meetings</Button>

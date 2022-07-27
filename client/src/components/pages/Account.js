@@ -20,9 +20,15 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import Auth from "../../firebaseApp";
+import { signOut } from "firebase/auth";
+
 import { getUserBasedOnUserId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
 
 export default function Account() {
+	const navigate = useNavigate();
+	
 	const [inputs, setInputs] = useState({});
 	const [ics, setIcs] = useState({});
 	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
@@ -69,7 +75,15 @@ export default function Account() {
 	};
 
 	const handleLogout = () => {
-		alert("logout!");
+		signOut(Auth).then(() => {
+			alert("Log out successfully");
+			navigate('../');
+		}).catch((error) => {
+			// An error happened.
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			alert(`${errorCode}: ${errorMessage}`);
+		});
 	}
 
 	const [currentUser, setCurrentUser] = useState({});
