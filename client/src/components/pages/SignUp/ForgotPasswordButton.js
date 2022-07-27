@@ -38,8 +38,7 @@ export default function ForgotPasswordButton() {
     };
 
     return (<>
-        <Link href="#" variant="body2" onClick={() => setIsOpen(true)} sx={{color: 'black',textDecoration: 'none'
-        }}>Forgot Password?</Link>
+        <Link href="#" variant="body2" onClick={() => setIsOpen(true)}>Forgot Password?</Link>
         <Modal
             open={isOpen}
             onClose={() => setIsOpen(false)}
