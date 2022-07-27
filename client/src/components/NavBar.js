@@ -125,21 +125,21 @@ export default function NavBar() {
 							} }}
 				>
 					<List component="nav">
-						<ListItemButton onClick={() => navigateToPage("home")}>
+						<ListItemButton key="icon" onClick={() => navigateToPage("home")}>
 							<ListItemIcon>
 								<FactCheckRoundedIcon sx={{ color: "white", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="Meeting Planner"
 										  primaryTypographyProps={{fontSize: '24px', fontWeight: "bold", lineHeight: 3.5, color: "white"}} />
 						</ListItemButton>
-						<ListItemButton onClick={() => navigateToPage("home")}>
+						<ListItemButton key="home" onClick={() => navigateToPage("home")}>
 							<ListItemIcon>
 								<HomeRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
 							<ListItemText primary="Home"
 										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
-						<ListItemButton onClick={(event) => navigateToPage("new-meeting")}>
+						<ListItemButton key="new-meeting" onClick={(event) => navigateToPage("new-meeting")}>
 							<ListItemIcon>
 								<AddCircleOutlineRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 							</ListItemIcon>
@@ -148,7 +148,7 @@ export default function NavBar() {
 						</ListItemButton>
 						{userState ? (
 								[
-									<ListItemButton onClick={() => navigateToPage("all-meetings")}>
+									<ListItemButton key="all-meetings" onClick={() => navigateToPage("all-meetings")}>
 										<ListItemIcon>
 											<FormatListBulletedRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 										</ListItemIcon>
@@ -162,21 +162,21 @@ export default function NavBar() {
 
 						{userState ? (
 							[
-								<ListItemButton onClick={handleLogout} >
+								<ListItemButton key="logout" onClick={handleLogout} >
 									<ListItemIcon>
 										<LogoutRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 									</ListItemIcon>
 									<ListItemText primary="Log out"
 												  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 								</ListItemButton>,
-								<ListItemButton onClick={() => navigateToPage("account")} >
+								<ListItemButton key="account" onClick={() => navigateToPage("account")} >
 									<ListItemIcon>
 										<PersonRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 									</ListItemIcon>
 									<ListItemText primary="Account"
 												  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 								</ListItemButton>
-							]) : <ListItemButton onClick={() => navigateToPage("signin")} >
+							]) : <ListItemButton key="signin" onClick={() => navigateToPage("signin")} >
 									<ListItemIcon>
 										<LoginRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 									</ListItemIcon>
@@ -202,22 +202,22 @@ export default function NavBar() {
 					}}
 				>
 					<Routes>
-						<Route exact path="/new-meeting" element={<NewMeeting/>}/>,
-						<Route exact path="/about-us" element={<AboutUs/>}/>
-						<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
+						<Route key="new-meeting-route" exact path="/new-meeting" element={<NewMeeting/>}/>,
+						<Route key="about-us-route" exact path="/about-us" element={<AboutUs/>}/>
+						<Route key="availability-route" exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
 					{userState ? (
 							[
-								<Route exact path="/" element={<RegisteredHome/>}/>,
-								<Route exact path="/home" element={<RegisteredHome/>}/>,
-								<Route exact path="/all-meetings" element={<AllMeetings/>}/>,
-								<Route exact path="/account" element={<Account/>}/>,
+								<Route key="registered-home-root-route" exact path="/" element={<RegisteredHome/>}/>,
+								<Route key="registered-home-route" exact path="/home" element={<RegisteredHome/>}/>,
+								<Route key="all-meetings-route" exact path="/all-meetings" element={<AllMeetings/>}/>,
+								<Route key="account-route" exact path="/account" element={<Account/>}/>,
 							]) :
 						[
-							<Route exact path="/" element={<GuestHome/>}/>,
-							<Route exact path="/home" element={<GuestHome/>}/>,
-							<Route exact path="/signup" element={<SignUp/>}/>,
-							<Route exact path="/signin" element={<SignIn/>}/>
+							<Route key="guest-home-root-route" exact path="/" element={<GuestHome/>}/>,
+							<Route key="guest-home" exact path="/home" element={<GuestHome/>}/>,
+							<Route key="sign-up-route" exact path="/signup" element={<SignUp/>}/>,
+							<Route key="sign-in-route" exact path="/signin" element={<SignIn/>}/>
 						]}
 					</Routes>
 
