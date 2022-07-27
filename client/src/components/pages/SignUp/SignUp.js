@@ -118,7 +118,7 @@ export default function SignIn() {
                         Sign Up
                     </Button>
                     <Grid container direction="row" justifyContent="end">
-                        <Link href="./SignIn" variant="body2" sx={{color: 'black',textDecoration: 'none'}}>
+                        <Link href="././signin" variant="body2" sx={{color: 'black',textDecoration: 'none'}}>
                             {"Already have an account? Sign In"}
                         </Link>
                     </Grid>

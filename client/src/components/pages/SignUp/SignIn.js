@@ -26,7 +26,7 @@ export default function SignIn() {
             .then((userCredential) => {
                 const user = userCredential.user;
                 dispatch(setUser(user.toJSON()));
-                window.location.href = './'
+                window.location.href = './home'
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -114,7 +114,7 @@ export default function SignIn() {
                             <ForgotPasswordButton/>
                         </Grid>
                         <Grid item>
-                            <Link href="././SignUp" variant="body2" sx={{color: 'black',textDecoration: 'none'}}>
+                            <Link href="././signup" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
