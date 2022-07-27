@@ -38,47 +38,49 @@ export default function ForgotPasswordButton() {
     };
 
     return (<>
-        <Link href="#" variant="body2" onClick={() => setIsOpen(true)}>Forgot Password?</Link>
+        <Link href="#" variant="body2" onClick={() => setIsOpen(true)} sx={{color: 'black',textDecoration: 'none'
+        }}>Forgot Password?</Link>
         <Modal
             open={isOpen}
             onClose={() => setIsOpen(false)}
             aria-labelledby="modal-forgot-password"
         >
-            <Box sx={style}>
-                <Typography component="h1" variant="h5">
-                    Reset Password
-                </Typography>
-                <Typography component="p" variant="p">
-                    Tell us the email address associated with your account, and we’ll send you an email with a link
-                    to reset your password.
-                </Typography>
-                <Box component="form" noValidate sx={{mt: 3}} onSubmit={handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                value = {email}
-                                onChange = {(event)=>{setEmail(event.target.value)}}
+                <Box sx={style}>
+                    <Typography component="h1" variant="h5">
+                        Reset Password
+                    </Typography>
+                    <Typography component="p" variant="p">
+                        Tell us the email address associated with your account, and we’ll send you an email with a link
+                        to reset your password.
+                    </Typography>
+                    <Box component="form" noValidate sx={{mt: 3}} onSubmit={handleSubmit}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    value = {email}
+                                    onChange = {(event)=>{setEmail(event.target.value)}}
 
-                            />
+                                />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <div className="Reset">
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 0.2}}>
-                            Reset Password
-                        </Button>
-                    </div>
+                        <div className="Reset">
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{mt: 3, mb: 0.2, backgroundColor:'black'}}>
+                                Reset Password
+                            </Button>
+                        </div>
+                    </Box>
                 </Box>
-            </Box>
+
         </Modal>
     </>);
 }

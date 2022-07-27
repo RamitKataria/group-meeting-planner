@@ -1,4 +1,4 @@
-import {Button, Container, CssBaseline, FormControlLabel, Link, TextField} from "@mui/material";
+import {Button, Container, CssBaseline, Divider, FormControlLabel, Link, TextField} from "@mui/material";
 import ForgotPasswordButton from "./ForgotPasswordButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -13,6 +13,7 @@ import {signInWithEmailAndPassword} from "firebase/auth";
 import Auth from "../../../firebaseApp";
 import {setUser} from "../../../redux/user";
 import AuthProviders from "./AuthProviders";
+import styles from "./styles.module.css";
 
 
 export default function SignIn() {
@@ -35,56 +36,76 @@ export default function SignIn() {
     };
 
     return (
-        <Container component="main" maxWidth="md"
-                   sx={{display: 'flex', flexDirection: 'row'}}>
-            <CssBaseline/>
-            <Box
-                sx={{
-                    marginTop: 8,
+        <div className = {styles.body}>
+            <div className = {styles.splitscreen}>
+
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{
+
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    width: 0.45
-                }}
-            >
-                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                    <LockOutlinedIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Welcome Back
-                </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                    mt:5,
+                    ml: 5,
+                    mr:5,
+                    mb: 5
+                }}>
+                    <Avatar sx={{ m: 1, bgcolor: 'black' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5"
+                                sx={{
+                                    mb: 5,
+                                    ml: 5,
+                                    mr:5 }}>
+                        Welcome back
+                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                            />
 
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
 
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                    />
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary"/>}
+                                label="Remember me"
+                            />
+
+                        </Grid>
+                    </Grid>
                     <Button
-                        type="submit"
                         fullWidth
-                        variant="contained"
-                        sx={{mt: 3, mb: 2}}
+                        type="submit"
+
+                        sx={{ mt: 3, mb: 2 ,
+                            backgroundColor: 'black',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: 'black',
+                            }
+
+                        }}
                     >
                         Sign In
                     </Button>
@@ -93,13 +114,15 @@ export default function SignIn() {
                             <ForgotPasswordButton/>
                         </Grid>
                         <Grid item>
-                            <Link href="././SignUp" variant="body2">
+                            <Link href="././SignUp" variant="body2" sx={{color: 'black',textDecoration: 'none'}}>
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
                     </Grid>
+
+                    <Divider style={{width:'100%',backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5, mt:2, mb:1 }}/>
+                    <AuthProviders/>
                 </Box>
-            </Box>
-            <AuthProviders/>
-        </Container>)
-}
+            </div>
+        </div>
+    )}
