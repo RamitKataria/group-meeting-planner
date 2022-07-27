@@ -31,7 +31,7 @@ import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {onAuthStateChanged} from "firebase/auth";
 import Auth from "../firebaseApp";
 
@@ -83,15 +83,19 @@ export default function NavBar() {
 
 	const [open, setOpen] = React.useState(false);
 
-	const [userState, setUserState] = useState(null);
+	const [userState, setUserState] = useState(Auth.currentUser);
 
-	onAuthStateChanged(Auth, (user) => {
-		// if (user) {
-		// 	setUserState(user);
-		// } else {
-		// 	setUserState(null);
-		// }
-	})
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			setUserState(user);
+		})
+	}, []);
+
+	useEffect(() => {
+		if (userState !== null) {
+			navigate('./');
+		}
+	}, [userState])
 
 	const openDrawer = () => {
 		setOpen(true);
@@ -142,7 +146,7 @@ export default function NavBar() {
 							<ListItemText primary="Create Meeting"
 										  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 						</ListItemButton>
-						{userState !== null ? (
+						{userState ? (
 								[
 									<ListItemButton onClick={() => navigateToPage("all-meetings")}>
 										<ListItemIcon>
@@ -156,7 +160,7 @@ export default function NavBar() {
 
 						<Divider sx={{ my: 1, borderColor: "white" }} />
 
-						{userState !== null ? (
+						{userState ? (
 							[
 								<ListItemButton onClick={handleLogout} >
 									<ListItemIcon>
@@ -202,7 +206,7 @@ export default function NavBar() {
 						<Route exact path="/about-us" element={<AboutUs/>}/>
 						<Route exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
-					{userState !== null ? (
+					{userState ? (
 							[
 								<Route exact path="/" element={<RegisteredHome/>}/>,
 								<Route exact path="/home" element={<RegisteredHome/>}/>,
