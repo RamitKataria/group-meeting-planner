@@ -1,9 +1,8 @@
-import {Button, Container, CssBaseline, Divider, FormControlLabel, Link, TextField} from "@mui/material";
+import {Button, Divider, FormControlLabel, Link, TextField} from "@mui/material";
 import ForgotPasswordButton from "./ForgotPasswordButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
@@ -12,14 +11,11 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import GoogleIcon from "@mui/icons-material/Google";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import {useDispatch} from "react-redux";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import Auth from "../../../firebaseApp";
 import {setUser} from "../../../redux/user";
 import AuthProviders from "./AuthProviders";
-import styles from "./styles.module.css";
 import React, {useState} from "react";
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
