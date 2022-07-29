@@ -33,6 +33,12 @@ import {useEffect, useState} from "react";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 import Auth from "../firebaseApp";
 import {theme} from "../theme/color-theme";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 
 function Copyright(props) {
 	return (
@@ -79,6 +85,7 @@ export default function NavBar() {
 	const navigate = useNavigate();
 
 	const [open, setOpen] = React.useState(false);
+	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
 
 	const [userState, setUserState] = useState(Auth.currentUser);
 
@@ -107,8 +114,9 @@ export default function NavBar() {
 
 	const handleLogout = () => {
 		signOut(Auth).then(() => {
-			alert("Log out successfully");
+			setLogOutDialogOpen(false);
 			navigate('../');
+			setOpen(false);
 		}).catch((error) => {
 			// An error happened.
 			const errorCode = error.code;
@@ -167,7 +175,7 @@ export default function NavBar() {
 
 						{userState ? (
 							[
-								<ListItemButton key="logout" onClick={handleLogout} >
+								<ListItemButton key="logout"  onClick={() => setLogOutDialogOpen(true)}>
 									<ListItemIcon>
 										<LogoutRoundedIcon sx={{ color: "lightgrey", fontSize: "40px"}}/>
 									</ListItemIcon>
@@ -189,6 +197,28 @@ export default function NavBar() {
 												  primaryTypographyProps={{lineHeight: '2.5', color: "lightgrey"}}/>
 								</ListItemButton>
 						}
+
+						<Dialog
+							open={logOutDialogOpen}
+							onClose={() => setLogOutDialogOpen(false)}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{"Are you sure you want to log out?"}
+							</DialogTitle>
+							<DialogContent>
+								<DialogContentText id="alert-dialog-description">
+									You can log back in after !
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={() => setLogOutDialogOpen(false)} autoFocus>Cancel</Button>
+								<Button onClick={handleLogout}>
+									Log out
+								</Button>
+							</DialogActions>
+						</Dialog>
 
 					</List>
 				</Drawer>
