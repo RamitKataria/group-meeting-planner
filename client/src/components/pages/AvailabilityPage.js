@@ -4,6 +4,12 @@ import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
@@ -57,10 +63,15 @@ export default function AvailabilityPage() {
 					spacing={8}
 				>
 
-					<Grid item lg={6} sm={12} >
+					<Grid item lg={5} sm={12} >
 						<Paper elevation={8}>
 							<Box sx={{py: 3, px: 5}}>
-								<h2>Meeting Summary</h2>
+								<Box sx={{justifyContent: 'space-between', display: 'flex', mb: 2, mt: 1}}>
+									<Typography sx={{flex: '1 1 100%', fontWeight: 'bold'}} variant='h4'  >
+										{meetingInfo.name}
+									</Typography>
+									<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={handleCopiedToClipboard}></ContentCopyIcon>
+								</Box>
 								<ToastContainer
 									position="top-right"
 									autoClose={1000}
@@ -75,17 +86,6 @@ export default function AvailabilityPage() {
 								<table>
 									<thead>
 									<tr>
-										<td className="table-header">
-											<strong>Link: &emsp;</strong>
-											<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={handleCopiedToClipboard}></ContentCopyIcon>
-										</td>
-										<td>{"http://localhost:3000/home/" + meetingInfo._id}</td>
-									</tr>
-									<tr>
-										<td className="table-header"><strong>Name: </strong></td>
-										<td>{meetingInfo.name}</td>
-									</tr>
-									<tr>
 										<td className="table-header"><strong>Description: </strong></td>
 										<td>{meetingInfo.description}</td>
 									</tr>
@@ -97,8 +97,30 @@ export default function AvailabilityPage() {
 								</table>
 							</Box>
 						</Paper>
+
+						<TableContainer component={Paper} sx={{mt: 5}}>
+							<Table  aria-label="simple table">
+								<TableHead>
+									<TableRow>
+										<TableCell align="center" sx={{fontWeight: 'bold'}}>AVAILABLE</TableCell>
+										<TableCell align="center" sx={{fontWeight: 'bold'}}>UNAVAILABLE</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									<TableRow
+										key="some-key"
+										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+									>
+										<TableCell component="th" scope="row" align="center">
+											Sophie
+										</TableCell>
+										<TableCell align="center">May</TableCell>
+									</TableRow>
+								</TableBody>
+							</Table>
+						</TableContainer>
 					</Grid>
-					<Grid item lg={6} sm={12} >
+					<Grid item lg={7} sm={12} >
 						<AvailabilityPicker meetingInfo={meetingInfo}/>
 					</Grid>
 				</Grid>
