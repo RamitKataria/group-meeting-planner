@@ -73,6 +73,14 @@ export default function RegisteredHome() {
 		setLinkMeetingID(event.target.value);
 	};
 
+	const dateOptions = {
+		weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+		hour12: false,
+		timeZoneName: 'short',
+	};
+
+	const dateTimeFormat = new Intl.DateTimeFormat('default', dateOptions);
+
 	function MeetingCard(props) {
 		return (
 			<Card elevation={2} sx={{ minWidth: 275,  mb: 3}}>
@@ -90,7 +98,7 @@ export default function RegisteredHome() {
 					/>
 					<Box sx={{justifyContent: 'space-between', display: 'flex'}}>
 						<Typography sx={{ fontSize: 14,}} color="text.secondary" gutterBottom>
-							{props.meeting.dateTimeUpdated}
+							{dateTimeFormat.format(new Date(props.meeting.dateTimeUpdated))}
 						</Typography>
 						<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={() => handleCopiedToClipboard(props.meeting._id)}></ContentCopyIcon>
 					</Box>

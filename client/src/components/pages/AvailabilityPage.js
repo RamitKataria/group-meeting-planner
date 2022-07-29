@@ -44,7 +44,7 @@ export default function AvailabilityPage() {
 
 	return (
 		<div >
-			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 				<Typography
 					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
 					variant="h4"
