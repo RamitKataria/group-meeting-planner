@@ -379,7 +379,7 @@ export default function EnhancedTable() {
 					All Meetings
 				</Typography>
 
-				<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 					<Paper sx={{width: "100%", mb: 2}}>
 						<EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete}/>
 						<ToastContainer

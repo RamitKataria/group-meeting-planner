@@ -19,7 +19,7 @@ import Stack from "@mui/material/Stack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
 import { signOut } from "firebase/auth";
@@ -31,7 +31,6 @@ export default function Account() {
 	
 	const [inputs, setInputs] = useState({});
 	const [ics, setIcs] = useState({});
-	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136");
 
@@ -119,7 +118,7 @@ export default function Account() {
 				pauseOnHover
 			/>
 
-			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 				<Grid
 					container
 					spacing={4}

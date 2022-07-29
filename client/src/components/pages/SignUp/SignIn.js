@@ -49,7 +49,7 @@ export default function SignIn() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{mx: "auto", my: 5, width: "80%"}}>
+            <Box sx={{mx: "auto", my: 5, width: "70%"}}>
                 <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
                     <Paper elevation={8} sx={{width: 500}}>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{px:7, py: 7}}>
@@ -115,7 +115,7 @@ export default function SignIn() {
 
                             <Box display="flex" justifyContent="space-between" sx={{mt: 2}}>
                                 <ForgotPasswordButton/>
-                                <Link href="././signup" variant="body2" >
+                                <Link href="../signup" variant="body2" >
                                     Don't have an account?
                                 </Link>
                             </Box>

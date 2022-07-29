@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -16,7 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
-import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import GuestHome from "./pages/GuestHome";
 import RegisteredHome from "./pages/RegisteredHome";
 import AboutUs from "./pages/AboutUs";
@@ -26,14 +26,13 @@ import AllMeetings from "./pages/AllMeetings";
 import Account from "./pages/Account";
 import SignIn from "./pages/SignUp/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
-import ListSubheader from "@mui/material/ListSubheader";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import {useEffect, useState} from "react";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 import Auth from "../firebaseApp";
+import {theme} from "../theme/color-theme";
 
 function Copyright(props) {
 	return (
@@ -53,7 +52,7 @@ const drawerWidth = 280;
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
 	({ theme, open }) => ({
 		'& .MuiDrawer-paper': {
-			position: 'relative',
+			// position: 'relative', // squeeze screen to the right
 			whiteSpace: 'nowrap',
 			width: drawerWidth,
 			transition: theme.transitions.create('width', {
@@ -75,8 +74,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 		},
 	}),
 );
-
-const mdTheme = createTheme();
 
 export default function NavBar() {
 	const navigate = useNavigate();
@@ -121,8 +118,8 @@ export default function NavBar() {
 	}
 
 	return (
-		<ThemeProvider theme={mdTheme}>
-			<Box sx={{ display: 'flex' }}>
+		<ThemeProvider theme={theme}>
+			<Box sx={{ display: 'flex'}}>
 				<CssBaseline />
 				<Drawer variant="permanent"
 						open={open}
@@ -229,7 +226,9 @@ export default function NavBar() {
 						]}
 					</Routes>
 
-					<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+					<Container maxWidth="lg"
+							   // sx={{ borderTop: 1, borderColor: 'primary.main' }}
+					>
 						<Copyright sx={{ pt: 4 }} />
 					</Container>
 				</Box>

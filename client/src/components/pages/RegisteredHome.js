@@ -5,18 +5,15 @@ import Box from "@mui/material/Box";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { alpha, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import Grid from '@mui/material/Grid';
 import {theme} from '../../theme/color-theme'
 import Paper from "@mui/material/Paper";
 import {Typography} from "@mui/material";
-import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import LoginIcon from '@mui/icons-material/Login';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -119,27 +116,30 @@ export default function RegisteredHome() {
 		<ThemeProvider theme={theme}>
 			<Box
 				sx={{
-					backgroundImage: 'url(https://images.unsplash.com/photo-1489769002049-ccd828976a6c?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=john-mark-arnold-ti4kGLkGgmU-unsplash.jpg)',
-					backgroundRepeat: 'no-repeat',
+					// backgroundImage: 'url(https://images.unsplash.com/photo-1489769002049-ccd828976a6c?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=john-mark-arnold-ti4kGLkGgmU-unsplash.jpg)',
+					// backgroundRepeat: 'no-repeat',
+					// backgroundPosition: 'center center',
+					// backgroundSize: 'cover',
+					// height: '100%',
 					backgroundColor: (theme) =>
 						theme.palette.mode === 'light'
 							? theme.palette.grey[100]
 							: theme.palette.grey[900],
-					backgroundSize: 'cover',
+							// backgroundSize: 'cover',
 				}}
 			>
-				<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 					<Grid
 						container
-						sx={{py: 10}}
+						sx={{pt: 5}}
 						spacing={6}
 						justifyContent="center"
 						alignItems="center"
 					>
 
-						<Grid item lg={5} sm={12} >
+						<Grid item lg={6} sm={12} >
 							<Paper elevation={8} sx={{maxWidth: 600}}>
-								<Box sx={{px:7, py: 7}}>
+								<Box sx={{px:7, py: 7}} >
 									<Typography
 										sx={{flex: '1 1 100%', fontWeight: 'bold', mb: 5, "textAlign": "center"}}
 										variant="h3"
@@ -206,12 +206,9 @@ export default function RegisteredHome() {
 							</Paper>
 						</Grid>
 
-						<Grid item lg={2} sm={12}>
-						</Grid>
-
-						<Grid item lg={5} sm={12}>
+						<Grid item lg={6} sm={12}>
 							<Paper elevation={8} sx={{maxWidth: 600}}>
-								<Box sx={{px:7, py: 7}}>
+								<Box sx={{px:7, py: 7}} >
 									<Typography
 										sx={{flex: '1 1 100%', mb: 5, "textAlign": "center"}}
 										variant="h4"
