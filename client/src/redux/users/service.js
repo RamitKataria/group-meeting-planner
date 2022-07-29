@@ -1,5 +1,7 @@
+const url = 'http://localhost:3001/users/';
+
 export const getMeetingsBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId + "/meetings";
+  const link =  url + userId + "/meetings";
   const response = await fetch(link, {
     method: 'GET'
   });
@@ -7,7 +9,7 @@ export const getMeetingsBasedOnUserId = async (userId) => {
 };
 
 export const getUserBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId;
+  const link = url + userId;
   const response = await fetch(link, {
     method: 'GET'
   });
@@ -15,7 +17,7 @@ export const getUserBasedOnUserId = async (userId) => {
 };
 
 export const deleteUserBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId;
+  const link = url + userId;
   const response = await fetch(link, {
     method: 'DELETE'
   });
@@ -28,7 +30,7 @@ export const deleteUserBasedOnUserId = async (userId) => {
 };
 
 export const updateUserBasedOnUserId = async (content) => {
-  const link = 'http://localhost:3001/users/' + content.userId;
+  const link = url + content.userId;
   const response = await fetch(link, {
     method: 'PATCH',
     headers: {
