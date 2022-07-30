@@ -33,7 +33,6 @@ const validateFirebaseIdToken = async (req, res, next) => {
             'or by passing a "__session" cookie.'
         );
         next();
-        res.status(403).send('Unauthorized');
         return;
     }
 
@@ -47,7 +46,6 @@ const validateFirebaseIdToken = async (req, res, next) => {
     } else {
         // No cookie
         next();
-        res.status(403).send('Unauthorized');
         return;
     }
 
