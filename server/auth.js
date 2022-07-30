@@ -32,6 +32,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
             'Authorization: Bearer <Firebase ID Token>',
             'or by passing a "__session" cookie.'
         );
+        next();
         res.status(403).send('Unauthorized');
         return;
     }
@@ -45,6 +46,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
         idToken = req.cookies.__session;
     } else {
         // No cookie
+        next();
         res.status(403).send('Unauthorized');
         return;
     }
