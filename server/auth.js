@@ -4,12 +4,12 @@ const { getAuth } = require("firebase-admin/auth");
 
 
 const serviceAccountCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_CONTENT;
+const serviceAccountCredentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-if (fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8') !== serviceAccountCredentials) {
+if (!fs.existsSync(serviceAccountCredentialsPath) ||
+    fs.readFileSync(serviceAccountCredentialsPath, 'utf8') !== serviceAccountCredentials) {
     try {
-        fs.writeFileSync(
-            process.env.GOOGLE_APPLICATION_CREDENTIALS,
-            serviceAccountCredentials, 'utf8');
+        fs.writeFileSync(serviceAccountCredentialsPath, serviceAccountCredentials, 'utf8');
     } catch (err) {
         console.error(err);
     }
