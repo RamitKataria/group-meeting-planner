@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema({
 	email: String,
 	ics: String,
 	meetings: [ { type: String, ref: 'Meeting' }],
-	auth: [{}]
+	auth: [{}],
+	firebaseUID: String
 });
 
 // create model

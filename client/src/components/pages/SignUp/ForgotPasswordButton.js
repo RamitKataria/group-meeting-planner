@@ -1,15 +1,10 @@
 import "../../../css/popbox.css";
 import React, {useState} from "react";
-import {Button, Link, Modal, TextField, Typography} from "@mui/material";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import {Button, Link, TextField} from "@mui/material";
 import Auth from "../../../firebaseApp";
 import {sendPasswordResetEmail} from "firebase/auth";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import Stack from "@mui/material/Stack";
-import LoginIcon from "@mui/icons-material/Login";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import DialogContentText from "@mui/material/DialogContentText";
