@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 
+const { validateFirebaseIdToken } = require('./auth');
 const indexRouter = require('./routes/index');
 const meetingsRouter = require('./routes/meetings');
 const usersRouter = require('./routes/users');
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
+app.use(validateFirebaseIdToken);
 
 const mongoose = require('mongoose');
 const generateUsers = require('./generate-data');

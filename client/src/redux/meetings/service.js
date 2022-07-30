@@ -1,9 +1,14 @@
+import {getAuth} from "firebase/auth";
+import {getAuthHeader} from "../../authHeader";
+
+
 const addMeeting = async (content) => {
   const link = 'http://localhost:3001/meetings/';
   const response = await fetch(link, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': await getAuthHeader()
     },
     body: JSON.stringify(content)
   });
@@ -13,7 +18,7 @@ const addMeeting = async (content) => {
     const errorMsg = data?.message;
     throw new Error(errorMsg)
   }
-  
+
   return data;
 };
 
@@ -21,7 +26,10 @@ export const getMeeting = async (meetingId) => {
   // console.log("meetingID: " + meetingId);
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   return response.json();
 };
@@ -30,6 +38,7 @@ const deleteMeeting = async (meetingId) => {
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
     method: 'DELETE',
+    'Authorization': await getAuthHeader()
   });
 
   const data = await response.json();
@@ -45,7 +54,8 @@ const updateMeeting = async (meetingId, content) => {
   const response = await fetch(link, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': await getAuthHeader()
     },
     body: JSON.stringify(content)
   });
