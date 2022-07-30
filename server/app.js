@@ -36,7 +36,7 @@ async function main() {
 
 }
 
-// app.use('/', indexRouter);
+app.use('/', indexRouter);
 app.use('/meetings', meetingsRouter);
 app.use('/users', usersRouter);
 app.use('/sendmail',emailRouter);
