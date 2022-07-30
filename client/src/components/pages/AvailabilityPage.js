@@ -52,7 +52,7 @@ export default function AvailabilityPage() {
 	const dispatch = useDispatch();
 
 	const handleCopiedToClipboard = () => {
-		const link = "http://localhost:3000/home/" + meetingInfo._id;
+		const link = process.env.REACT_APP_SERVER_URL + "/home/" + meetingInfo._id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
 				toast("🗒️ Copied to clipboard!");

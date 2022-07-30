@@ -1,7 +1,7 @@
 import {getAuthHeader} from "../../authHeader";
 // import {getAuth} from "firebase/auth";
 
-const url = 'http://localhost:3001/users/';
+const url = process.env.REACT_APP_SERVER_URL + '/users/';
 
 export const getMeetingsBasedOnUserId = async (userId) => {
   const link =  url + userId + "/meetings";
