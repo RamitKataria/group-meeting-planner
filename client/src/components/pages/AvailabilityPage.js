@@ -1,7 +1,7 @@
 import "../../css/availability-page.css";
 import { useDispatch } from "react-redux";
 import {useEffect, useState} from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
@@ -10,6 +10,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
@@ -20,11 +26,18 @@ import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
 import {Typography, Box} from "@mui/material";
+import Button from "@mui/material/Button";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import Stack from "@mui/material/Stack";
 
 export default function AvailabilityPage() {
+	const navigate = useNavigate();
+
 	const { meetingId } = useParams();
 	const [meetingInfo, setMeetingInfo] = useState({});
 	const [userInfo, setUserInfo] = useState({});
+	const [openGuestDialog, setOpenGuestDialog] = React.useState(false);
 
 	useEffect(() => {
 		async function populateMeetingInfo() {
@@ -50,6 +63,10 @@ export default function AvailabilityPage() {
 			});
 	}
 
+	const handleRedirectLink = (page) => {
+			navigate("../" + page);
+	}
+
 	const importICS = () => {
 		// TODO: populate ics into table, disabled for guest.
 	}
@@ -57,6 +74,24 @@ export default function AvailabilityPage() {
 	const removeICS = () => {
 		// TODO: remove ics from table, disabled for guest.
 	}
+
+	const createGuestAccount = (event) => {
+		event.preventDefault();
+		const name = event.target.name.value;
+		const email = event.target.email.value;
+		alert(name + " " + email);
+		// TODO: create guest account in firebase.
+		handleClose();
+	}
+
+	const handleClickOpen = () => {
+		setOpenGuestDialog(true);
+	};
+
+	const handleClose = () => {
+		setOpenGuestDialog(false);
+	};
+
 	return (
 		<div >
 			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
@@ -144,6 +179,61 @@ export default function AvailabilityPage() {
 						<AvailabilityPicker meetingInfo={meetingInfo}/>
 					</Grid>
 				</Grid>
+
+
+
+				<Dialog open={openGuestDialog} onClose={handleClose}>
+					<DialogTitle>Enjoy more features?</DialogTitle>
+					<DialogContent>
+						<Stack
+							direction="column"
+							justifyContent="center"
+							alignItems="center"
+							spacing={2}
+						>
+							<Button variant="contained" sx={{minWidth:150}} startIcon={<LoginIcon />}
+									onClick={() => handleRedirectLink("signup")} >
+								Register/Sign Up
+							</Button>
+
+							<Button variant="contained" sx={{minWidth:150}} startIcon={<PersonAddIcon />}
+									onClick={() => handleRedirectLink("signin")} >
+								Log In
+							</Button>
+						</Stack>
+
+					</DialogContent>
+
+					<DialogTitle sx={{pb:0}}>Or continue as guest?</DialogTitle>
+					<DialogContent >
+						<form onSubmit={createGuestAccount}>
+							<TextField
+								autoFocus
+								margin="dense"
+								id="name"
+								label="Enter your name:"
+								type="text"
+								name="name"
+								fullWidth
+								variant="standard"
+								required
+							/>
+							<TextField
+								margin="dense"
+								id="email"
+								label="Email (optional):"
+								type="email"
+								name="email"
+								fullWidth
+								variant="standard"
+							/>
+							<DialogActions sx={{mt:2}}>
+								<Button onClick={handleClose}>Cancel</Button>
+								<Button type="submit">Go</Button>
+							</DialogActions>
+						</form>
+					</DialogContent>
+				</Dialog>
 			</Box>
 		</div>
 	);
