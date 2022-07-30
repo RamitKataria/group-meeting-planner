@@ -17,7 +17,7 @@ const MeetingSchema = new mongoose.Schema({
 	userAvailability: [{
 		_id : false ,
 		user:  { type: String, ref: 'User' },
-		availableSlots: [String]
+		availableSlots: [Date]
 	}]
 });
 

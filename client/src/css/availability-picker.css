@@ -3,32 +3,31 @@
     min-height: 24px;
 }
 
-.availability-picker-div table, td, th {
+table.availability-table{
     border-collapse: collapse;
     padding: 0;
     user-select: none;
-    border: none;
-    width: 15rem;
 }
 
 .selected {
     background-color: #5fa2db;
 }
 
-.availability-picker-div tbody td {
+table.availability-table tbody td {
     border: 1px solid #999;
-	/* padding: 0.5rem; */
     text-align: center;
 }
 
-.availability-picker-div .hour {
+table.availability-table .hour {
     font-family: 'Kdam Thmor Pro', sans-serif;
     font-size: small;
     font-style: normal;
 }
 
-.availability-picker-div .date {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: medium;
+table.availability-table .date {
+    font-family: 'Kdam Thmor Pro', sans-serif;
+    font-size: small;
     font-style: normal;
+    vertical-align: bottom;
+    text-align: center;
 }

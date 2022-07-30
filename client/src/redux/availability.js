@@ -2,11 +2,9 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const init = {
     dates: [
-        new Date(2022, 5, 20).getTime(),
-        new Date(2022, 5, 22).getTime(),
-        new Date(2022, 5, 24).getTime()
+        new Date().getTime()
     ],
-    timeRanges: [[8 , 17]],
+    timeRanges: [[9 , 17]],
     userAvailability: [],
     othersAvailability: []
 }
@@ -17,6 +15,12 @@ const availabilitySlice = createSlice({
     reducers: {
         setUserSlots(state, action) {
             state.userAvailability = action.payload;
+        },
+        setDates(state, action) {
+            state.dates = action.payload;
+        },
+        setTimeRanges(state, action) {
+            state.timeRanges = action.payload;
         }
     },
 })

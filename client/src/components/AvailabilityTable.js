@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AvailabilityPeriod from "./AvailabilityPeriod";
 
 const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSlots }) => {
@@ -51,8 +51,13 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
 
     const colDateFormat = new Intl.DateTimeFormat('default', {month: 'short', day: 'numeric'})
 
+    useEffect(() => {
+        setCurrSelection(selectedSlots)
+    }, [selectedSlots])
+
     return (
-        <table onMouseDown={startSelection} onMouseUp={endSelection} onMouseLeave={endSelection}>
+        <table onMouseDown={startSelection} onMouseUp={endSelection} onMouseLeave={endSelection}
+        className="availability-table">
             <thead>
             <tr>
                 <th></th>

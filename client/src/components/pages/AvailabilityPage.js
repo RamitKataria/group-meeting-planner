@@ -8,24 +8,38 @@ import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
 import {getUserBasedOnUserId} from "../../redux/users/service";
 import Box from "@mui/material/Box";
-import {Typography} from "@mui/material";
+import {LinearProgress, Typography} from "@mui/material";
 import React from "react";
+import Auth from "../../firebaseApp"
+import Stack from '@mui/material/Stack';
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
 	const [meetingInfo, setMeetingInfo] = useState({});
-	const [userInfo, setUserInfo] = useState({});
+	const [creatorInfo, setCreatorInfo] = useState({});
+	const [loading, setLoading] = useState(true);
+	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
 
 	useEffect(() => {
 		async function populateMeetingInfo() {
 			const response = await getMeeting(meetingId);
 			setMeetingInfo(response);
 			const response2 = await getUserBasedOnUserId(response.createdBy);
-			setUserInfo(response2);
+			setCreatorInfo(response2);
+			setLoading(false);
 		}
 		populateMeetingInfo();
 
 		}, []);
+
+	// user not logged in
+	if (currentUser === null) {
+		// TODO: link with guest form
+		setCurrentUser({
+			uid: 'd515b255-0691-4778-9796-cb4f41840136',
+			email: '',
+		})
+	}
 
 	const dispatch = useDispatch();
 
@@ -41,6 +55,7 @@ export default function AvailabilityPage() {
 
 	return (
 		<div>
+			{loading && <LoadingBar/>}
 			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
 				<Typography
 					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
@@ -69,7 +84,7 @@ export default function AvailabilityPage() {
 									</tr>
 									<tr>
 										<td className="table-header"><strong>Created By: </strong></td>
-										<td>{userInfo.name}</td>
+										<td>{creatorInfo.name}</td>
 									</tr>
 								</thead>
 							</table>
@@ -79,9 +94,19 @@ export default function AvailabilityPage() {
 
 				<div className="availability-picker-div">
 					<AvailabilityPicker
-						meetingInfo={meetingInfo}/>
+						meetingInfo={meetingInfo}
+						currentUser={currentUser}/>
 				</div>
 			</Box>
 		</div>
 	);
+}
+
+function LoadingBar	() {
+	return (
+		<Stack sx={{ width: '100%', color: '#DF7861'}}> 
+		{/* TODO: use theme */}
+			<LinearProgress color="inherit" />
+		</Stack>
+	)
 }
