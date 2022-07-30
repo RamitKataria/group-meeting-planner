@@ -3,6 +3,7 @@ import AvailabilityTable from "./AvailabilityTable";
 import {useDispatch, useSelector} from "react-redux";
 import "../css/availability-picker.css"
 import { setUserSlots } from "../redux/availability";
+import { updateAvailAsync } from "../redux/meetings/thunks";
 
 const AvailabilityPicker = ({meetingInfo, currentUser}) => {
     const state = useSelector((state) => state.availability);
@@ -16,7 +17,6 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
 
     const hourInMilliS = 60 * 60 * 1000;
     
-
     // convert meetingInfo to availabilityTable format
     var dates = state.dates;
     var timeRange = state.timeRanges[0]; 
@@ -38,7 +38,7 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
                     if (entry.user && currentUser.uid) { // firebase user
                         return entry.user === currentUser.uid;
                     } 
-                    // guest user TODO: remove
+                    // TODO: remove
                     else if (entry.user.displayName && currentUser.displayName) { 
                         return entry.user.displayName === currentUser.displayName;
                     }
@@ -52,14 +52,26 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
             }
         }
     }, [meetingInfo])
-    
+
+    function changeAvailSlots(args) {
+        dispatch(setUserSlots(args));
+        dispatch(updateAvailAsync({
+            meetingId: meetingInfo._id,
+            userId: currentUser.uid,
+            body: {
+                user: currentUser.uid,
+                availableSlots: args.map(e => new Date(e))
+            }
+        }))
+    }
 
     return (
         <AvailabilityTable
             days={dates.map(d => new Date(d))}
             timeRange={timeRange.map(x => x * hourInMilliS)} 
             timeUnit={hourInMilliS}
-            setUserSlots={(args) => dispatch(setUserSlots(args))}
+            // setUserSlots={(args) => dispatch(setUserSlots(args))}
+            setUserSlots={changeAvailSlots}
             selectedSlots={state.userAvailability}
             //TODO: other-user availability
         />

@@ -58,9 +58,28 @@ const updateMeeting = async (meetingId, content) => {
   return data;
 };
 
+const updateAvailability = async (meetingId, userId, content) => {
+  const link = 'http://localhost:3001/meetings/availability/' + meetingId + '/' + userId;
+  const response = await fetch(link, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(content)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg)
+  }
+  return data;
+}
+
 export default {
   addMeeting: addMeeting,
   getMeeting: getMeeting,
   deleteMeeting: deleteMeeting,
-  updateMeeting: updateMeeting
+  updateMeeting: updateMeeting,
+  updateAvailability: updateAvailability
 };

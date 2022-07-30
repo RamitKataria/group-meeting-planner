@@ -23,9 +23,16 @@ export const deleteMeetingAsync = createAsyncThunk(
     }
 );
 
-export const updateRecipeAsync = createAsyncThunk(
+export const updateMeetingAsync = createAsyncThunk(
     actionTypes.UPDATE_MEETING,
     async (meeting) => {
-        return await MeetingService.updateMeeting({meeting});
+        return await MeetingService.updateMeeting(meeting._id, {meeting});
+    }
+);
+
+export const updateAvailAsync = createAsyncThunk(
+    actionTypes.UPDATE_AVAIL,
+    async (args) => {
+        return await MeetingService.updateAvailability(args.meetingId, args.userId, args.body);
     }
 );

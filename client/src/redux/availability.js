@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { updateAvailAsync } from "./meetings/thunks";
+import { REQUEST_STATE } from './utils';
 
 const init = {
     dates: [
@@ -6,7 +8,11 @@ const init = {
     ],
     timeRanges: [[9 , 17]],
     userAvailability: [],
-    othersAvailability: []
+    othersAvailability: [],
+    updateAvailability: {
+        state: REQUEST_STATE.IDLE,
+        response: null,
+    }
 }
 
 const availabilitySlice = createSlice({
@@ -23,6 +29,23 @@ const availabilitySlice = createSlice({
             state.timeRanges = action.payload;
         }
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updateAvailAsync.pending, (state) => {
+                state.updateAvailability.state = REQUEST_STATE.PENDING;
+                state.updateAvailability.response = null;
+                state.error = null;
+            })
+            .addCase(updateAvailAsync.fulfilled, (state, action) => {
+                state.updateAvailability.state = REQUEST_STATE.FULFILLED;
+                state.updateAvailability.response = action.payload;
+                state.list = action.payload;
+            })
+            .addCase(updateAvailAsync.rejected, (state, action) => {
+                state.updateAvailability.state = REQUEST_STATE.REJECTED;
+                state.error = action.error;
+            })
+    }
 })
 
 

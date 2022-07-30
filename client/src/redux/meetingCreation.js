@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { REQUEST_STATE } from './utils';
 import { addMeetingsAsync } from './meetings/thunks';
 
-// purely front-end slice for meeting creation
+// slice for meeting creation
 
 const init = {
   currUser: "",

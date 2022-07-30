@@ -86,15 +86,15 @@ function generateMeetings() {
         ],
         userAvailability: [
             {
-                user: { _id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
+                user: "d515b255-0691-4778-9796-cb4f41840136", // ramit
                 availableSlots: [new Date(2022, 5, 20, 10, 00), new Date(2022, 5, 20, 12, 00)]
             },
             {
-                user: { _id: "baebcdfb-4fc0-411d-9934-0d9ffa57ffe1"}, // guest sophie
+                user: "baebcdfb-4fc0-411d-9934-0d9ffa57ffe1", // guest sophie
                 availableSlots: []
             },
             {
-                user: { _id: "81409ec3-deac-41ef-9da2-7c0c1b324321"}, // may
+                user: "81409ec3-deac-41ef-9da2-7c0c1b324321", // may
                 availableSlots: []
             }
         ]
@@ -118,13 +118,13 @@ function generateMeetings() {
         slotDuration: 60*60*1000, // slot duration in milliseconds
         userAvailability: [
             {
-                user: { _id: "d515b255-0691-4778-9796-cb4f41840136" }, // ramit
+                user: "d515b255-0691-4778-9796-cb4f41840136" , // ramit
                 availableSlots: [
                     new Date(2022, 5, 20, 10, 00), new Date(2022, 5, 20, 12, 00)
                 ] // only the UTC stamp of the start of each slot
             },
             {
-                user: { _id: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" }, // tom
+                user: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" , // tom
                 availableSlots: []
             }
         ]

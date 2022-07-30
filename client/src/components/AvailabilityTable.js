@@ -25,7 +25,11 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
 
     const endSelection = (e) => {
         setSelectionMode(null);
-        setUserSlots(currSelection);
+        // only update when the list is updated
+        if (currSelection.length !== selectedSlots.length || 
+            !currSelection.every(e => selectedSlots.includes(e))) {  
+            setUserSlots(currSelection);
+        }
     }
 
     const slotHandleMouseEnter = (e) => {
