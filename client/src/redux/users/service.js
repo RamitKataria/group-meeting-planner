@@ -1,9 +1,15 @@
+import {getAuth} from "firebase/auth";
+import {getAuthHeader} from "../../authHeader";
+
 const url = 'http://localhost:3001/users/';
 
 export const getMeetingsBasedOnUserId = async (userId) => {
   const link =  url + userId + "/meetings";
   const response = await fetch(link, {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   return response.json();
 };
@@ -11,7 +17,10 @@ export const getMeetingsBasedOnUserId = async (userId) => {
 export const getUserBasedOnUserId = async (userId) => {
   const link = url + userId;
   const response = await fetch(link, {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   return response.json();
 };
@@ -19,7 +28,10 @@ export const getUserBasedOnUserId = async (userId) => {
 export const deleteUserBasedOnUserId = async (userId) => {
   const link = url + userId;
   const response = await fetch(link, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   const data = await response.json();
   if (!response.ok) {
@@ -34,7 +46,8 @@ export const updateUserBasedOnUserId = async (content) => {
   const response = await fetch(link, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': await getAuthHeader()
     },
     body: JSON.stringify(content.updateContents)
   });

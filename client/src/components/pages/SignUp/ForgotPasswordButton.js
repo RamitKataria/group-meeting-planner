@@ -73,7 +73,7 @@ export default function ForgotPasswordButton() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{mt: 3, mb: 0.2, backgroundColor:'black'}}>
+                                sx={{mt: 3, mb: 0.2}}>
                                 Reset Password
                             </Button>
                         </div>

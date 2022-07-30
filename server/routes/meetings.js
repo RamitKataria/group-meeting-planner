@@ -8,6 +8,9 @@ const meetingsQueries = require("../queries/meetings");
 const usersQueries = require("../queries/users");
 
 router.delete('/:meetingId', async function (req, res) {
+	if (!req.user) {
+		return res.status(403).send('Unauthorized');
+	}
 	const meetings = await meetingsQueries.deleteOneMeeting(req.params['meetingId']);
 
 	return res.send(meetings);
