@@ -1,14 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { updateAvailAsync } from "./meetings/thunks";
+import { REQUEST_STATE } from './utils';
 
 const init = {
     dates: [
-        new Date(2022, 5, 20).getTime(),
-        new Date(2022, 5, 22).getTime(),
-        new Date(2022, 5, 24).getTime()
+        new Date().getTime()
     ],
-    timeRanges: [[8 , 17]],
+    timeRanges: [[9 , 17]],
     userAvailability: [],
-    othersAvailability: []
+    othersAvailability: [],
+    updateAvailability: {
+        state: REQUEST_STATE.IDLE,
+        response: null,
+    },
+    available: [],
+    unavailable: [],
 }
 
 const availabilitySlice = createSlice({
@@ -17,10 +23,42 @@ const availabilitySlice = createSlice({
     reducers: {
         setUserSlots(state, action) {
             state.userAvailability = action.payload;
+        },
+        setDates(state, action) {
+            state.dates = action.payload;
+        },
+        setTimeRanges(state, action) {
+            state.timeRanges = action.payload;
+        },
+        setOthersAvailability(state, action) {
+            state.othersAvailability = action.payload;
+        },
+        setAvailable(state, action) {
+            state.available = action.payload;
+        },
+        setUnavailable(state, action) {
+            state.unavailable = action.payload;
         }
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updateAvailAsync.pending, (state) => {
+                state.updateAvailability.state = REQUEST_STATE.PENDING;
+                state.updateAvailability.response = null;
+                state.error = null;
+            })
+            .addCase(updateAvailAsync.fulfilled, (state, action) => {
+                state.updateAvailability.state = REQUEST_STATE.FULFILLED;
+                state.updateAvailability.response = action.payload;
+                state.list = action.payload;
+            })
+            .addCase(updateAvailAsync.rejected, (state, action) => {
+                state.updateAvailability.state = REQUEST_STATE.REJECTED;
+                state.error = action.error;
+            })
+    }
 })
 
 
-export const { setUserSlots } = availabilitySlice.actions
+export const { setUserSlots, setDates, setTimeRanges, setOthersAvailability, setAvailable, setUnavailable } = availabilitySlice.actions
 export default availabilitySlice.reducer

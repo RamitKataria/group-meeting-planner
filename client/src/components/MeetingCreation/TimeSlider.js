@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 
 const PrettoSlider = styled(Slider)(
     ({theme}) => ({
-    color: '#1c7ed4',
+    color: '#DF7861',
     height: 8,
     '& .MuiSlider-track': {
       border: 'none',
@@ -18,7 +18,7 @@ const PrettoSlider = styled(Slider)(
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                  '#1c7ed4',
+                  '#DF7861',
               )}" d="m12 5.83 2.46 2.46c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 3.7a.9959.9959 0 0 0-1.41 0L8.12 6.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 5.83zm0 12.34-2.46-2.46a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41l3.17 3.18c.39.39 1.02.39 1.41 0l3.17-3.17c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L12 18.17z"/></svg>')`,
       '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
       },
@@ -34,7 +34,7 @@ const PrettoSlider = styled(Slider)(
       width: 32,
       height: 32,
       borderRadius: '50% 50% 50% 0',
-      backgroundColor: '#4799e0',
+      backgroundColor: '#DF7861',
       transformOrigin: 'bottom left',
       transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
       '&:before': { display: 'none' },

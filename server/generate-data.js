@@ -77,19 +77,31 @@ function generateMeetings() {
         createdBy: {
             _id: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" // tom
         },
-        range: [],
+        slotDuration: 60*60*1000, // slot duration in milliseconds
+        range: [
+            [new Date(2022, 5, 20, 09, 00), new Date(2022, 5, 20, 16, 00)],
+            [new Date(2022, 5, 21, 09, 00), new Date(2022, 5, 21, 16, 00)],
+            [new Date(2022, 5, 22, 09, 00), new Date(2022, 5, 22, 16, 00)],
+            [new Date(2022, 5, 23, 09, 00), new Date(2022, 5, 23, 16, 00)]
+        ],
         userAvailability: [
             {
-                user: { _id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
-                availableSlots: []
+                user: "d515b255-0691-4778-9796-cb4f41840136", // ramit
+                availableSlots: [new Date(2022, 5, 20, 10, 00), new Date(2022, 5, 20, 12, 00)]
             },
             {
                 user: "baebcdfb-4fc0-411d-9934-0d9ffa57ffe1", // guest sophie
-                availableSlots: []
+                availableSlots: [
+                    new Date(2022, 5, 20, 10, 00), new Date(2022, 5, 20, 11, 00), new Date(2022, 5, 20, 13, 00), new Date(2022, 5, 20, 14, 00),
+                    new Date(2022, 5, 22, 10, 00), new Date(2022, 5, 22, 11, 00), new Date(2022, 5, 22, 13, 00), new Date(2022, 5, 22, 14, 00)
+                ]
             },
             {
                 user: "81409ec3-deac-41ef-9da2-7c0c1b324321", // may
-                availableSlots: []
+                availableSlots: [
+                    new Date(2022, 5, 21, 10, 00), new Date(2022, 5, 21, 11, 00), new Date(2022, 5, 21, 13, 00), new Date(2022, 5, 21, 14, 00),
+                    new Date(2022, 5, 22, 13, 00), new Date(2022, 5, 22, 14, 00)
+                ]
             }
         ]
     });
@@ -103,16 +115,26 @@ function generateMeetings() {
         createdBy: {
             _id: "d515b255-0691-4778-9796-cb4f41840136" // ramit
         },
-        range: [],
+        range: [
+            [new Date(2022, 5, 20, 09, 00), new Date(2022, 5, 20, 13, 00)],
+            [new Date(2022, 5, 21, 09, 00), new Date(2022, 5, 21, 13, 00)],
+            [new Date(2022, 5, 22, 09, 00), new Date(2022, 5, 22, 13, 00)],
+            [new Date(2022, 5, 23, 09, 00), new Date(2022, 5, 23, 13, 00)]
+        ],
+        slotDuration: 60*60*1000, // slot duration in milliseconds
         userAvailability: [
             {
-                user: { _id: "d515b255-0691-4778-9796-cb4f41840136" }, // ramit
-                availableSlots: []
+                user: "d515b255-0691-4778-9796-cb4f41840136" , // ramit
+                availableSlots: [
+                    new Date(2022, 5, 20, 10, 00), new Date(2022, 5, 20, 12, 00)
+                ] // only the UTC stamp of the start of each slot
             },
             {
-                user: { _id: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" }, // tom
-                availableSlots: []
-            },
+                user: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" , // tom
+                availableSlots: [
+                    new Date(2022, 5, 21, 11, 00), new Date(2022, 5, 22, 11, 00)
+                ]
+            }
         ]
     });
 

@@ -15,16 +15,17 @@ export function sliderTimeToString(sliderTime) {
     return timeStr;
 }   
 
-// TODO: update user state
 export function creationSliceToInstance(state) {
     const creationTime = new Date();
-    const user = state['currUser'] === "" ? "Guest" : state['currUser'];
+    const user = state.currUser.uid ? state.currUser.uid : "";
+    const diaplayName = state.currUser.displayName ? state.currUser.displayName : "";
     return {
         name: state['name'],
-        description: "A non-descript event? ", // TODO
+        description: state['description'],
         dateTimeCreated: creationTime.getTime(),
         dateTimeUpdated: creationTime.getTime(),
         createdBy: user,
+        creatorDisplayName: diaplayName, // TODO: remove
         range: convertToRange(state['dates'], state['startTime'], state['endTime']),
         usersAvailability: [
             {
