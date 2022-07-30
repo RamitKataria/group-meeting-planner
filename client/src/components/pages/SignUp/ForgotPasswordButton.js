@@ -5,6 +5,14 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Auth from "../../../firebaseApp";
 import {sendPasswordResetEmail} from "firebase/auth";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import Stack from "@mui/material/Stack";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from "@mui/material/Dialog";
+import DialogContentText from "@mui/material/DialogContentText";
 
 export default function ForgotPasswordButton() {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,48 +47,35 @@ export default function ForgotPasswordButton() {
 
     return (<>
         <Link href="#" variant="body2" onClick={() => setIsOpen(true)}>Forgot Password?</Link>
-        <Modal
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-            aria-labelledby="modal-forgot-password"
-        >
-                <Box sx={style}>
-                    <Typography component="h1" variant="h5">
-                        Reset Password
-                    </Typography>
-                    <Typography component="p" variant="p">
-                        Tell us the email address associated with your account, and we’ll send you an email with a link
-                        to reset your password.
-                    </Typography>
-                    <Box component="form" noValidate sx={{mt: 3}} onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    value = {email}
-                                    onChange = {(event)=>{setEmail(event.target.value)}}
 
-                                />
-                            </Grid>
-                        </Grid>
-                        <div className="Reset">
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{mt: 3, mb: 0.2}}>
-                                Reset Password
-                            </Button>
-                        </div>
-                    </Box>
-                </Box>
-
-        </Modal>
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+            <DialogTitle>Reset Password</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Tell us the email address associated with your account, and we’ll send you an email with a link
+                    to reset your password.
+                </DialogContentText>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        required
+                        autofocus
+                        margin="dense"
+                        id="email"
+                        label="Email:"
+                        type="email"
+                        name="email"
+                        fullWidth
+                        variant="standard"
+                        value = {email}
+                        onChange = {(event)=>{setEmail(event.target.value)}}
+                    />
+                    <DialogActions sx={{mt:2}}>
+                        <Button onClick={() => setIsOpen(false)}>Cancel</Button>
+                        <Button type="submit">Reset</Button>
+                    </DialogActions>
+                </form>
+            </DialogContent>
+        </Dialog>
     </>);
 }
 
