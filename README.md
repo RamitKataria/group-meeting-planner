@@ -48,6 +48,7 @@ Allow users to set up meetings schedules & automatically fill in availability by
 7. As an attendee, I want to be able to create an account through some external authentication service 
 8. As an attendee, I want to be able to log in to my account through the same external authentication service
 9. As a meeting organizer, I want to be able to remove a user from a meeting 
+10. As a user, I would like my private data to not be accessible through API. 
 
 ### Stretch Requirements
 
