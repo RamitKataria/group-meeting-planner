@@ -51,7 +51,7 @@ function MeetingCreation() {
             >
                 Schedule A Meeting
             </Typography>
-            <Box sx={{mx: "auto", my: 5, width: "80%"}}>
+            <Box sx={{mx: "auto", my: 5, width: "70%"}}>
                 <Grid container spacing={2} columns={12} alignItems="flex-start" justifyContent="space-around">
                     <Grid item xs={3}></Grid>
                     <Grid item xs={6}>

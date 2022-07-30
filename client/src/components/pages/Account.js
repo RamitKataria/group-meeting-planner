@@ -19,7 +19,7 @@ import Stack from "@mui/material/Stack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
 import { signOut } from "firebase/auth";
@@ -31,8 +31,8 @@ export default function Account() {
 	
 	const [inputs, setInputs] = useState({});
 	const [ics, setIcs] = useState({});
-	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
-	const [dialogOpen, setDialogOpen] = useState(false);
+	const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
+	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136");
 
 	const handleAccountChange = (event) => {
@@ -69,14 +69,13 @@ export default function Account() {
 	};
 
 	const deleteAccount = async () => {
-		setDialogOpen(false);
+		setDeleteAccountDialogOpen(false);
 		await deleteUserBasedOnUserId(currentUserID);
 		alert("Account Deleted!");
 	};
 
 	const handleLogout = () => {
 		signOut(Auth).then(() => {
-			alert("Log out successfully");
 			navigate('../');
 		}).catch((error) => {
 			// An error happened.
@@ -119,7 +118,7 @@ export default function Account() {
 				pauseOnHover
 			/>
 
-			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 				<Grid
 					container
 					spacing={4}
@@ -224,16 +223,16 @@ export default function Account() {
 											alignItems="center"
 											spacing={2}
 										>
-											<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={handleLogout} sx={{mt: 5}}>
+											<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={() => setLogOutDialogOpen(true)} sx={{mt: 5}}>
 												Log out
 											</Button>
-											<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
+											<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDeleteAccountDialogOpen(true)}>
 												Delete Account
 											</Button>
 
 											<Dialog
-												open={dialogOpen}
-												onClose={() => setDialogOpen(false)}
+												open={deleteAccountDialogOpen}
+												onClose={() => setDeleteAccountDialogOpen(false)}
 												aria-labelledby="alert-dialog-title"
 												aria-describedby="alert-dialog-description"
 											>
@@ -246,9 +245,31 @@ export default function Account() {
 													</DialogContentText>
 												</DialogContent>
 												<DialogActions>
-													<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-													<Button onClick={deleteAccount} autoFocus>
+													<Button onClick={() => setDeleteAccountDialogOpen(false)} autoFocus>Cancel</Button>
+													<Button onClick={deleteAccount}>
 														Delete
+													</Button>
+												</DialogActions>
+											</Dialog>
+
+											<Dialog
+												open={logOutDialogOpen}
+												onClose={() => setLogOutDialogOpen(false)}
+												aria-labelledby="alert-dialog-title"
+												aria-describedby="alert-dialog-description"
+											>
+												<DialogTitle id="alert-dialog-title">
+													{"Are you sure you want to log out?"}
+												</DialogTitle>
+												<DialogContent>
+													<DialogContentText id="alert-dialog-description">
+														You can log back in after !
+													</DialogContentText>
+												</DialogContent>
+												<DialogActions>
+													<Button onClick={() => setLogOutDialogOpen(false)} autoFocus>Cancel</Button>
+													<Button onClick={handleLogout}>
+														Log out
 													</Button>
 												</DialogActions>
 											</Dialog>
