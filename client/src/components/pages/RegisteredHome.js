@@ -22,7 +22,7 @@ import { getUserBasedOnUserId, getMeetingsBasedOnUserId, } from "../../redux/use
 import {getMeeting} from "../../redux/meetings/service";
 
 const handleCopiedToClipboard = (id) => {
-	const link = process.env.REACT_APP_SERVER_URL + "/home/" + id;
+	const link = window.location.host + "/home/" + id;
 	navigator.clipboard.writeText(link)
 		.then(() => {
 			toast("🗒️ Copied to clipboard!");

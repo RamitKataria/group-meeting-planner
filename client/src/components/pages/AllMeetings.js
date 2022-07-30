@@ -337,7 +337,7 @@ export default function EnhancedTable() {
 	};
 
 	const handleCopiedToClipboard = (id) => {
-		const link = process.env.REACT_APP_SERVER_URL + "home/" + id;
+		const link = window.location.host + "/home/" + id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
 				toast("🗒️ Copied to clipboard!");
@@ -450,7 +450,7 @@ export default function EnhancedTable() {
 														align="right"
 														onClick={() => handleCopiedToClipboard(meeting._id)}
 													>
-														{process.env.REACT_APP_SERVER_URL + "/home/" + meeting._id}
+														{window.location.host + "/home/" + meeting._id}
 													</StyledTableCell>
 												</StyledTableRow>
 											);

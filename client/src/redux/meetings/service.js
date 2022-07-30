@@ -68,7 +68,7 @@ const updateMeeting = async (meetingId, content) => {
 };
 
 const updateAvailability = async (meetingId, userId, content) => {
-  const link = 'http://localhost:3001/meetings/availability/' + meetingId + '/' + userId;
+  const link = url + 'availability/' + meetingId + '/' + userId;
   const response = await fetch(link, {
     method: 'POST',
     headers: {
