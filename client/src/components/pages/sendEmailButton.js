@@ -7,7 +7,7 @@ import {Button} from "@mui/material";
 
 export default function SendEmail(){
     function sendMail(){
-        fetch('http://localhost:3001/sendmail', {
+        fetch(process.env.REACT_APP_SERVER_URL + '/sendmail', {
             method: 'GET'
         }).then(()=>{
             console.log("email sent successfully!")
