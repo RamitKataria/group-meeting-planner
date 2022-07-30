@@ -68,7 +68,7 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
             });
             dispatch(setOthersAvailability(othersAvailability));
         }
-    }, [meetingInfo])
+    }, [meetingInfo, currentUser])
 
     function changeAvailSlots(args) {
         dispatch(setUserSlots(args));

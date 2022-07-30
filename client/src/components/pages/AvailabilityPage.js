@@ -161,28 +161,9 @@ export default function AvailabilityPage() {
 								</table>
 							</Box>
 						</Paper>
-
-						<TableContainer component={Paper} sx={{mt: 5}}>
-							<Table  aria-label="simple table">
-								<TableHead>
-									<TableRow>
-										<TableCell align="center" sx={{fontWeight: 'bold'}}>AVAILABLE</TableCell>
-										<TableCell align="center" sx={{fontWeight: 'bold'}}>UNAVAILABLE</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									<TableRow
-										key="some-key"
-										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-									>
-										<TableCell component="th" scope="row" align="center">
-											Sophie
-										</TableCell>
-										<TableCell align="center">May</TableCell>
-									</TableRow>
-								</TableBody>
-							</Table>
-						</TableContainer>
+						<AvailableTable
+							listAvailable={availabilityInfo.available}
+							listUnavailable={availabilityInfo.unavailable}/>
 					</Grid>
 					<Grid item lg={7} sm={12}>
 						<Box sx={{justifyContent:'space-around', display:'flex', mb: 3}}>
@@ -196,7 +177,9 @@ export default function AvailabilityPage() {
 								Temp Guest Dialog
 							</Button>
 						</Box>
-						<AvailabilityPicker meetingInfo={meetingInfo}/>
+						<AvailabilityPicker 
+							meetingInfo={meetingInfo}
+							currentUser={currentUser}/>
 					</Grid>
 				</Grid>
 
@@ -265,5 +248,59 @@ function LoadingBar	() {
 		{/* TODO: use theme */}
 			<LinearProgress color="inherit" />
 		</Stack>
+	)
+}
+
+function AvailableTable({listAvailable, listUnavailable}) {
+	
+	function AvailRow({cell1, cell2, idx}) {
+		return (
+		<TableRow
+		key={idx}
+		sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+		>
+			<TableCell component="th" scope="row" align="center">
+				{cell1}
+			</TableCell>
+			<TableCell align="center">
+				{cell2}
+			</TableCell>
+		</TableRow>)
+	}
+
+	function generateTableContent() {
+		var tableContent = [];
+		for (let i = 0; i < Math.max(listAvailable.length, listUnavailable.length); i++) {
+			if (listAvailable[i] && listUnavailable[i]) {
+				tableContent.push([listAvailable[i], listUnavailable[i]]);
+			} else if (listAvailable[i]) {
+				tableContent.push([listAvailable[i], ""]);
+			} else if (listUnavailable[i]) {
+				tableContent.push(["", listUnavailable[i]]);
+			} 
+		}
+
+		return tableContent.map((row, idx) => {
+			return <AvailRow
+					cell1={row[0]}
+					cell2={row[1]}
+					idx={idx}/>
+		})
+	}
+
+	return (
+		<TableContainer component={Paper} sx={{ mt: 5 }}>
+			<Table aria-label="simple table">
+				<TableHead>
+					<TableRow>
+						<TableCell align="center" sx={{ fontWeight: 'bold' }}>AVAILABLE</TableCell>
+						<TableCell align="center" sx={{ fontWeight: 'bold' }}>UNAVAILABLE</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{generateTableContent()}
+				</TableBody>
+			</Table>
+		</TableContainer>
 	)
 }

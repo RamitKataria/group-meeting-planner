@@ -4,6 +4,10 @@
     --secondary-color-main: #75b38b;
 }
 
+table.availability-table {
+    margin: auto;
+}
+
 .availability-table-cell {
     min-width: 48px;
     min-height: 24px;
