@@ -7,7 +7,6 @@ const serviceAccountCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_CON
 
 if (fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8') !== serviceAccountCredentials) {
     try {
-        console.log(1111)
         fs.writeFileSync(
             process.env.GOOGLE_APPLICATION_CREDENTIALS,
             serviceAccountCredentials, 'utf8');
