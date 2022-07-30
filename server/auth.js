@@ -3,13 +3,19 @@ const { initializeApp, applicationDefault} = require('firebase-admin/app');
 const { getAuth } = require("firebase-admin/auth");
 
 
-try {
-    fs.writeFileSync(
-        process.env.GOOGLE_APPLICATION_CREDENTIALS,
-        process.env.GOOGLE_APPLICATION_CREDENTIALS_CONTENT, 'utf8');
-} catch (err) {
-    console.error(err);
+const serviceAccountCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_CONTENT;
+
+if (fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8') !== serviceAccountCredentials) {
+    try {
+        console.log(1111)
+        fs.writeFileSync(
+            process.env.GOOGLE_APPLICATION_CREDENTIALS,
+            serviceAccountCredentials, 'utf8');
+    } catch (err) {
+        console.error(err);
+    }
 }
+
 
 const app = initializeApp({
     credential: applicationDefault()

@@ -1,4 +1,5 @@
 import {getAuth} from "firebase/auth";
+import {getAuthHeader} from "../../authHeader";
 
 
 const addMeeting = async (content) => {
@@ -7,7 +8,7 @@ const addMeeting = async (content) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + await getAuth().currentUser.getIdToken()
+      'Authorization': await getAuthHeader()
     },
     body: JSON.stringify(content)
   });
@@ -27,7 +28,7 @@ export const getMeeting = async (meetingId) => {
   const response = await fetch(link, {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer ' + await getAuth().currentUser.getIdToken()
+      'Authorization': await getAuthHeader()
     }
   });
   return response.json();
@@ -37,7 +38,7 @@ const deleteMeeting = async (meetingId) => {
   const link = 'http://localhost:3001/meetings/' + meetingId;
   const response = await fetch(link, {
     method: 'DELETE',
-    'Authorization': 'Bearer ' + await getAuth().currentUser.getIdToken()
+    'Authorization': await getAuthHeader()
   });
 
   const data = await response.json();
@@ -54,7 +55,7 @@ const updateMeeting = async (meetingId, content) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + await getAuth().currentUser.getIdToken()
+      'Authorization': await getAuthHeader()
     },
     body: JSON.stringify(content)
   });
