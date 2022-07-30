@@ -1,5 +1,5 @@
-import {getAuth} from "firebase/auth";
 import {getAuthHeader} from "../../authHeader";
+// import {getAuth} from "firebase/auth";
 
 const url = 'http://localhost:3001/users/';
 

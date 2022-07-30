@@ -1,8 +1,6 @@
-const url = 'http://localhost:3001/meetings/';
-
-import {getAuth} from "firebase/auth";
+// import {getAuth} from "firebase/auth";
 import {getAuthHeader} from "../../authHeader";
-
+const url = 'http://localhost:3001/meetings/';
 
 const addMeeting = async (content) => {
   const response = await fetch(url, {

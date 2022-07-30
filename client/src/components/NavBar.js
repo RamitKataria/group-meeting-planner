@@ -97,7 +97,8 @@ export default function NavBar() {
 
 	useEffect(() => {
 		if (userState !== null) {
-			navigate('./');
+			// avoids redirection when a link is entered. Initially placed to redirect to ./ after signed in
+			// navigate('./');
 		}
 	}, [userState])
 
