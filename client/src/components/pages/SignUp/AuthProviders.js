@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Button} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import Auth from "../../../firebaseApp";
 import {setUser} from "../../../redux/user";
@@ -38,19 +38,22 @@ export default function AuthProviders() {
     }
 
     return (
-    <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: 0.45,
-        margin: 'auto',
-    }}>
-        <Button onClick={handleGoogleSignIn} sx={{backgroundColor: 'white', minHeight: 50}} fullWidth>
-            <GoogleIcon/> Continue with Google
-        </Button>
-        <Button onClick={() => {navigate('/')}} sx={{backgroundColor: '#333333', minHeight: 50}} fullWidth>
-            <GitHubIcon/> Continue with GitHub
-        </Button>
-    </Box>
+        <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+        >
+            <Button variant="outlined" startIcon={<GoogleIcon/>} onClick={handleGoogleSignIn} >
+                Continue with Google
+            </Button>
+
+            <Button variant="outlined" startIcon={<GitHubIcon/>} onClick={() => {navigate('/')}} >
+                Continue with GitHub
+            </Button>
+         </Stack>
     )
 }
+
+
+

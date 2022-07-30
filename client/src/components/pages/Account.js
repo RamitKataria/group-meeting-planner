@@ -1,10 +1,12 @@
 import "../../css/account.css";
-import SignUp from './SignUp/SignUp.js';
-import SignIn from './SignUp/SignIn.js';
 import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Grid from '@mui/material/Grid';
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,21 +14,23 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import LogoutIcon from '@mui/icons-material/Logout';
 import Stack from "@mui/material/Stack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
 import {useDispatch, useSelector} from "react-redux";
-import {getUserAsync, updateUserAsync, deleteUserAsync} from "../../redux/users/thunks";
-import { getUserBasedOnUserId, updateUserBasedOnUserId } from "../../redux/users/service";
+import {useNavigate} from "react-router-dom";
+import Auth from "../../firebaseApp";
+import { signOut } from "firebase/auth";
 
+import { getUserBasedOnUserId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
 
 export default function Account() {
+	const navigate = useNavigate();
+	
 	const [inputs, setInputs] = useState({});
 	const [ics, setIcs] = useState({});
-	const [updateAccSucceed, setUpdateAccSucceed] = useState(false);
-	const [updateIcsSucceed, setUpdateIcsSucceed] = useState(false);
-	const [deleteIcsSucceed, setDeleteIcsSucceed] = useState(false);
 	const [showDeleteAccDialog, setShowDeleteAccDialog] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136");
@@ -45,42 +49,46 @@ export default function Account() {
 
 	const submitAccount = async (event) => {
 		event.preventDefault();
-		// await dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": inputs}));
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": inputs});
 		setCurrentUser(response);
-		setUpdateAccSucceed(true);
+		toast("👤 Account Updated!");
 	};
 
 	const submitIcs = async (event) => {
 		event.preventDefault();
-		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": ics}));
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": ics});
 		setCurrentUser(response);
-		setUpdateIcsSucceed(true);
+		toast("📅 Calendar Updated!");
 	};
 
 	const deleteCalendar = async (event) => {
 		event.preventDefault();
-		// dispatch(updateUserAsync({"userId": "d515b255-0691-4778-9796-cb4f41840136", "updateContents": {"ics": ""}}));
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"ics": ""}});
 		setCurrentUser(response);
-		setDeleteIcsSucceed(true);
+		toast("🗑️ Calendar Deleted!");
 	};
 
-	const deleteAccount = () => {
+	const deleteAccount = async () => {
 		setDialogOpen(false);
-		dispatch(deleteUserAsync(currentUserID));
-		window.location.href = "http://localhost:3000/about-us";
+		await deleteUserBasedOnUserId(currentUserID);
+		alert("Account Deleted!");
 	};
 
-	// const currentUser = useSelector((state) => state.usersReducer.list);
+	const handleLogout = () => {
+		signOut(Auth).then(() => {
+			alert("Log out successfully");
+			navigate('../');
+		}).catch((error) => {
+			// An error happened.
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			alert(`${errorCode}: ${errorMessage}`);
+		});
+	}
+
 	const [currentUser, setCurrentUser] = useState({});
 
 	useEffect(() => {
-		// dispatch(getUserAsync("d515b255-0691-4778-9796-cb4f41840136"));
-		// const response = await getUserBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
-		// setCurrentUser(response);
-
 		async function populateAccountInfo() {
 			const response = await getUserBasedOnUserId(currentUserID);
 			setCurrentUser(response);
@@ -91,153 +99,168 @@ export default function Account() {
 	const dispatch = useDispatch();
 
 	return (
-		<div className="outer-div">
-			{/*<Login/>*/}
-			<Typography variant="h4" display="inline-box" component="h3"  align="center" sx={{ flex: '1 1 100%', fontWeight: 'bold', marginBottom: '20px'}}>
+		<div>
+			<Typography
+				sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
+				variant="h4"
+				component="div"
+			>
 				Account Settings
 			</Typography>
+			<ToastContainer
+				position="top-right"
+				autoClose={3000}
+				hideProgressBar
+				newestOnTop
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 
-			<div className="account-info">
-			<Paper elevation={8}>
-				<div className="left-div">
-				<form className="form-account">
-				<label htmlFor="name">Name</label>
-				<input
-					name="name"
-					defaultValue={currentUser.name}
-					type="text"
-					onChange={handleAccountChange}
-					required
-				/>
+			<Box sx={{mx: "auto", my: 5, width: "80%"}}>
+				<Grid
+					container
+					spacing={4}
+					justifyContent="space-between"
+					alignItems="center"
+				>
 
-				<label htmlFor="email">Email</label>
-				<input
-					name="email"
-					defaultValue={currentUser.email}
-					type="email"
-					onChange={handleAccountChange}
-					required
-				/>
+					<Grid item lg={6} sm={12} >
+						<Paper elevation={8} >
+							<Box sx={{pt: 3, pb: 10, px: 5}}>
+								<form className="form-account">
+									<label htmlFor="name">Name</label>
+									<input
+										name="name"
+										defaultValue={currentUser.name}
+										type="text"
+										onChange={handleAccountChange}
+										required
+									/>
 
-				<label htmlFor="oldPassword">Old Password</label>
-				<input
-					name="oldPassword"
-					// defaultValue={currentUser.oldPassword}
-					placeholder="old password"
-					type="password"
-					// onChange={handleAccountChange}
-					required
-				/>
+									<label htmlFor="email">Email</label>
+									<input
+										name="email"
+										defaultValue={currentUser.email}
+										type="email"
+										onChange={handleAccountChange}
+										required
+									/>
 
-				<label htmlFor="newPassword">New Password</label>
-				<input
-					name="newPassword"
-					// defaultValue={currentUser.newPassword}
-					placeholder="new password"
-					type="password"
-					// onChange={handleAccountChange}
-					required
-				/>
-				<br/>
-					{/*<div className="message-warning">*/}
-					{/*	Incorrect Old Password.*/}
-					{/*</div>*/}
+									<label htmlFor="oldPassword">Old Password</label>
+									<input
+										name="oldPassword"
+										// defaultValue={currentUser.oldPassword}
+										placeholder="old password"
+										type="password"
+										// onChange={handleAccountChange}
+										required
+									/>
 
-					<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount}>
-						Update
-					</Button>
+									<label htmlFor="newPassword">New Password</label>
+									<input
+										name="newPassword"
+										// defaultValue={currentUser.newPassword}
+										placeholder="new password"
+										type="password"
+										// onChange={handleAccountChange}
+										required
+									/>
+									<br/>
+									{/*<div className="message-warning">*/}
+									{/*	Incorrect Old Password.*/}
+									{/*</div>*/}
 
-					{updateAccSucceed ? (
-						<div className="message-success">
-							Your account is updated!<br/>
-						</div>
-					) : null}
+									<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount} sx={{mt: 2}}>
+										Update
+									</Button>
 
-
-			</form>
-				</div>
-			</Paper>
-			</div>
-
-			<div className="ics-div">
-				<Paper elevation={8}>
-					<div className="right-top-div">
-						<form className="form-ics" >
-						<label htmlFor="ics">ICS Link</label>
-						<input
-							name="ics"
-							defaultValue={currentUser.ics}
-							type="text"
-							onChange={handleIcsChange}
-							required
-						/>
-							<br/>
-
-							<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs}>
-								Update
-							</Button>
-							{updateIcsSucceed ? (
-								<span className="message-success">
-									Your ICS Calendar is updated!<br/>
-								</span>
-							) : null}
-						</form>
-					</div>
-				</Paper>
-						<br/>
-				<Paper elevation={8}>
-					<div className="right-bottom-div">
-						<br/>
-						<form>
+								</form>
+							</Box>
+						</Paper>
+					</Grid>
+					<Grid item lg={6} sm={12}>
 						<Stack
 							direction="column"
-							justifyContent="center"
-							alignItems="center"
-							spacing={2}
+							justifyContent="space-between"
+							spacing={4}
 						>
-							<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
-								Delete Calendar
-							</Button>
-							<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
-								Delete Account
-							</Button>
+							<Paper elevation={8}>
+								<Box sx={{pt: 3, pb: 10, px: 5}}>
+									<form className="form-ics" >
+										<label htmlFor="ics">ICS Link</label>
+										<input
+											name="ics"
+											defaultValue={currentUser.ics}
+											type="text"
+											onChange={handleIcsChange}
+											required
+										/>
+										<Stack
+											direction="column"
+											justifyContent="center"
+											alignItems="center"
+											spacing={2}
+										>
+											<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs} sx={{mt: 5}}>
+												Update
+											</Button>
+											<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
+												Delete Calendar
+											</Button>
+										</Stack>
 
-							<Dialog
-								open={dialogOpen}
-								onClose={() => setDialogOpen(false)}
-								aria-labelledby="alert-dialog-title"
-								aria-describedby="alert-dialog-description"
-							>
-								<DialogTitle id="alert-dialog-title">
-									{"Are you sure you want to delete this account?"}
-								</DialogTitle>
-								<DialogContent>
-									<DialogContentText id="alert-dialog-description">
-										There's no turning back !
-									</DialogContentText>
-								</DialogContent>
-								<DialogActions>
-									<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-									<Button onClick={deleteAccount} autoFocus>
-										Delete
-									</Button>
-								</DialogActions>
-							</Dialog>
+									</form>
+								</Box>
+							</Paper>
+							<Paper elevation={8}>
+								<Box sx={{pt: 3, pb: 7, px: 5}}>
+									<form>
+										<Stack
+											direction="column"
+											justifyContent="center"
+											alignItems="center"
+											spacing={2}
+										>
+											<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={handleLogout} sx={{mt: 5}}>
+												Log out
+											</Button>
+											<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDialogOpen(true)}>
+												Delete Account
+											</Button>
 
+											<Dialog
+												open={dialogOpen}
+												onClose={() => setDialogOpen(false)}
+												aria-labelledby="alert-dialog-title"
+												aria-describedby="alert-dialog-description"
+											>
+												<DialogTitle id="alert-dialog-title">
+													{"Are you sure you want to delete this account?"}
+												</DialogTitle>
+												<DialogContent>
+													<DialogContentText id="alert-dialog-description">
+														There's no turning back !
+													</DialogContentText>
+												</DialogContent>
+												<DialogActions>
+													<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+													<Button onClick={deleteAccount} autoFocus>
+														Delete
+													</Button>
+												</DialogActions>
+											</Dialog>
+
+										</Stack>
+									</form>
+								</Box>
+							</Paper>
 						</Stack>
-
-						{deleteIcsSucceed ? (
-							<span className="message-success">
-								Calendar Deleted!
-							</span>
-						) : null}
-
-						</form>
-					</div>
-				</Paper>
-
-			</div>
-
+					</Grid>
+				</Grid>
+			</Box>
 		</div>
 
 	);

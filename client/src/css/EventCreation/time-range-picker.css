@@ -1,15 +1,5 @@
-div#time-of-day #pick-time-range {
-    /* TO REMOVE: Vertically aligh with left box*/
-    /* margin-top: 53.92px;  */
-
-    /* Form outline */
-    padding: 1em;
-    border: 1px;
-    border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    line-height: 1.125em;
-    border-radius: 0.5em;
-    flex: auto;
+.pick-time-range {
+    padding: 15px 30px;
 }
 
 div.time-field {
@@ -17,7 +7,14 @@ div.time-field {
     padding: 0.5em;
 }
 
+.time-label {
+    /*margin: auto;*/
+    width: 150px;
+    display: inline-block;
+}
+
 .time-field input[type="time"]{
     font-family: 'Kdam Thmor Pro', sans-serif;
+    width: 100px;
 }
 

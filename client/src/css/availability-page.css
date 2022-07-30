@@ -2,15 +2,6 @@
     font-family: 'Merriweather', sans-serif;
     line-height: 2;
 }
-.outer-div{
-    margin: 3% 15%;
-}
-
-.meeting-summary-div {
-    float: left;
-    width: 50%;
-    padding-right: 10%;
-}
 
 tr {
     height: 50px;
@@ -18,16 +9,4 @@ tr {
 
 .table-header {
     width: 35%;
-}
-
-.availability-picker-div {
-    float: left;
-    /*border: 3px double #6d8b74;*/
-
-}
-
-@media screen and (max-width: 600px) {
-    .meeting-summary-div {
-        width: 100%;
-    }
 }
