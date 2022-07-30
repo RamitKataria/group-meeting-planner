@@ -31,11 +31,21 @@ router.get('/:userId/meetings', async function (req, res, next) {
 	return res.send(user[0].meetings);
 });
 
+// router.get('/:userId', async function (req, res, next) {
+// 	if (!req.user) {
+// 		return res.status(403).send('Unauthorized');
+// 	}
+// 	const user = await usersQueries.getUser({"_id": req.params.userId});
+//
+// 	return res.send(user[0]);
+// });
+
+// using firebaseUID instead (temporary??)
 router.get('/:userId', async function (req, res, next) {
 	if (!req.user) {
 		return res.status(403).send('Unauthorized');
 	}
-	const user = await usersQueries.getUser({"_id": req.params.userId});
+	const user = await usersQueries.getUser({"firebaseUID": req.params.userId});
 
 	return res.send(user[0]);
 });
@@ -44,11 +54,11 @@ router.patch('/:userId', async function (req, res) {
 	if (!req.user) {
 		return res.status(403).send('Unauthorized');
 	}
-	const user = await usersQueries.getUser({"_id": req.params.userId});
-
-	const newUser = {...user, ...req.body, _id: req.params.userId};
-	const updateduser = await usersQueries.updateOneUser(req.params.userId, newUser);
-	return res.send(updateduser);
+	const userArray = await usersQueries.getUser({"firebaseUID": req.params.userId});
+	const newUser = {...userArray, ...req.body, _id: userArray[0]._id, firebaseUID: userArray[0].firebaseUID};
+	await usersQueries.updateOneUser(userArray[0]._id, newUser);
+	const updatedUser = await usersQueries.getUser({"firebaseUID": req.params.userId});
+	return res.send(updatedUser[0]);
 });
 
 router.delete('/:userId', async function (req, res, next) {
