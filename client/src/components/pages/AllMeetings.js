@@ -21,26 +21,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import {theme} from '../../theme/color-theme'
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import {useDispatch, useSelector} from "react-redux";
+
 import {useEffect, useState} from "react";
-import {getMeetingsAsync} from "../../redux/users/thunks";
-import {getMeetingAsync} from "../../redux/meetings/thunks";
+import { useNavigate } from "react-router-dom";
 import {getMeeting} from "../../redux/meetings/service";
-import {getMeetingsBasedOnUserId} from "../../redux/users/service";
-
-const formatStringToDate = (date) => {
-	const [dateValues, timeValues] = date.split(' ');
-
-	const [month, day, year] = dateValues.split('-');
-	const [hours, minutes, seconds] = timeValues.split(':');
-	return new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
-}
-
-const formatDateToString = (date) => {
-	return String(date.getMonth()).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0') + "-"
-		+ date.getFullYear() + " " + String(date.getHours()).padStart(2, '0') + ":" + String(date.getMinutes()).padStart(2, '0');
-}
+import {
+	getMeetingsBasedOnUserId,
+	updateUserBasedOnUserId,
+	getUserBasedOnUserId
+} from "../../redux/users/service";
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -115,7 +107,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	},
 	// hide last border
 	'&:last-child td, &:last-child th': {
-		// border: 0,
 	},
 }));
 
@@ -187,8 +178,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-	const { numSelected } = props;
-
+	const  numSelected  = props.numSelected;
 	return (
 		<ThemeProvider theme={theme}>
 		<Toolbar
@@ -217,8 +207,8 @@ const EnhancedTableToolbar = (props) => {
 
 			{numSelected > 0 ? (
 				<Tooltip title="Delete">
-					<IconButton>
-						<DeleteIcon />
+					<IconButton onClick={props.handleDelete}>
+						<DeleteIcon/>
 					</IconButton>
 				</Tooltip>
 			) : (
@@ -238,38 +228,56 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	// const currentUser = useSelector((state) => state.usersReducer.list);
-	// const meetingInfo = useSelector((state) => state.meetingsReducer.list);
-	const [allMeetings, setAllMeetings] = useState([]);
-	const [update, setUpdate] = useState(0);
-
-	useEffect( () => {
-
-	// 	const currentUser = await getMeetingsBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
-	// 	await Promise.all(currentUser.map(async (meeting) => {
-	// 		const response = await getMeeting(meeting);
-	// 		setAllMeetings(current => [...current, response]);
-	// 	}));
-	// }, []);
-		
-		async function populateAllMeetingsList() {
-			const currentUser = await getMeetingsBasedOnUserId("d515b255-0691-4778-9796-cb4f41840136");
-			const response = await Promise.all(currentUser.map((meeting) => 
-				getMeeting(meeting)
-			));
-			
-			setAllMeetings(response);
-		}
-		populateAllMeetingsList();
-	}, []);
-
-	// const dispatch = useDispatch();
+	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136"); // temporary
+	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
+	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
+	const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
+	const [allCreators, setAllCreators] = useState([]); // users (creators) info of all meetings
+	const [selected, setSelected] = useState([]); // all selected meetingsID for deletion
+	const [update, setUpdate] = useState(false); // for useEffect update after deletion
 
 	const [order, setOrder] = useState("asc");
 	const [orderBy, setOrderBy] = useState("meetingId");
-	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
+
+	const navigate = useNavigate();
+
+	useEffect( () => {
+		async function populateAllMeetingsList() {
+			const currentUserMeetingsID = await getMeetingsBasedOnUserId(currentUserID);
+			setAllMeetingsID(currentUserMeetingsID);
+
+			const response = await Promise.all(currentUserMeetingsID.map((meetingID) => {
+				setMeetingIDToCreatorMap(map => new Map(map.set(meetingID, "")));
+				return getMeeting(meetingID);
+			}));
+			setAllMeetings(response);
+		}
+		populateAllMeetingsList();
+	}, [update]);
+
+	useEffect( () => {
+		async function populateAllCreatorsList() {
+			const response2 = await Promise.all(allMeetings.map((meeting) => {
+				setMeetingIDToCreatorMap(map => new Map(map.set(meeting._id, meeting.createdBy)));
+				return getUserBasedOnUserId(meeting.createdBy);
+			}));
+			setAllCreators(response2);
+		}
+		populateAllCreatorsList();
+	}, [allMeetings]);
+
+	const returnCreatorName = (meetingID) => {
+		const creatorID = meetingIDToCreatorMap.get(meetingID);
+		if (allCreators.length > 0) {
+			const foundCreator = allCreators.find(obj => {
+				return obj._id === creatorID;
+			})
+			return foundCreator.name;
+		}
+		return "";
+	}
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -279,15 +287,15 @@ export default function EnhancedTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			const newSelecteds = allMeetings.map((n) => n.meetingId);
+			const newSelecteds = allMeetings.map((n) => n._id);
 			setSelected(newSelecteds);
 			return;
 		}
-		setSelected([]);
+		setSelected([]); // to reset selected array
 	};
 
 	const handleRedirectLink = (event, meetingId) => {
-		window.location.href = "http://localhost:3000/home/" + meetingId;
+		navigate("../home/" + meetingId);
 	}
 
 	const handleClick = (event, name) => {
@@ -310,6 +318,15 @@ export default function EnhancedTable() {
 		setSelected(newSelected);
 	};
 
+	const handleDelete = async () => {
+		// remove ids in selected from allMeetingsID
+		const meetingsIDAfterDelete = allMeetingsID.filter( ( el ) => !selected.includes( el ) );
+		// update meetings field in user to meetingsIDAfterDelete
+		await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"meetings": meetingsIDAfterDelete}});
+		setUpdate(!update);
+		setSelected([]);
+	}
+
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
@@ -318,6 +335,27 @@ export default function EnhancedTable() {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+
+	const handleCopiedToClipboard = (id) => {
+		const link = "http://localhost:3000/home/" + id;
+		navigator.clipboard.writeText(link)
+			.then(() => {
+				toast("🗒️ Copied to clipboard!");
+			})
+			.catch(() => {
+				alert("something went wrong with clipboard");
+			});
+	}
+
+	const dateOptions = {
+		weekday: 'short',
+		year: 'numeric', month: 'numeric', day: 'numeric',
+		hour: 'numeric', minute: 'numeric', second: 'numeric',
+		hour12: false,
+		timeZone: 'America/Los_Angeles'
+	};
+
+	const dateTimeFormat = new Intl.DateTimeFormat('default', dateOptions);
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -337,9 +375,20 @@ export default function EnhancedTable() {
 					All Meetings
 				</Typography>
 
-				<Box sx={{mx: "auto", my: 5, width: "80%"}}>
-					<Paper sx={{width: "100%", mb: 2}} elevation={8}>
-						<EnhancedTableToolbar numSelected={selected.length}/>
+				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
+					<Paper sx={{width: "100%", mb: 2}}>
+						<EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete}/>
+						<ToastContainer
+							position="top-right"
+							autoClose={1000}
+							hideProgressBar
+							newestOnTop={false}
+							closeOnClick
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+						/>
 						<TableContainer>
 							<Table
 								sx={{minWidth: 750}}
@@ -357,13 +406,12 @@ export default function EnhancedTable() {
 									{stableSort(allMeetings, getComparator(order, orderBy))
 										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 										.map((meeting, index) => {
-											const isItemSelected = isSelected(meeting.meetingId);
+											const isItemSelected = isSelected(meeting._id);
 											const labelId = `enhanced-table-checkbox-${index}`;
 
 											return (
 												<StyledTableRow
 													hover
-													onClick={(event) => handleClick(event, meeting._id)}
 													role="checkbox"
 													aria-checked={isItemSelected}
 													tabIndex={-1}
@@ -374,13 +422,14 @@ export default function EnhancedTable() {
 														<Checkbox
 															color="primary"
 															checked={isItemSelected}
+															onClick={(event) => handleClick(event, meeting._id)}
 															inputProps={{
 																"aria-labelledby": labelId
 															}}
 														/>
 													</StyledTableCell>
 													<StyledTableCell
-														sx={{textDecoration: 'underline'}}
+														sx={{textDecoration: 'underline', cursor: 'pointer'}}
 														id={labelId}
 														scope="row"
 														padding="none"
@@ -392,11 +441,16 @@ export default function EnhancedTable() {
 														{meeting.name}
 													</StyledTableCell>
 													<StyledTableCell
-														align="right">{meeting.dateTimeUpdated}</StyledTableCell>
-													<StyledTableCell align="right">{meeting.createdBy}</StyledTableCell>
-													<StyledTableCell align="right" numeric="true"
-														// component="a"
-													>{"http://localhost:3000/availability/" + meeting._id}
+
+													align="right">{dateTimeFormat.format(new Date(meeting.dateTimeUpdated))}</StyledTableCell>
+													<StyledTableCell align="right">{returnCreatorName(meeting._id)}</StyledTableCell>
+
+													<StyledTableCell
+														sx={{textDecoration: 'underline', cursor: 'pointer'}}
+														align="right"
+														onClick={() => handleCopiedToClipboard(meeting._id)}
+													>
+														{"http://localhost:3000/home/" + meeting._id}
 													</StyledTableCell>
 												</StyledTableRow>
 											);

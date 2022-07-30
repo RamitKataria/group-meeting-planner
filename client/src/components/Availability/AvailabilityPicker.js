@@ -33,7 +33,7 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
     
     useEffect(() => {
         // update userAvailability & save in state
-        if (Array.isArray(meetingInfo.userAvailability)) {
+        if (Array.isArray(meetingInfo.userAvailability) && currentUser) {
             const currentUserAvail = meetingInfo.userAvailability.find(
                 (entry) => {
                     // check if availabilty entry belongs to current user

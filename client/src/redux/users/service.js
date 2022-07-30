@@ -1,23 +1,37 @@
+import {getAuthHeader} from "../../authHeader";
+// import {getAuth} from "firebase/auth";
+
+const url = 'http://localhost:3001/users/';
+
 export const getMeetingsBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId + "/meetings";
+  const link =  url + userId + "/meetings";
   const response = await fetch(link, {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   return response.json();
 };
 
 export const getUserBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId;
+  const link = url + userId;
   const response = await fetch(link, {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   return response.json();
 };
 
-const deleteUserBasedOnUserId = async (userId) => {
-  const link = 'http://localhost:3001/users/' + userId;
+export const deleteUserBasedOnUserId = async (userId) => {
+  const link = url + userId;
   const response = await fetch(link, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
   });
   const data = await response.json();
   if (!response.ok) {
@@ -28,11 +42,12 @@ const deleteUserBasedOnUserId = async (userId) => {
 };
 
 export const updateUserBasedOnUserId = async (content) => {
-  const link = 'http://localhost:3001/users/' + content.userId;
+  const link = url + content.userId;
   const response = await fetch(link, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': await getAuthHeader()
     },
     body: JSON.stringify(content.updateContents)
   });

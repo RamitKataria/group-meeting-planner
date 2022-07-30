@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
 import { Calendar } from '@natscale/react-calendar';
-import "../../css/EventCreation/date-picker.css"
+import "../../css/EventCreation/date-picker.css";
 import '@natscale/react-calendar/dist/main.css';
 import ViewSwitch from './ViewSwitch';
 import {storeDates} from '../../redux/meetingCreation'

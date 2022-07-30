@@ -29,7 +29,7 @@ export default function AboutUs() {
 				<div className="team-div">
 					<h3>We are Honey Dip Donut, a team of four in UBC.</h3>
 
-					<Fade direction="right" duration="2000" triggerOnce="true">
+					<Fade direction="right" duration="4000" triggerOnce="true">
 						<div className="section-left">
 							<div className="section-inner-div-left">
 							<img className="left image" src="https://media.giphy.com/media/PgKAsMXyo0vXFp6vj0/giphy.gif"
@@ -42,7 +42,7 @@ export default function AboutUs() {
 							</div>
 						</div>
 					</Fade>
-					<Fade direction="left" duration="2000" triggerOnce="true">
+					<Fade direction="left" duration="4000" triggerOnce="true">
 						<div className="section-right">
 							<div className="section-inner-div-right">
 							<img className="right1 image" src="https://media.giphy.com/media/1jXaP2LfX7eQTErugm/giphy.gif"
@@ -56,7 +56,7 @@ export default function AboutUs() {
 						</div>
 
 					</Fade>
-					<Fade direction="right" duration="2000" triggerOnce="true">
+					<Fade direction="right" duration="4000" triggerOnce="true">
 						<div className="section-left">
 							<div className="section-inner-div-left">
 							<img className="left image" src="https://media.giphy.com/media/1wX7raPRBBmIjT4kmS/giphy.gif"
@@ -70,7 +70,7 @@ export default function AboutUs() {
 						</div>
 
 					</Fade>
-					<Fade direction="left" duration="2000" triggerOnce="true">
+					<Fade direction="left" duration="4000" triggerOnce="true">
 						<div className="section-right">
 							<div className="section-inner-div-right">
 								<img className="right1 image" src="https://media.giphy.com/media/l0MYIdIrGhCuFqj72/giphy.gif"

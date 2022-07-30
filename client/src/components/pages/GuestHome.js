@@ -4,12 +4,11 @@ import React from "react";
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { alpha, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import Grid from '@mui/material/Grid';
 import {theme} from '../../theme/color-theme'
 import Paper from "@mui/material/Paper";
 import {Typography} from "@mui/material";
-import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -17,7 +16,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-export default function Home() {
+export default function GuestHome() {
 	const navigate = useNavigate();
 	const [meetingID, setMeetingID] = useState("");
 
@@ -36,26 +35,25 @@ export default function Home() {
 		<ThemeProvider theme={theme}>
 			<Box
 				sx={{
-				backgroundImage: 'url(https://images.unsplash.com/photo-1489769002049-ccd828976a6c?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=john-mark-arnold-ti4kGLkGgmU-unsplash.jpg)',
-				backgroundRepeat: 'no-repeat',
+				// backgroundImage: 'url(https://images.unsplash.com/photo-1489769002049-ccd828976a6c?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=john-mark-arnold-ti4kGLkGgmU-unsplash.jpg)',
+				// backgroundRepeat: 'no-repeat',
 					backgroundColor: (theme) =>
 						theme.palette.mode === 'light'
 							? theme.palette.grey[100]
 							: theme.palette.grey[900],
-				backgroundSize: 'cover',
+				// backgroundSize: 'cover',
 				}}
 			>
-				<Box sx={{mx: "auto", my: 5, width: "80%"}}>
-					{/*<CssBaseline />*/}
+				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 					<Grid
 						container
-						sx={{py: 10}}
+						sx={{pt: 5}}
 						spacing={6}
 						justifyContent="center"
 						alignItems="center"
 					>
 
-						<Grid item lg={5} sm={12} >
+						<Grid item lg={6} sm={12} >
 							<Paper elevation={8} sx={{maxWidth: 600}}>
 								<Box sx={{px:7, py: 7}}>
 									<Typography
@@ -100,10 +98,7 @@ export default function Home() {
 							</Paper>
 						</Grid>
 
-						<Grid item lg={2} sm={12}>
-						</Grid>
-
-						<Grid item lg={5} sm={12}>
+						<Grid item lg={6} sm={12}>
 							<Paper elevation={8} sx={{maxWidth: 600}}>
 								<Box sx={{px:7, py: 7}}>
 									<Typography

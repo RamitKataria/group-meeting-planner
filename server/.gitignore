@@ -57,6 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# Google service account credentials
+ServiceAccountKey.json
+
 # next.js build output
 .next
 
