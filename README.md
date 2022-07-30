@@ -42,19 +42,19 @@ Allow users to set up meetings schedules & automatically fill in availability by
 ### Standard requirements
 
 1. As a user, I want to be able to use the website as a guest, or as a registered user if I want extra features[<sup>1</sup>](#footnotes)
-2. As a registered user, I want to be able to delete my account and update account information ([Settings Page](#account-settings-page))
-3. As a registered user, I want to be able to change the meeting span after creating it by logging into the account I used to create it
+2. As a registered user, I want to be able to delete my account and update account information (Settings Page)
 5. As a registered user, I want to be sent an email verification to change my password when I forget the password
 7. As an attendee, I want to be able to create an account through some external authentication service 
 8. As an attendee, I want to be able to log in to my account through the same external authentication service
-9. As a meeting organizer, I want to be able to remove a user from a meeting 
-10. As a user, I would like my private data to not be accessible through API. 
+10. As a user, I would like my private data to not be accessible through API by unauthorized users
 
 ### Stretch Requirements
 
 1. All meeting attendees should be able to vote for the best meeting time from all the options provided by the website
 2. As the meeting organizer, I want to be able to limit access to the meeting info and availability to registered users with given email addresses
 3. As a user, I want to be able to import my availability from a link to my personal availability ICS file
+4. As a registered user, I want to be able to change the meeting span after creating it by logging into the account I used to create it
+5. As a meeting organizer, I want to be able to remove a user from a meeting
 
 ## Minimal Requirements Breakdown
 
