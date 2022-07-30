@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
+
 const { validateFirebaseIdToken } = require('./auth');
 const indexRouter = require('./routes/index');
 const meetingsRouter = require('./routes/meetings');

@@ -348,7 +348,7 @@ export default function EnhancedTable() {
 		const link = "http://localhost:3000/home/" + id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
-				toast("Copied to clipboard!");
+				toast("🗒️ Copied to clipboard!");
 			})
 			.catch(() => {
 				alert("something went wrong with clipboard");
@@ -371,7 +371,7 @@ export default function EnhancedTable() {
 		<div className="">
 			<ThemeProvider theme={theme}>
 				<Typography
-					sx={{flex: '1 1 100%', fontWeight: 'bold', margin: "3% 0", "textAlign": "center"}}
+					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
 					variant="h4"
 					id="tableTitle"
 					component="div"
@@ -379,7 +379,7 @@ export default function EnhancedTable() {
 					All Meetings
 				</Typography>
 
-				<Box sx={{mx: "auto", my: "3%", width: "80%"}}>
+				<Box sx={{mx: "auto", my: 5, width: "80%"}}>
 					<Paper sx={{width: "100%", mb: 2}}>
 						<EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete}/>
 						<ToastContainer
@@ -436,6 +436,7 @@ export default function EnhancedTable() {
 														sx={{textDecoration: 'underline', cursor: 'pointer'}}
 														id={labelId}
 														scope="row"
+														padding="none"
 														align="right"
 														onClick={(event) => handleRedirectLink(event,
 															meeting._id
