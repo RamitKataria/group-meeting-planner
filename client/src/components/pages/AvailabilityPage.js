@@ -11,6 +11,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ClearIcon from '@mui/icons-material/Clear';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
 import {getUserBasedOnUserId} from "../../redux/users/service";
@@ -48,6 +50,13 @@ export default function AvailabilityPage() {
 			});
 	}
 
+	const importICS = () => {
+		// TODO: populate ics into table, disabled for guest.
+	}
+
+	const removeICS = () => {
+		// TODO: remove ics from table, disabled for guest.
+	}
 	return (
 		<div >
 			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
@@ -120,7 +129,18 @@ export default function AvailabilityPage() {
 							</Table>
 						</TableContainer>
 					</Grid>
-					<Grid item lg={7} sm={12} >
+					<Grid item lg={7} sm={12}>
+						<Box sx={{justifyContent:'space-around', display:'flex', mb: 3}}>
+							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} >
+								Import ICS
+							</Button>
+							<Button variant="contained" startIcon={<ClearIcon />} onClick={removeICS} >
+								Remove ICS
+							</Button>
+							<Button variant="outlined" onClick={handleClickOpen}>
+								Temp Guest Dialog
+							</Button>
+						</Box>
 						<AvailabilityPicker meetingInfo={meetingInfo}/>
 					</Grid>
 				</Grid>
