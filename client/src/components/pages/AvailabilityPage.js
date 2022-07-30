@@ -31,8 +31,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Stack from "@mui/material/Stack";
 
 import {useSelector} from "react-redux";
-import AvailabilityText from "../Availability/AvailabilityText"; // TODO: remove
 import Auth from "../../firebaseApp"
+import {onAuthStateChanged} from "firebase/auth";
 
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
@@ -52,19 +52,30 @@ export default function AvailabilityPage() {
 			setMeetingInfo(response);
 			// const response2 = await getUserBasedOnUserId(response.createdBy);
 			// setCreatorInfo(response2);
+			// console.log(response2);
+			
 			// TODO: for testing only
-			setCreatorInfo({name: 'Creator'})
+			if (response.creatorDisplayName) { 
+				setCreatorInfo({name: response.creatorDisplayName})
+			} else {
+				setCreatorInfo({name: 'Creator'})
+			}
 			setLoading(false);
 		}
 		populateMeetingInfo();
 
 		}, []);
 
-	// user not logged in
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			setCurrentUser(user);
+		})
+	}, []);
+
+	// TODO: remove? fallback for user not logged in
 	if (!currentUser) {
-		// TODO: link with guest form
 		setCurrentUser({
-			uid: 'd515b255-0691-4778-9796-cb4f41840136',
+			uid: '',
 			email: '',
 		})
 	}
