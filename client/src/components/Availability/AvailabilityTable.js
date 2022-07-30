@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import AvailabilityPeriod from "./AvailabilityPeriod";
+import { usersAvailableAt, fractionOfUsersAvailableAt } from "./utils";
 
-const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSlots }) => {
+const AvailabilityTable = ({ 
+    days, timeRange, timeUnit, setUserSlots, selectedSlots, othersAvailability 
+}) => {
     const [selectionMode, setSelectionMode] = useState(null);
     const [currSelection, setCurrSelection] = useState(selectedSlots);
 
@@ -81,6 +84,8 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
                                 availability={1}
                                 processSelection={slotHandleMouseEnter}
                                 selected={currSelection.includes(slots[j][i].getTime())}
+                                fractionAvailable={fractionOfUsersAvailableAt(slots[j][i].getTime(), othersAvailability)}
+                                availableList={usersAvailableAt(slots[j][i].getTime(), othersAvailability)}
                             />
                         ))}
                     </tr>

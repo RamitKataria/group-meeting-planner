@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import AvailabilityTable from "./AvailabilityTable";
 import {useDispatch, useSelector} from "react-redux";
-import "../css/availability-picker.css"
-import { setUserSlots } from "../redux/availability";
-import { updateAvailAsync } from "../redux/meetings/thunks";
+import "../../css/availability-picker.css"
+import { setUserSlots, setOthersAvailability } from "../../redux/availability";
+import { updateAvailAsync } from "../../redux/meetings/thunks";
 
+// root/index component of Availability components
 const AvailabilityPicker = ({meetingInfo, currentUser}) => {
     const state = useSelector((state) => state.availability);
     const dispatch = useDispatch();
@@ -29,8 +30,9 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
         timeRange = meetingInfo.range[0].map(time => new Date(time).getHours())
     }
     
-    // update userSlots in state
+    
     useEffect(() => {
+        // update userAvailability & save in state
         if (Array.isArray(meetingInfo.userAvailability)) {
             const currentUserAvail = meetingInfo.userAvailability.find(
                 (entry) => {
@@ -50,6 +52,21 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
                     d => new Date(d).getTime()
                 )))
             }
+            
+
+            const othersAvailability = meetingInfo.userAvailability.filter((entry) => {
+                if (entry.user && currentUser.uid) {
+                    return entry.user !== currentUser.uid;
+                }
+                return true;
+            }).map(
+                (entry) => {
+                    return {
+                        ...entry,
+                        availableSlots: entry.availableSlots.map(d => new Date(d).getTime())
+                    }   
+            });
+            dispatch(setOthersAvailability(othersAvailability));
         }
     }, [meetingInfo])
 
@@ -73,7 +90,7 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
             // setUserSlots={(args) => dispatch(setUserSlots(args))}
             setUserSlots={changeAvailSlots}
             selectedSlots={state.userAvailability}
-            //TODO: other-user availability
+            othersAvailability={state.othersAvailability}
         />
     );
 };

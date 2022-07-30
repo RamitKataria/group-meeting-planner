@@ -91,11 +91,17 @@ function generateMeetings() {
             },
             {
                 user: "baebcdfb-4fc0-411d-9934-0d9ffa57ffe1", // guest sophie
-                availableSlots: []
+                availableSlots: [
+                    new Date(2022, 5, 20, 10, 00), new Date(2022, 5, 20, 11, 00), new Date(2022, 5, 20, 13, 00), new Date(2022, 5, 20, 14, 00),
+                    new Date(2022, 5, 22, 10, 00), new Date(2022, 5, 22, 11, 00), new Date(2022, 5, 22, 13, 00), new Date(2022, 5, 22, 14, 00)
+                ]
             },
             {
                 user: "81409ec3-deac-41ef-9da2-7c0c1b324321", // may
-                availableSlots: []
+                availableSlots: [
+                    new Date(2022, 5, 21, 10, 00), new Date(2022, 5, 21, 11, 00), new Date(2022, 5, 21, 13, 00), new Date(2022, 5, 21, 14, 00),
+                    new Date(2022, 5, 22, 13, 00), new Date(2022, 5, 22, 14, 00)
+                ]
             }
         ]
     });
@@ -125,7 +131,9 @@ function generateMeetings() {
             },
             {
                 user: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" , // tom
-                availableSlots: []
+                availableSlots: [
+                    new Date(2022, 5, 21, 11, 00), new Date(2022, 5, 22, 11, 00)
+                ]
             }
         ]
     });

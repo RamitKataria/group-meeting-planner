@@ -1,3 +1,9 @@
+:root {
+    --primary-color-main: #DF7861;
+    --primary-color-light: #ECB390;
+    --secondary-color-main: #75b38b;
+}
+
 .availability-table-cell {
     min-width: 48px;
     min-height: 24px;
@@ -9,9 +15,20 @@ table.availability-table{
     user-select: none;
 }
 
-.selected {
-    background-color: #5fa2db;
+table.availability-table .someAvail {
+    background-color: var(--primary-color-light);
+
 }
+
+table.availability-table .allAvail {
+    background-color: var(--primary-color-main);
+}
+
+table.availability-table .selected {
+    background-color: #5fa2db;
+    /* background-color: var(--secondary-color-main); */
+}
+
 
 table.availability-table tbody td {
     border: 1px solid #999;

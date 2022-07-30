@@ -4,7 +4,8 @@ import {useEffect, useState} from "react";
 import { useParams } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import AvailabilityPicker from "../AvailabilityPicker";
+import AvailabilityPicker from "../Availability/AvailabilityPicker";
+import AvailabilityText from "../Availability/AvailabilityText"; // TODO: remove
 import {getMeeting} from "../../redux/meetings/service";
 import {getUserBasedOnUserId} from "../../redux/users/service";
 import Box from "@mui/material/Box";
@@ -12,6 +13,7 @@ import {LinearProgress, Typography} from "@mui/material";
 import React from "react";
 import Auth from "../../firebaseApp"
 import Stack from '@mui/material/Stack';
+import {useSelector} from "react-redux";
 
 export default function AvailabilityPage() {
 	const { meetingId } = useParams();
@@ -19,6 +21,7 @@ export default function AvailabilityPage() {
 	const [creatorInfo, setCreatorInfo] = useState({});
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
+	const availabilityInfo = useSelector((state) => state.availability);
 
 	useEffect(() => {
 		async function populateMeetingInfo() {
@@ -90,7 +93,13 @@ export default function AvailabilityPage() {
 							</table>
 						</div>
 					</Paper>
+					{/* TODO: remove */}
+					<AvailabilityText
+						listAvailable={availabilityInfo.available}
+						listUnavailable={availabilityInfo.unavailable}/>
 				</div>
+
+				
 
 				<div className="availability-picker-div">
 					<AvailabilityPicker

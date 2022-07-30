@@ -12,7 +12,9 @@ const init = {
     updateAvailability: {
         state: REQUEST_STATE.IDLE,
         response: null,
-    }
+    },
+    available: [],
+    unavailable: [],
 }
 
 const availabilitySlice = createSlice({
@@ -27,6 +29,15 @@ const availabilitySlice = createSlice({
         },
         setTimeRanges(state, action) {
             state.timeRanges = action.payload;
+        },
+        setOthersAvailability(state, action) {
+            state.othersAvailability = action.payload;
+        },
+        setAvailable(state, action) {
+            state.available = action.payload;
+        },
+        setUnavailable(state, action) {
+            state.unavailable = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -49,5 +60,5 @@ const availabilitySlice = createSlice({
 })
 
 
-export const { setUserSlots } = availabilitySlice.actions
+export const { setUserSlots, setDates, setTimeRanges, setOthersAvailability, setAvailable, setUnavailable } = availabilitySlice.actions
 export default availabilitySlice.reducer
