@@ -149,29 +149,25 @@ export default function Account() {
 										defaultValue={currentUser.email}
 										type="email"
 										required
+										disabled
 									/>
 
 									<label htmlFor="oldPassword">Old Password</label>
 									<input
 										name="oldPassword"
-										// defaultValue={currentUser.oldPassword}
 										placeholder="old password"
 										type="password"
-										// required
+										disabled
 									/>
 
 									<label htmlFor="newPassword">New Password</label>
 									<input
 										name="newPassword"
-										// defaultValue={currentUser.newPassword}
 										placeholder="new password"
 										type="password"
-										// required
+										disabled
 									/>
 									<br/>
-									{/*<div className="message-warning">*/}
-									{/*	Incorrect Old Password.*/}
-									{/*</div>*/}
 
 									<Button variant="contained" startIcon={<SaveIcon />}
 											type="submit"
