@@ -3,6 +3,9 @@
     color: #222;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     line-height: 1.125em;
+    --primary-color-main: #DF7861;
+    --primary-color-light: #ECB390;
+    --secondary-color-main: #75b38b;
 }
 
 /*** Calendar Styling ***/
@@ -13,6 +16,9 @@
     --rc-color-accent:purple;
     --rc-color-accent-light:rgba(128, 0, 128, 0.4);
     --rc-color-accent-lighter:rgba(128, 0, 128, 0.1);
+    --rc-color-primary: var(--primary-color-main);
+    --rc-color-primary-lighter: var(var(--primary-color-light));
+    --rc-color-bg-dom-in-range-active: #ecb3901f;
 }
 
 div.rc_body-days-of-month .rc_body-cell .rc_body-cell_value:hover {

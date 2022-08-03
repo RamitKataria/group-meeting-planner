@@ -1,6 +1,6 @@
 // import {getAuth} from "firebase/auth";
 import {getAuthHeader} from "../../authHeader";
-const url = 'http://localhost:3001/meetings/';
+const url = process.env.REACT_APP_SERVER_URL + '/meetings/';
 
 const addMeeting = async (content) => {
   const response = await fetch(url, {
@@ -67,9 +67,28 @@ const updateMeeting = async (meetingId, content) => {
   return data;
 };
 
+const updateAvailability = async (meetingId, userId, content) => {
+  const link = url + 'availability/' + meetingId + '/' + userId;
+  const response = await fetch(link, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(content)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg)
+  }
+  return data;
+}
+
 export default {
   addMeeting: addMeeting,
   getMeeting: getMeeting,
   deleteMeeting: deleteMeeting,
-  updateMeeting: updateMeeting
+  updateMeeting: updateMeeting,
+  updateAvailability: updateAvailability
 };

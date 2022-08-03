@@ -18,41 +18,72 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import AvailabilityPicker from "../AvailabilityPicker";
+import AvailabilityPicker from "../Availability/AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
 import {getUserBasedOnFirebaseId} from "../../redux/users/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
-import {Typography, Box} from "@mui/material";
+import {LinearProgress, Typography, Box} from "@mui/material";
 import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Stack from "@mui/material/Stack";
+
+import {useSelector} from "react-redux";
+import Auth from "../../firebaseApp"
+import {onAuthStateChanged} from "firebase/auth";
 
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
 
 	const { meetingId } = useParams();
 	const [meetingInfo, setMeetingInfo] = useState({});
-	const [userInfo, setUserInfo] = useState({});
+	const [creatorInfo, setCreatorInfo] = useState({});
 	const [openGuestDialog, setOpenGuestDialog] = React.useState(false);
+
+	const [loading, setLoading] = useState(true);
+	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
+	const availabilityInfo = useSelector((state) => state.availability);
 
 	useEffect(() => {
 		async function populateMeetingInfo() {
 			const response = await getMeeting(meetingId);
 			setMeetingInfo(response);
-			const response2 = await getUserBasedOnFirebaseId(response.createdBy);
-			setUserInfo(response2);
+			// const response2 = await getUserBasedOnUserId(response.createdBy);
+			// setCreatorInfo(response2);
+			// console.log(response2);
+
+			// TODO: for testing only
+			if (response.creatorDisplayName) {
+				setCreatorInfo({name: response.creatorDisplayName})
+			} else {
+				setCreatorInfo({name: 'Creator'})
+			}
+			setLoading(false);
 		}
 		populateMeetingInfo();
 
 		}, []);
 
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			setCurrentUser(user);
+		})
+	}, []);
+
+	// TODO: remove? fallback for user not logged in
+	if (!currentUser) {
+		setCurrentUser({
+			uid: '',
+			email: '',
+		})
+	}
+
 	const dispatch = useDispatch();
 
 	const handleCopiedToClipboard = () => {
-		const link = "http://localhost:3000/home/" + meetingInfo._id;
+		const link = window.location.host + "/home/" + meetingInfo._id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
 				toast("🗒️ Copied to clipboard!");
@@ -93,6 +124,7 @@ export default function AvailabilityPage() {
 
 	return (
 		<div >
+			{loading && <LoadingBar/>}
 			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 				<Typography
 					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
@@ -134,34 +166,15 @@ export default function AvailabilityPage() {
 									</tr>
 									<tr>
 										<td className="table-header"><strong>Created By: </strong></td>
-										<td>{userInfo.name}</td>
+										<td>{creatorInfo.name}</td>
 									</tr>
 									</thead>
 								</table>
 							</Box>
 						</Paper>
-
-						<TableContainer component={Paper} sx={{mt: 5}}>
-							<Table  aria-label="simple table">
-								<TableHead>
-									<TableRow>
-										<TableCell align="center" sx={{fontWeight: 'bold'}}>AVAILABLE</TableCell>
-										<TableCell align="center" sx={{fontWeight: 'bold'}}>UNAVAILABLE</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									<TableRow
-										key="some-key"
-										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-									>
-										<TableCell component="th" scope="row" align="center">
-											Sophie
-										</TableCell>
-										<TableCell align="center">May</TableCell>
-									</TableRow>
-								</TableBody>
-							</Table>
-						</TableContainer>
+						<AvailableTable
+							listAvailable={availabilityInfo.available}
+							listUnavailable={availabilityInfo.unavailable}/>
 					</Grid>
 					<Grid item lg={7} sm={12}>
 						<Box sx={{justifyContent:'space-around', display:'flex', mb: 3}}>
@@ -175,7 +188,9 @@ export default function AvailabilityPage() {
 								Temp Guest Dialog
 							</Button>
 						</Box>
-						<AvailabilityPicker meetingInfo={meetingInfo}/>
+						<AvailabilityPicker
+							meetingInfo={meetingInfo}
+							currentUser={currentUser}/>
 					</Grid>
 				</Grid>
 
@@ -236,4 +251,67 @@ export default function AvailabilityPage() {
 			</Box>
 		</div>
 	);
+}
+
+function LoadingBar	() {
+	return (
+		<Stack sx={{ width: '100%', color: '#DF7861'}}>
+		{/* TODO: use theme */}
+			<LinearProgress color="inherit" />
+		</Stack>
+	)
+}
+
+function AvailableTable({listAvailable, listUnavailable}) {
+
+	function AvailRow({cell1, cell2, idx}) {
+		return (
+		<TableRow
+		key={idx}
+		sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+		>
+			<TableCell component="th" scope="row" align="center">
+				{cell1}
+			</TableCell>
+			<TableCell align="center">
+				{cell2}
+			</TableCell>
+		</TableRow>)
+	}
+
+	function generateTableContent() {
+		var tableContent = [];
+		for (let i = 0; i < Math.max(listAvailable.length, listUnavailable.length); i++) {
+			if (listAvailable[i] && listUnavailable[i]) {
+				tableContent.push([listAvailable[i], listUnavailable[i]]);
+			} else if (listAvailable[i]) {
+				tableContent.push([listAvailable[i], ""]);
+			} else if (listUnavailable[i]) {
+				tableContent.push(["", listUnavailable[i]]);
+			}
+		}
+
+		return tableContent.map((row, idx) => {
+			return <AvailRow
+					cell1={row[0]}
+					cell2={row[1]}
+					idx={idx}/>
+		})
+	}
+
+	return (
+		<TableContainer component={Paper} sx={{ mt: 5 }}>
+			<Table aria-label="simple table">
+				<TableHead>
+					<TableRow>
+						<TableCell align="center" sx={{ fontWeight: 'bold' }}>AVAILABLE</TableCell>
+						<TableCell align="center" sx={{ fontWeight: 'bold' }}>UNAVAILABLE</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{generateTableContent()}
+				</TableBody>
+			</Table>
+		</TableContainer>
+	)
 }

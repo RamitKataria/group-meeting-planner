@@ -7,7 +7,7 @@ import Input from '@mui/material/Input';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector, useDispatch } from 'react-redux';
-import {storeMeetingName, resetAddMeeting} from '../../redux/meetingCreation';
+import {storeMeetingName, resetAddMeeting, storeDescription, setCurrUser} from '../../redux/meetingCreation';
 import { addMeetingsAsync } from "../../redux/meetings/thunks";
 import { creationSliceToInstance } from "./utils";
 import { useEffect } from "react";
@@ -16,6 +16,9 @@ import {useNavigate} from "react-router-dom";
 import {Typography} from "@mui/material";
 import React from "react";
 import Box from "@mui/material/Box";
+
+import Auth from "../../firebaseApp"
+import {onAuthStateChanged} from "firebase/auth";
 
 function MeetingCreation() {
     const meetingCreationSlice = useSelector(state => state.meetingCreation)
@@ -33,6 +36,10 @@ function MeetingCreation() {
         dispatch(storeMeetingName(e.target.value))
     }
 
+    function handleDescriptionChange(e) {
+        dispatch(storeDescription(e.target.value))
+    }
+
     useEffect( () => {
         console.log(addMeeting)
         if (addMeeting.state === REQUEST_STATE.FULFILLED) {
@@ -41,6 +48,12 @@ function MeetingCreation() {
             navigate('../home/' + addMeeting.response._id);
         }
     }, [addMeeting, dispatch, navigate])
+
+    useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			dispatch(setCurrUser(user));
+		})
+	}, []);
 
     return (
         <div>
@@ -73,8 +86,8 @@ function MeetingCreation() {
                         <div className="input">
                             <div className="input item padding "></div>
                             <Input
-                                // value={meetingCreationSlice['name']}
-                                // onChange={handleNameChange}
+                                value={meetingCreationSlice['description']}
+                                onChange={handleDescriptionChange}
                                 className="input item"
                                 label="name"
                                 placeholder="A brief description.."></Input>

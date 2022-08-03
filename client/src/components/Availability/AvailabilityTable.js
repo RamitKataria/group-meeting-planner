@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AvailabilityPeriod from "./AvailabilityPeriod";
+import { usersAvailableAt, fractionOfUsersAvailableAt } from "./utils";
 
-const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSlots }) => {
+const AvailabilityTable = ({ 
+    days, timeRange, timeUnit, setUserSlots, selectedSlots, othersAvailability 
+}) => {
     const [selectionMode, setSelectionMode] = useState(null);
     const [currSelection, setCurrSelection] = useState(selectedSlots);
 
@@ -25,7 +28,11 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
 
     const endSelection = (e) => {
         setSelectionMode(null);
-        setUserSlots(currSelection);
+        // only update when the list is updated
+        if (currSelection.length !== selectedSlots.length || 
+            !currSelection.every(e => selectedSlots.includes(e))) {  
+            setUserSlots(currSelection);
+        }
     }
 
     const slotHandleMouseEnter = (e) => {
@@ -51,8 +58,13 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
 
     const colDateFormat = new Intl.DateTimeFormat('default', {month: 'short', day: 'numeric'})
 
+    useEffect(() => {
+        setCurrSelection(selectedSlots)
+    }, [selectedSlots])
+
     return (
-        <table onMouseDown={startSelection} onMouseUp={endSelection} onMouseLeave={endSelection}>
+        <table onMouseDown={startSelection} onMouseUp={endSelection} onMouseLeave={endSelection}
+        className="availability-table">
             <thead>
             <tr>
                 <th></th>
@@ -72,6 +84,8 @@ const AvailabilityTable = ({ days, timeRange, timeUnit, setUserSlots, selectedSl
                                 availability={1}
                                 processSelection={slotHandleMouseEnter}
                                 selected={currSelection.includes(slots[j][i].getTime())}
+                                fractionAvailable={fractionOfUsersAvailableAt(slots[j][i].getTime(), othersAvailability)}
+                                availableList={usersAvailableAt(slots[j][i].getTime(), othersAvailability)}
                             />
                         ))}
                     </tr>

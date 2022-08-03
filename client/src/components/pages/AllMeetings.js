@@ -228,7 +228,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	const [currentUserID, setCurrentUserID] = useState("ea0f9ae2-2c9e-40eb-9bae-c40054addcf9"); // temporary
+	const [currentUserID, setCurrentUserID] = useState(""); // temporary
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
 	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
 	const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
@@ -337,7 +337,7 @@ export default function EnhancedTable() {
 	};
 
 	const handleCopiedToClipboard = (id) => {
-		const link = "http://localhost:3000/home/" + id;
+		const link = window.location.host + "/home/" + id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
 				toast("🗒️ Copied to clipboard!");
@@ -450,7 +450,7 @@ export default function EnhancedTable() {
 														align="right"
 														onClick={() => handleCopiedToClipboard(meeting._id)}
 													>
-														{"http://localhost:3000/home/" + meeting._id}
+														{window.location.host + "/home/" + meeting._id}
 													</StyledTableCell>
 												</StyledTableRow>
 											);

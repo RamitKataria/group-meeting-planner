@@ -2,11 +2,11 @@ import { createSlice } from "@reduxjs/toolkit"
 import { REQUEST_STATE } from './utils';
 import { addMeetingsAsync } from './meetings/thunks';
 
-// purely front-end slice for meeting creation
+// slice for meeting creation
 
 const init = {
-  currUser: "",
-  name: "",
+  currUser: {}, // firebase curruser entity
+  name: "", 
   description: "",
   dates: [],
   startTime: 9,
@@ -46,9 +46,22 @@ const meetingCreationSlice = createSlice({
         "name": action.payload,
       }
     }, 
+    storeDescription(state, action) {
+      return {
+        ...state,
+        "description": action.payload,
+      }
+    }, 
+    setCurrUser(state, action) {
+      return {
+        ...state,
+        "currUser": action.payload,
+      }
+    },
     resetAddMeeting() {
       return init;
-    }
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -72,6 +85,6 @@ const meetingCreationSlice = createSlice({
 // Extract the action creators object and the reducer
 const { actions, reducer } = meetingCreationSlice
 // Extract and export each action creator by name
-export const { storeDates, storeStartTime, storeEndTime, storeMeetingName, resetAddMeeting } = actions
+export const { storeDates, storeStartTime, storeEndTime, storeMeetingName, storeDescription, resetAddMeeting, setCurrUser } = actions
 // Export the reducer, either as a default or named export
 export default reducer
