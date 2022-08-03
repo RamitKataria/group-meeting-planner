@@ -23,6 +23,8 @@ import { visuallyHidden } from "@mui/utils";
 import {theme} from '../../theme/color-theme'
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Auth from "../../firebaseApp";
+import {onAuthStateChanged} from "firebase/auth";
 
 
 import {useEffect, useState} from "react";
@@ -243,6 +245,19 @@ export default function EnhancedTable() {
 
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			if (user) {
+				const uid = user.uid;
+				setCurrentUserID(uid);
+				setUpdate(!update);
+			} else {
+				// User is signed out
+				alert("user not logged in!");
+			}
+		});
+	}, []);
+
 	useEffect( () => {
 		async function populateAllMeetingsList() {
 			const currentUserMeetingsID = await getMeetingsBasedOnUserId(currentUserID);
@@ -254,7 +269,8 @@ export default function EnhancedTable() {
 			}));
 			setAllMeetings(response);
 		}
-		populateAllMeetingsList();
+		if (currentUserID !== "")
+			populateAllMeetingsList();
 	}, [update]);
 
 	useEffect( () => {
@@ -432,7 +448,6 @@ export default function EnhancedTable() {
 														sx={{textDecoration: 'underline', cursor: 'pointer'}}
 														id={labelId}
 														scope="row"
-														padding="none"
 														align="right"
 														onClick={(event) => handleRedirectLink(event,
 															meeting._id

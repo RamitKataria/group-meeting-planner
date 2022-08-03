@@ -28,13 +28,10 @@ import { getUserBasedOnFirebaseId, updateUserBasedOnUserId, deleteUserBasedOnUse
 
 export default function Account() {
 	const navigate = useNavigate();
-	
-	// const [inputs, setInputs] = useState({});
-	// const [ics, setIcs] = useState({});
+
 	const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
 	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("");
-	// d515b255-0691-4778-9796-cb4f41840136
 
 	useEffect(() => {
 		onAuthStateChanged(Auth, (user) => {
