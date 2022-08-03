@@ -27,8 +27,7 @@ router.get('/:userId/meetings', async function (req, res, next) {
 		if (!req.user) {
 			return res.status(403).send('Unauthorized');
 		}
-		const user = await usersQueries.getUser({_id: req.params.userId});
-	
+		const user = await usersQueries.getUser({firebaseUID: req.params.userId});
 		return res.send(user[0].meetings);
 	} catch (e) {
 		console.log(e);
@@ -46,13 +45,11 @@ router.get('/:userId/meetings', async function (req, res, next) {
 // 	return res.send(user[0]);
 // });
 
-// using firebaseUID instead (temporary??)
 router.get('/:userId', async function (req, res, next) {
 	if (!req.user) {
 		return res.status(403).send('Unauthorized');
 	}
 	const user = await usersQueries.getUser({"firebaseUID": req.params.userId});
-
 	return res.send(user[0]);
 });
 
