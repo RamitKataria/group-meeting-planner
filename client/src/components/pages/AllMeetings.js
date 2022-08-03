@@ -31,7 +31,7 @@ import {getMeeting} from "../../redux/meetings/service";
 import {
 	getMeetingsBasedOnUserId,
 	updateUserBasedOnUserId,
-	getUserBasedOnUserId
+	getUserBasedOnFirebaseId
 } from "../../redux/users/service";
 
 function descendingComparator(a, b, orderBy) {
@@ -228,7 +228,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136"); // temporary
+	const [currentUserID, setCurrentUserID] = useState("ea0f9ae2-2c9e-40eb-9bae-c40054addcf9"); // temporary
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
 	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
 	const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
@@ -261,7 +261,7 @@ export default function EnhancedTable() {
 		async function populateAllCreatorsList() {
 			const response2 = await Promise.all(allMeetings.map((meeting) => {
 				setMeetingIDToCreatorMap(map => new Map(map.set(meeting._id, meeting.createdBy)));
-				return getUserBasedOnUserId(meeting.createdBy);
+				return getUserBasedOnFirebaseId(meeting.createdBy);
 			}));
 			setAllCreators(response2);
 		}
@@ -272,7 +272,7 @@ export default function EnhancedTable() {
 		const creatorID = meetingIDToCreatorMap.get(meetingID);
 		if (allCreators.length > 0) {
 			const foundCreator = allCreators.find(obj => {
-				return obj._id === creatorID;
+				return obj.firebaseUID === creatorID;
 			})
 			return foundCreator.name;
 		}

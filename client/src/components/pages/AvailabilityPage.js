@@ -20,7 +20,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
-import {getUserBasedOnUserId} from "../../redux/users/service";
+import {getUserBasedOnFirebaseId} from "../../redux/users/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
@@ -42,7 +42,7 @@ export default function AvailabilityPage() {
 		async function populateMeetingInfo() {
 			const response = await getMeeting(meetingId);
 			setMeetingInfo(response);
-			const response2 = await getUserBasedOnUserId(response.createdBy);
+			const response2 = await getUserBasedOnFirebaseId(response.createdBy);
 			setUserInfo(response2);
 		}
 		populateMeetingInfo();

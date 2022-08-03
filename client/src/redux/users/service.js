@@ -14,7 +14,7 @@ export const getMeetingsBasedOnUserId = async (userId) => {
   return response.json();
 };
 
-export const getUserBasedOnUserId = async (userId) => {
+export const getUserBasedOnFirebaseId = async (userId) => {
   const link = url + userId;
   const response = await fetch(link, {
     method: 'GET',
@@ -62,7 +62,7 @@ export const updateUserBasedOnUserId = async (content) => {
 
 export default {
   getMeetingsBasedOnUserId: getMeetingsBasedOnUserId,
-  getUserBasedOnUserId: getUserBasedOnUserId,
+  getUserBasedOnUserId: getUserBasedOnFirebaseId,
   deleteUserBasedOnUserId: deleteUserBasedOnUserId,
   updateUserBasedOnUserId: updateUserBasedOnUserId
 };

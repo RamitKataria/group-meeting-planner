@@ -24,7 +24,7 @@ import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 
-import { getUserBasedOnUserId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
+import { getUserBasedOnFirebaseId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
 
 export default function Account() {
 	const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function Account() {
 
 	useEffect(() => {
 		async function populateAccountInfo() {
-			const response = await getUserBasedOnUserId(currentUserID);
+			const response = await getUserBasedOnFirebaseId(currentUserID);
 			setCurrentUser(response);
 		}
 		if (currentUserID !== "")
