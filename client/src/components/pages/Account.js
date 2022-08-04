@@ -38,9 +38,6 @@ export default function Account() {
 			if (user) {
 				const uid = user.uid;
 				setCurrentUserID(uid);
-			} else {
-				// User is signed out
-				alert("user not logged in!");
 			}
 		});
 	}, []);

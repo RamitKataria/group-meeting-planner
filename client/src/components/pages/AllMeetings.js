@@ -251,9 +251,6 @@ export default function EnhancedTable() {
 				const uid = user.uid;
 				setCurrentUserID(uid);
 				setUpdate(!update);
-			} else {
-				// User is signed out
-				alert("user not logged in!");
 			}
 		});
 	}, []);
