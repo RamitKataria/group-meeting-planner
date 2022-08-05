@@ -18,7 +18,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { getUserBasedOnUserId, getMeetingsBasedOnUserId, } from "../../redux/users/service";
+import { getUserBasedOnFirebaseId, getMeetingsBasedOnUserId, } from "../../redux/users/service";
 import {getMeeting} from "../../redux/meetings/service";
 
 const handleCopiedToClipboard = (id) => {
@@ -42,7 +42,7 @@ export default function RegisteredHome() {
 
 	useEffect(() => {
 		async function populateAccountInfo() {
-			const response = await getUserBasedOnUserId(currentUserID);
+			const response = await getUserBasedOnFirebaseId(currentUserID);
 			setCurrentUser(response);
 		}
 		populateAccountInfo();

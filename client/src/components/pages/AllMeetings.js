@@ -23,6 +23,8 @@ import { visuallyHidden } from "@mui/utils";
 import {theme} from '../../theme/color-theme'
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Auth from "../../firebaseApp";
+import {onAuthStateChanged} from "firebase/auth";
 
 
 import {useEffect, useState} from "react";
@@ -31,7 +33,7 @@ import {getMeeting} from "../../redux/meetings/service";
 import {
 	getMeetingsBasedOnUserId,
 	updateUserBasedOnUserId,
-	getUserBasedOnUserId
+	getUserBasedOnFirebaseId
 } from "../../redux/users/service";
 
 function descendingComparator(a, b, orderBy) {
@@ -228,7 +230,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136"); // temporary
+	const [currentUserID, setCurrentUserID] = useState(""); // temporary
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
 	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
 	const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
@@ -243,6 +245,16 @@ export default function EnhancedTable() {
 
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			if (user) {
+				const uid = user.uid;
+				setCurrentUserID(uid);
+				setUpdate(!update);
+			}
+		});
+	}, []);
+
 	useEffect( () => {
 		async function populateAllMeetingsList() {
 			const currentUserMeetingsID = await getMeetingsBasedOnUserId(currentUserID);
@@ -254,14 +266,15 @@ export default function EnhancedTable() {
 			}));
 			setAllMeetings(response);
 		}
-		populateAllMeetingsList();
+		if (currentUserID !== "")
+			populateAllMeetingsList();
 	}, [update]);
 
 	useEffect( () => {
 		async function populateAllCreatorsList() {
 			const response2 = await Promise.all(allMeetings.map((meeting) => {
 				setMeetingIDToCreatorMap(map => new Map(map.set(meeting._id, meeting.createdBy)));
-				return getUserBasedOnUserId(meeting.createdBy);
+				return getUserBasedOnFirebaseId(meeting.createdBy);
 			}));
 			setAllCreators(response2);
 		}
@@ -272,7 +285,7 @@ export default function EnhancedTable() {
 		const creatorID = meetingIDToCreatorMap.get(meetingID);
 		if (allCreators.length > 0) {
 			const foundCreator = allCreators.find(obj => {
-				return obj._id === creatorID;
+				return obj.firebaseUID === creatorID;
 			})
 			return foundCreator.name;
 		}
@@ -432,7 +445,6 @@ export default function EnhancedTable() {
 														sx={{textDecoration: 'underline', cursor: 'pointer'}}
 														id={labelId}
 														scope="row"
-														padding="none"
 														align="right"
 														onClick={(event) => handleRedirectLink(event,
 															meeting._id

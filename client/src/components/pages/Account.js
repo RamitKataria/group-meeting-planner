@@ -22,41 +22,51 @@ import SaveIcon from '@mui/icons-material/Save';
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
-import { signOut } from "firebase/auth";
+import {onAuthStateChanged, signOut} from "firebase/auth";
 
-import { getUserBasedOnUserId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
+import { getUserBasedOnFirebaseId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
 
 export default function Account() {
 	const navigate = useNavigate();
-	
-	const [inputs, setInputs] = useState({});
-	const [ics, setIcs] = useState({});
+
 	const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
 	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
-	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136");
+	const [currentUserID, setCurrentUserID] = useState("");
 
-	const handleAccountChange = (event) => {
-		const name = event.target.name;
-		const value = event.target.value;
-		setInputs((values) => ({ ...values, [name]: value }));
-	};
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			if (user) {
+				const uid = user.uid;
+				setCurrentUserID(uid);
+			}
+		});
+	}, []);
 
-	const handleIcsChange = (event) => {
-		const name = event.target.name;
-		const value = event.target.value;
-		setIcs((values) => ({[name]: value}));
-	};
+	useEffect(() => {
+		async function populateAccountInfo() {
+			const response = await getUserBasedOnFirebaseId(currentUserID);
+			setCurrentUser(response);
+		}
+		if (currentUserID !== "")
+			populateAccountInfo();
+	}, [currentUserID]);
 
 	const submitAccount = async (event) => {
 		event.preventDefault();
-		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": inputs});
+		const name = event.target.name.value;
+		const email = event.target.email.value; // should user be able to update email??
+		const content = {"name": name};
+		// update user based on firebaseID (temporary?)
+		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": content});
 		setCurrentUser(response);
 		toast("👤 Account Updated!");
 	};
 
 	const submitIcs = async (event) => {
 		event.preventDefault();
-		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": ics});
+		const ics = event.target.ics.value;
+		const content = {"ics": ics};
+		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": content});
 		setCurrentUser(response);
 		toast("📅 Calendar Updated!");
 	};
@@ -86,14 +96,6 @@ export default function Account() {
 	}
 
 	const [currentUser, setCurrentUser] = useState({});
-
-	useEffect(() => {
-		async function populateAccountInfo() {
-			const response = await getUserBasedOnUserId(currentUserID);
-			setCurrentUser(response);
-		}
-		populateAccountInfo();
-	}, []);
 
 	const dispatch = useDispatch();
 
@@ -129,13 +131,12 @@ export default function Account() {
 					<Grid item lg={6} sm={12} >
 						<Paper elevation={8} >
 							<Box sx={{pt: 3, pb: 10, px: 5}}>
-								<form className="form-account">
+								<form className="form-account" onSubmit={submitAccount}>
 									<label htmlFor="name">Name</label>
 									<input
 										name="name"
 										defaultValue={currentUser.name}
 										type="text"
-										onChange={handleAccountChange}
 										required
 									/>
 
@@ -144,35 +145,30 @@ export default function Account() {
 										name="email"
 										defaultValue={currentUser.email}
 										type="email"
-										onChange={handleAccountChange}
 										required
+										disabled
 									/>
 
 									<label htmlFor="oldPassword">Old Password</label>
 									<input
 										name="oldPassword"
-										// defaultValue={currentUser.oldPassword}
 										placeholder="old password"
 										type="password"
-										// onChange={handleAccountChange}
-										required
+										disabled
 									/>
 
 									<label htmlFor="newPassword">New Password</label>
 									<input
 										name="newPassword"
-										// defaultValue={currentUser.newPassword}
 										placeholder="new password"
 										type="password"
-										// onChange={handleAccountChange}
-										required
+										disabled
 									/>
 									<br/>
-									{/*<div className="message-warning">*/}
-									{/*	Incorrect Old Password.*/}
-									{/*</div>*/}
 
-									<Button variant="contained" startIcon={<SaveIcon />} onClick={submitAccount} sx={{mt: 2}}>
+									<Button variant="contained" startIcon={<SaveIcon />}
+											type="submit"
+											sx={{mt: 2}}>
 										Update
 									</Button>
 
@@ -188,13 +184,12 @@ export default function Account() {
 						>
 							<Paper elevation={8}>
 								<Box sx={{pt: 3, pb: 10, px: 5}}>
-									<form className="form-ics" >
+									<form className="form-ics" onSubmit={submitIcs}>
 										<label htmlFor="ics">ICS Link</label>
 										<input
 											name="ics"
 											defaultValue={currentUser.ics}
 											type="text"
-											onChange={handleIcsChange}
 											required
 										/>
 										<Stack
@@ -203,7 +198,7 @@ export default function Account() {
 											alignItems="center"
 											spacing={2}
 										>
-											<Button variant="contained" startIcon={<SaveIcon />} onClick={submitIcs} sx={{mt: 5}}>
+											<Button variant="contained" startIcon={<SaveIcon />} type="submit" sx={{mt: 5}}>
 												Update
 											</Button>
 											<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
