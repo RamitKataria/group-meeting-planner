@@ -20,7 +20,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../Availability/AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
-import {getUserBasedOnUserId} from "../../redux/users/service";
+import {getUserBasedOnFirebaseId} from "../../redux/users/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
@@ -41,7 +41,7 @@ export default function AvailabilityPage() {
 	const [meetingInfo, setMeetingInfo] = useState({});
 	const [creatorInfo, setCreatorInfo] = useState({});
 	const [openGuestDialog, setOpenGuestDialog] = React.useState(false);
-	
+
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
 	const availabilityInfo = useSelector((state) => state.availability);
@@ -53,9 +53,9 @@ export default function AvailabilityPage() {
 			// const response2 = await getUserBasedOnUserId(response.createdBy);
 			// setCreatorInfo(response2);
 			// console.log(response2);
-			
+
 			// TODO: for testing only
-			if (response.creatorDisplayName) { 
+			if (response.creatorDisplayName) {
 				setCreatorInfo({name: response.creatorDisplayName})
 			} else {
 				setCreatorInfo({name: 'Creator'})
@@ -188,7 +188,7 @@ export default function AvailabilityPage() {
 								Temp Guest Dialog
 							</Button>
 						</Box>
-						<AvailabilityPicker 
+						<AvailabilityPicker
 							meetingInfo={meetingInfo}
 							currentUser={currentUser}/>
 					</Grid>
@@ -255,7 +255,7 @@ export default function AvailabilityPage() {
 
 function LoadingBar	() {
 	return (
-		<Stack sx={{ width: '100%', color: '#DF7861'}}> 
+		<Stack sx={{ width: '100%', color: '#DF7861'}}>
 		{/* TODO: use theme */}
 			<LinearProgress color="inherit" />
 		</Stack>
@@ -263,7 +263,7 @@ function LoadingBar	() {
 }
 
 function AvailableTable({listAvailable, listUnavailable}) {
-	
+
 	function AvailRow({cell1, cell2, idx}) {
 		return (
 		<TableRow
@@ -288,7 +288,7 @@ function AvailableTable({listAvailable, listUnavailable}) {
 				tableContent.push([listAvailable[i], ""]);
 			} else if (listUnavailable[i]) {
 				tableContent.push(["", listUnavailable[i]]);
-			} 
+			}
 		}
 
 		return tableContent.map((row, idx) => {
