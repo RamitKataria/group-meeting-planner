@@ -227,7 +227,10 @@ export default function NavBar() {
 						height: '100vh',
 						overflow: 'auto',
 						p: '0',
-						m: '0',
+						ml: theme.spacing(7),
+						[theme.breakpoints.up('sm')]: {
+							ml: theme.spacing(9),
+						},
 					}}
 				>
 					<Routes>
