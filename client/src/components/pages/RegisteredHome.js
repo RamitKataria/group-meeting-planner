@@ -236,9 +236,10 @@ export default function RegisteredHome() {
 										Upcoming Meetings
 									</Typography>
 
-									{allMeetings.length !== 0 ? ([
-										<MeetingCard key="first-card" meeting={allMeetings[0]}></MeetingCard>,
-
+									{allMeetings.length > 0 ? ([
+										<MeetingCard key="first-card" meeting={allMeetings[0]}></MeetingCard>]
+									) : null}
+									{allMeetings.length > 1 ? ([
 										<MeetingCard key="second-card" meeting={allMeetings[1]}></MeetingCard>]
 									) : null}
 									<Box sx={{justifyContent: 'flex-end', display: 'flex'}}>
