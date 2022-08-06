@@ -18,8 +18,10 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { getUserBasedOnFirebaseId, getMeetingsBasedOnUserId, } from "../../redux/users/service";
+import { getUserBasedOnFirebaseId} from "../../redux/users/service";
 import {getMeeting} from "../../redux/meetings/service";
+import {onAuthStateChanged} from "firebase/auth";
+import Auth from "../../firebaseApp";
 
 const handleCopiedToClipboard = (id) => {
 	const link = window.location.host + "/home/" + id;
@@ -35,35 +37,44 @@ const handleCopiedToClipboard = (id) => {
 export default function RegisteredHome() {
 	const navigate = useNavigate();
 	const [linkMeetingID, setLinkMeetingID] = useState("");
-	const [currentUserID, setCurrentUserID] = useState("d515b255-0691-4778-9796-cb4f41840136"); // temporary
+	const [currentUserID, setCurrentUserID] = useState("");
 	const [currentUser, setCurrentUser] = useState({}); // user info
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
-	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
+
+	useEffect(() => {
+		onAuthStateChanged(Auth, (user) => {
+			if (user) {
+				const uid = user.uid;
+				setCurrentUserID(uid);
+			}
+		});
+	}, []);
 
 	useEffect(() => {
 		async function populateAccountInfo() {
 			const response = await getUserBasedOnFirebaseId(currentUserID);
 			setCurrentUser(response);
 		}
-		populateAccountInfo();
-	}, []);
+		if (currentUserID !== "")
+			populateAccountInfo();
+	}, [currentUserID]);
 
 	useEffect( () => {
 		async function populateAllMeetingsList() {
-			const currentUserMeetingsID = await getMeetingsBasedOnUserId(currentUserID);
-			setAllMeetingsID(currentUserMeetingsID);
+			if (Object.keys(currentUser).length !== 0) {
+				const response = await Promise.all(currentUser.meetings.map((meetingID) => {
+					return getMeeting(meetingID);
+				}));
 
-			const response = await Promise.all(currentUserMeetingsID.map((meetingID) => {
-				return getMeeting(meetingID);
-			}));
+				const sortedMeetings = response.sort(
+					(meetingA, meetingB) => new Date(meetingA.dateTimeUpdated) - new Date(meetingB.dateTimeUpdated),
+				);
+				setAllMeetings(sortedMeetings);
+			}
 
-			const sortedMeetings = response.sort(
-				(meetingA, meetingB) => new Date(meetingA.dateTimeUpdated) - new Date(meetingB.dateTimeUpdated),
-			);
-			setAllMeetings(sortedMeetings);
 		}
 		populateAllMeetingsList();
-	}, []);
+	}, [currentUser]);
 
 	const handleRedirectLink = (page) => {
 		navigate(page);
@@ -225,9 +236,10 @@ export default function RegisteredHome() {
 										Upcoming Meetings
 									</Typography>
 
-									{allMeetings.length !== 0 ? ([
-										<MeetingCard key="first-card" meeting={allMeetings[0]}></MeetingCard>,
-
+									{allMeetings.length > 0 ? ([
+										<MeetingCard key="first-card" meeting={allMeetings[0]}></MeetingCard>]
+									) : null}
+									{allMeetings.length > 1 ? ([
 										<MeetingCard key="second-card" meeting={allMeetings[1]}></MeetingCard>]
 									) : null}
 									<Box sx={{justifyContent: 'flex-end', display: 'flex'}}>
