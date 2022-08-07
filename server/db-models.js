@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI);
+// mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect("mongodb+srv://" + process.env.ATLAS_USERNAME + ":" + process.env.ATLAS_PASSWORD + "@" + process.env.DB_CLUSTER + ".mongodb.net/?retryWrites=true&w=majority",
+    {dbName: process.env.DB_NAME});
 
 
 const MeetingSchema = new mongoose.Schema({
@@ -29,4 +31,4 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 
-module.export = { Meeting, User }
+module.exports = { Meeting, User }

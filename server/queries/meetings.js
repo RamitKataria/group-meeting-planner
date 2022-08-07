@@ -1,4 +1,4 @@
-const Meeting = require('../model/meeting');
+const Meeting = require('../db-models');
 
 const meetingsQueries = {
     // get one/all meetings

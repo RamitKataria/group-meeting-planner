@@ -18,22 +18,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(validateFirebaseIdToken);
+// app.use(validateFirebaseIdToken);
 
 
-main().catch(err => console.log(err));
-
-async function main() {
-	console.log("connecting :)");
-	await mongoose.connect("mongodb+srv://" + process.env.ATLAS_USERNAME + ":" + process.env.ATLAS_PASSWORD + "@" + process.env.DB_CLUSTER + ".mongodb.net/?retryWrites=true&w=majority",
-		{dbName: process.env.DB_NAME});
-	// await mongoose.connect('mongodb://localhost:27017/sandbox');
-
-	// await generateData();
-
-}
-
-app.use('/api', apiRouter);
+app.use('/api', [validateFirebaseIdToken, apiRouter]);
 
 if (process.env.SERVE_STATIC) {
 	app.use(express.static(path.join(__dirname, '../client/build')));
