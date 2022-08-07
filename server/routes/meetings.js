@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {v4: uuidv4} = require('uuid');
+import { nanoid } from 'nanoid';
 
 let meetingsData = require('../data/meetings');
 let items = meetingsData.items;
@@ -82,7 +82,7 @@ router.get('/:meetingId', async function (req, res, next) {
 
 router.post('/', async function (req, res) {
 	if (req.body) {
-		const newMeeting = {...req.body, _id: uuidv4()};
+		const newMeeting = {...req.body, _id: nanoid()};
 		await meetingsQueries.insertOneMeeting(newMeeting);
 		return res.send(newMeeting);
 	}
