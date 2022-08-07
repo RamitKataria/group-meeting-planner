@@ -1,6 +1,8 @@
 # Meeting Planner
 
-## Project Description
+## 1 - Project Description
+
+> *TODO: change to 2-3 sentence description of app*
 
 ### Who is it for?
 
@@ -31,7 +33,9 @@ Allow users to set up meetings schedules & automatically fill in availability by
 - Sending notifications once the meeting time is finalized
 - Display event information on event page (eg. links, embedded map)
 
-## Project task requirements
+## 2 - Goals Checklist
+
+> *TODO: statement of goals + indication of what is completed*
 
 ### Minimal requirements
 
@@ -56,27 +60,28 @@ Allow users to set up meetings schedules & automatically fill in availability by
 4. As a registered user, I want to be able to change the meeting span after creating it by logging into the account I used to create it
 5. As a meeting organizer, I want to be able to remove a user from a meeting
 
-## Minimal Requirements Breakdown
+## 3 - Tech Used from Class
 
-**Requirement 1:** As a meeting organizer, I want to be able to create a new meeting with a given span (possible days/time) and get a unique link for it
+> *TODO: Description, 2-3 sentences each, on how tech from Units 1-5 are used in the project.
+> (Ideally) Usage of tech includes best practices. Code is clean and clear. Description of usage explains in-depth how the technology has made the app better. Possibly a mention of how it compares to other similar tech. Documentation demonstrates a solid understanding of the tech learned throughout the term, and its purpose in creating a production-level full-stack web application.*
 
-- Create a form for inputting dates and times, to be used for selecting span
-- Create a webpage where the meeting organizer can enter the meeting title and span
-- Create a Submit button to send the request (meeting title and span) to the server
-- Store this information in the database with a randomly generated meeting ID and send this key in the response
-- Show the user a link containing this meeting ID so they they can send it to the meeting attendees
+ - Unit 1 - HTML, CSS, JS
+ - Unit 2 - React & Redux
+ - Unit 3 - Node & Express
+ - Unit 4 - NoSQL with MongoDB
+ - Unit 5 - Release Engineering 
 
-**Requirement 2:** As a meeting attendee, I want to be able to go to the link shared by the meeting organizer and access meeting title and notes
+## 4 - Above & Beyond Functionalities
 
-- Create a webpage for displaying meeting info and already entered availability
-- Server should correctly redirect each unique link to its corresponding meeting page
-- Server should serve “incorrect meeting ID” page for invalid meeting ID
+> *TODO: descriptions for each point*
 
-## Sketch Prototypes
+ - Fully Responsive
+ - Using External APIs (firebase)
+ - Did research for UI/UX (?????)
+ - Support multiple timezones
 
-![Image containing rough sketch prototypes](SketchPrototypes.png)
+
+## 5 - Next Steps
 
 
----
-###### *Footnotes*
-*1. <a id="#foot1"></a> A user of can be either a guest or a registered user. A guest can access the features listed in Minimal Requirements, whereas a registered user can access all implemented features.*
+## 6 - List of Contributions
