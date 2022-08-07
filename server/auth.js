@@ -29,6 +29,11 @@ const auth = getAuth();
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
 const validateFirebaseIdToken = async (req, res, next) => {
+    if (!req.secure) {
+        console.log('Unencrypted request')
+        return next();
+    }
+
     if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
         !(req.cookies && req.cookies.__session)) {
         console.error(
