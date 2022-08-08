@@ -59,7 +59,7 @@ router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 	}
 });
 
-router.get('/:meetingID', async function (req, res, next) {
+router.get('/:meetingID', async function (req, res) {
 	try {
 		const meeting = await Meeting.findOne({id: req.params.meetingID});
 		const populatedMeeting = await populateUsers(meeting)

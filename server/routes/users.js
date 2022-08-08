@@ -15,7 +15,7 @@ async function getUserOrInit(firebaseUID) {
 	return user;
 }
 
-router.get('/:userID/meetings', confirmAuthenticated, async function (req, res, next) {
+router.get('/:userID/meetings', confirmAuthenticated, async function (req, res) {
 	try {
 		const user = await getUserOrInit(req.params.userID);
 		return res.send(user.meetings);
@@ -25,7 +25,7 @@ router.get('/:userID/meetings', confirmAuthenticated, async function (req, res, 
 	}
 });
 
-router.get('/:userID', confirmAuthenticated, async function (req, res, next) {
+router.get('/:userID', confirmAuthenticated, async function (req, res) {
 	try {
 		const user = await getUserOrInit(req.params.userID);
 		return res.send(removeBuiltInFields(user));
@@ -84,7 +84,7 @@ router.put('/:userID/calendar-link', confirmAuthenticated, async function (req, 
 	}
 });
 
-router.delete('/:userID', confirmAuthenticated, async function (req, res, next) {
+router.delete('/:userID', confirmAuthenticated, async function (req, res) {
 	try {
 		await deleteUserInFirebase(req.params.firebaseUID);
 		await User.deleteOne({firebaseUID: req.params.firebaseUID});
