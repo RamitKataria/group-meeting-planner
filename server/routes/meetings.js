@@ -2,7 +2,6 @@ const { nanoid } = require('nanoid');
 const express = require('express');
 const router = express.Router();
 
-const meetingsQueries = require("../queries/meetings");
 const {confirmAuthenticated} = require("../auth");
 const {Meeting, removeBuiltInFields} = require("../db-models");
 
