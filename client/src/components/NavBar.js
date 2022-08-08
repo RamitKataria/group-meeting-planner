@@ -244,7 +244,6 @@ export default function NavBar() {
 								<Route key="registered-home-route" exact path="/home" element={<RegisteredHome/>}/>,
 								<Route key="all-meetings-route" exact path="/all-meetings" element={<AllMeetings/>}/>,
 								<Route key="account-route" exact path="/account" element={<Account/>}/>,
-								<Route key="sign-in-route" exact path="/signin" element={ <Navigate to="/" /> }/>
 							]) :
 						[
 							<Route key="guest-home-root-route" exact path="/" element={<GuestHome/>}/>,
