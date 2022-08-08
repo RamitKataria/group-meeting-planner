@@ -1,6 +1,6 @@
+const { nanoid } = require('nanoid');
 const express = require('express');
 const router = express.Router();
-import { nanoid } from 'nanoid';
 
 let meetingsData = require('../data/meetings');
 let items = meetingsData.items;
