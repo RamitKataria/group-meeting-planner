@@ -51,7 +51,7 @@ function MeetingCreation() {
 
     useEffect(() => {
 		onAuthStateChanged(Auth, (user) => {
-			dispatch(setCurrUser(user));
+			dispatch(setCurrUser(user.toJSON()));
 		})
 	}, []);
 

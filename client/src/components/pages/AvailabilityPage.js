@@ -50,15 +50,11 @@ export default function AvailabilityPage() {
 		async function populateMeetingInfo() {
 			const response = await getMeeting(meetingId);
 			setMeetingInfo(response);
-			// const response2 = await getUserBasedOnUserId(response.createdBy);
-			// setCreatorInfo(response2);
-			// console.log(response2);
 
-			// TODO: for testing only
-			if (response.creatorDisplayName) {
-				setCreatorInfo({name: response.creatorDisplayName})
+			if (response.createdByInfo) {
+				setCreatorInfo({name: response.createdByInfo.name})
 			} else {
-				setCreatorInfo({name: 'Creator'})
+				setCreatorInfo({name: 'Missing'})
 			}
 			setLoading(false);
 		}
@@ -122,9 +118,11 @@ export default function AvailabilityPage() {
 		setOpenGuestDialog(false);
 	};
 
+	if (loading) {
+		return <LoadingBar/>
+	}
 	return (
 		<div >
-			{loading && <LoadingBar/>}
 			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 				<Typography
 					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}

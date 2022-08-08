@@ -42,7 +42,6 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 		return res.send(updatedmeeting);
 	} 
 	catch (e) {
-		console.log(e);
 		res.status(400).send("Internal Server Error\n");
 	}
 });
@@ -63,7 +62,8 @@ router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 router.get('/:meetingID', async function (req, res, next) {
 	try {
 		const meeting = await Meeting.findOne({id: req.params.meetingID});
-		return res.send(removeBuiltInFields(meeting));
+		const populatedMeeting = await populateUsers(meeting)
+		return res.send(removeBuiltInFields(populatedMeeting));
 	} catch (e) {
 		console.log(e);
 		res.status(400).send("Internal Server Error");
@@ -79,5 +79,45 @@ router.post('/', async function (req, res) {
 	}
 	return res.status(400).send({message: 'Invalid body'});
 })
+
+
+/**
+ * Replace all user ids with user objects 
+ */
+async function populateUsers(meeting) {
+	var userAvailability = []
+	var createdBy = {}
+
+	try {
+		userAvailability = await Promise.all(
+			meeting.userAvailability.map(async (availEntry) => {
+				const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
+				
+				return {
+					...availEntry,
+					userInfo: {
+						name: user.name,
+						email: user.email,
+					},
+				}
+			})
+		)
+		
+		createdBy = await User.findOne({"firebaseUID": meeting.createdBy}).lean();
+		
+		return {
+			...meeting,
+			createdByInfo: {
+				name: createdBy.name,
+				email: createdBy.email,
+			},
+			userAvailability: userAvailability,
+		}
+	} catch (e) {
+		console.log('Failed to populate users in meetingInfo\n');
+		console.log(e);
+		return meeting;
+	}
+}
 
 module.exports = router;
