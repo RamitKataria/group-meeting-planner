@@ -113,8 +113,8 @@ async function populateUsers(meeting) {
 			})
 		)
 		
-		createdBy = await usersQueries.getOneLeanUser({"firebaseUID": createdBy}); 
-
+		createdBy = await usersQueries.getOneLeanUser({"firebaseUID": meeting.createdBy}); 
+		
 		return {
 			...meeting,
 			createdByInfo: {
@@ -124,7 +124,8 @@ async function populateUsers(meeting) {
 			userAvailability: userAvailability,
 		}
 	} catch (e) {
-		console.log('Failed to populate users in meetingInfo');
+		console.log('Failed to populate users in meetingInfo\n');
+		console.log(e);
 		return meeting;
 	}
 }
