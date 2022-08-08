@@ -71,7 +71,7 @@ router.patch('/:meetingId', async function (req, res) {
 
 router.get('/:meetingId', async function (req, res, next) {
 	try {
-		const meeting = await meetingsQueries.getOneLeanMeeting({"_id": req.params.meetingId});
+		const meeting = await Meeting.findOne({"_id": req.params.meetingId}).lean();
 		
 		const populatedMeeting = await populateUsers(meeting)
 		// console.log(populatedMeeting)
@@ -101,7 +101,7 @@ async function populateUsers(meeting) {
 	try {
 		userAvailability = await Promise.all(
 			meeting.userAvailability.map(async (availEntry) => {
-				const user = await usersQueries.getOneLeanUser({"firebaseUID": availEntry.user});
+				const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
 				
 				return {
 					...availEntry,
@@ -113,7 +113,7 @@ async function populateUsers(meeting) {
 			})
 		)
 		
-		createdBy = await usersQueries.getOneLeanUser({"firebaseUID": meeting.createdBy}); 
+		createdBy = await User.findOne({"firebaseUID": meeting.createdBy}).lean();
 		
 		return {
 			...meeting,
