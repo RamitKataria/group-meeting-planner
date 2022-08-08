@@ -118,9 +118,11 @@ export default function AvailabilityPage() {
 		setOpenGuestDialog(false);
 	};
 
+	if (loading) {
+		return <LoadingBar/>
+	}
 	return (
 		<div >
-			{loading && <LoadingBar/>}
 			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
 				<Typography
 					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
