@@ -49,7 +49,6 @@ router.post("/availability/:meetingId/:userId", async function(req, res) {
 		return res.send(updatedmeeting);
 	} 
 	catch (e) {
-		console.log(e);
 		res.status(400).send("Internal Server Error\n");
 	}
 })
@@ -72,9 +71,12 @@ router.patch('/:meetingId', async function (req, res) {
 
 router.get('/:meetingId', async function (req, res, next) {
 	try {
-		const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
-
-		return res.send(meeting[0]);
+		const meeting = await meetingsQueries.getOneLeanMeeting({"_id": req.params.meetingId});
+		
+		const populatedMeeting = await populateUsers(meeting)
+		// const populatedMeeting = meeting
+		console.log(populatedMeeting)
+		return res.send(populatedMeeting);
 	} catch (e) {
 		res.status(400).send("Internal Server Error");
 	}
@@ -88,5 +90,38 @@ router.post('/', async function (req, res) {
 	}
 	return res.status(400).send({message: 'Invalid body'});
 })
+
+
+/**
+ * Replace all user ids with user objects 
+ */
+async function populateUsers(meeting) {
+	var userAvailability = []
+	// TODO: query creator as well
+
+	try {
+		userAvailability = await Promise.all(
+			meeting.userAvailability.map(async (availEntry) => {
+				const user = await usersQueries.getOneLeanUser({"firebaseUID": availEntry.user});
+				
+				return {
+					...availEntry,
+					userInfo: {
+						name: user.name,
+						email: user.email,
+					},
+				}
+			})
+		)
+
+		return {
+			...meeting,
+			userAvailability: userAvailability,
+		}
+	} catch (e) {
+		console.log('Error when populating users');
+		throw e;
+	}
+}
 
 module.exports = router;
