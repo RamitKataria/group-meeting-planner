@@ -35,6 +35,8 @@ import {
 	updateUserBasedOnUserId,
 	getUserBasedOnFirebaseId
 } from "../../redux/users/service";
+import Stack from "@mui/material/Stack";
+import {LinearProgress} from "@mui/material";
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -229,6 +231,14 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired
 };
 
+function LoadingBar	() {
+	return (
+		<Stack sx={{ width: '100%', color: '#DF7861'}}>
+			<LinearProgress color="inherit" />
+		</Stack>
+	)
+}
+
 export default function EnhancedTable() {
 	const [currentUserID, setCurrentUserID] = useState(""); // temporary
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
@@ -242,6 +252,7 @@ export default function EnhancedTable() {
 	const [orderBy, setOrderBy] = useState("meetingId");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [loading, setLoading] = useState(true);
 
 	const navigate = useNavigate();
 
@@ -277,8 +288,10 @@ export default function EnhancedTable() {
 				return getUserBasedOnFirebaseId(meeting.createdBy);
 			}));
 			setAllCreators(response2);
+			setLoading(false);
 		}
 		populateAllCreatorsList();
+
 	}, [allMeetings]);
 
 	const returnCreatorName = (meetingID) => {
@@ -290,6 +303,7 @@ export default function EnhancedTable() {
 			return foundCreator.name;
 		}
 		return "";
+
 	}
 
 	const handleRequestSort = (event, property) => {
@@ -372,115 +386,112 @@ export default function EnhancedTable() {
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
-	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allMeetings.length) : 0;
-
 	return (
 		<div className="">
 			<ThemeProvider theme={theme}>
-				<Typography
-					sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
-					variant="h4"
-					id="tableTitle"
-					component="div"
-				>
-					All Meetings
-				</Typography>
+				{loading ?
+					(<LoadingBar/>) :
+					[<Typography
+						sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
+						variant="h4"
+						id="tableTitle"
+						component="div"
+					>All Meetings</Typography>,
 
-				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
-					<Paper sx={{width: "100%", mb: 2}}>
-						<EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete}/>
-						<ToastContainer
-							position="top-right"
-							autoClose={1000}
-							hideProgressBar
-							newestOnTop={false}
-							closeOnClick
-							rtl={false}
-							pauseOnFocusLoss
-							draggable
-							pauseOnHover
-						/>
-						<TableContainer>
-							<Table
-								sx={{minWidth: 750}}
-								aria-labelledby="tableTitle"
-							>
-								<EnhancedTableHead
-									numSelected={selected.length}
-									order={order}
-									orderBy={orderBy}
-									onSelectAllClick={handleSelectAllClick}
-									onRequestSort={handleRequestSort}
-									rowCount={allMeetings.length}
-								/>
-								<TableBody>
-									{stableSort(allMeetings, getComparator(order, orderBy))
-										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-										.map((meeting, index) => {
-											const isItemSelected = isSelected(meeting._id);
-											const labelId = `enhanced-table-checkbox-${index}`;
+					<Box sx={{mx: "auto", my: 5, width: "70%"}}>
+						<Paper sx={{width: "100%", mb: 2}}>
+							<EnhancedTableToolbar numSelected={selected.length} handleDelete={handleDelete}/>
+							<ToastContainer
+								position="top-right"
+								autoClose={1000}
+								hideProgressBar
+								newestOnTop={false}
+								closeOnClick
+								rtl={false}
+								pauseOnFocusLoss
+								draggable
+								pauseOnHover
+							/>
+							<TableContainer>
+								<Table
+									sx={{minWidth: 750}}
+									aria-labelledby="tableTitle"
+								>
+									<EnhancedTableHead
+										numSelected={selected.length}
+										order={order}
+										orderBy={orderBy}
+										onSelectAllClick={handleSelectAllClick}
+										onRequestSort={handleRequestSort}
+										rowCount={allMeetings.length}
+									/>
+									<TableBody>
+										{stableSort(allMeetings, getComparator(order, orderBy))
+											.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+											.map((meeting, index) => {
+												const isItemSelected = isSelected(meeting._id);
+												const labelId = `enhanced-table-checkbox-${index}`;
 
-											return (
-												<StyledTableRow
-													hover
-													role="checkbox"
-													aria-checked={isItemSelected}
-													tabIndex={-1}
-													key={index}
-													selected={isItemSelected}
-												>
-													<StyledTableCell padding="checkbox">
-														<Checkbox
-															color="primary"
-															checked={isItemSelected}
-															onClick={(event) => handleClick(event, meeting._id)}
-															inputProps={{
-																"aria-labelledby": labelId
-															}}
-														/>
-													</StyledTableCell>
-													<StyledTableCell
-														sx={{textDecoration: 'underline', cursor: 'pointer'}}
-														id={labelId}
-														scope="row"
-														align="right"
-														onClick={(event) => handleRedirectLink(event,
-															meeting._id
-														)}
+												return (
+													<StyledTableRow
+														hover
+														role="checkbox"
+														aria-checked={isItemSelected}
+														tabIndex={-1}
+														key={index}
+														selected={isItemSelected}
 													>
-														{meeting.name}
-													</StyledTableCell>
-													<StyledTableCell
+														<StyledTableCell padding="checkbox">
+															<Checkbox
+																color="primary"
+																checked={isItemSelected}
+																onClick={(event) => handleClick(event, meeting._id)}
+																inputProps={{
+																	"aria-labelledby": labelId
+																}}
+															/>
+														</StyledTableCell>
+														<StyledTableCell
+															sx={{textDecoration: 'underline', cursor: 'pointer'}}
+															id={labelId}
+															scope="row"
+															align="right"
+															onClick={(event) => handleRedirectLink(event,
+																meeting._id
+															)}
+														>
+															{meeting.name}
+														</StyledTableCell>
+														<StyledTableCell
 
-													align="right">{dateTimeFormat.format(new Date(meeting.dateTimeUpdated))}</StyledTableCell>
-													<StyledTableCell align="right">{returnCreatorName(meeting._id)}</StyledTableCell>
+														align="right">{dateTimeFormat.format(new Date(meeting.dateTimeUpdated))}</StyledTableCell>
+														<StyledTableCell align="right">{returnCreatorName(meeting._id)}</StyledTableCell>
 
-													<StyledTableCell
-														sx={{textDecoration: 'underline', cursor: 'pointer'}}
-														align="right"
-														onClick={() => handleCopiedToClipboard(meeting._id)}
-													>
-														{window.location.host + "/home/" + meeting._id}
-													</StyledTableCell>
-												</StyledTableRow>
-											);
-										})}
-								</TableBody>
-							</Table>
-						</TableContainer>
-						<TablePagination
-							rowsPerPageOptions={[5, 10, 25]}
-							component="div"
-							count={allMeetings.length}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							onPageChange={handleChangePage}
-							onRowsPerPageChange={handleChangeRowsPerPage}
-						/>
-					</Paper>
-				</Box>
+														<StyledTableCell
+															sx={{textDecoration: 'underline', cursor: 'pointer'}}
+															align="right"
+															onClick={() => handleCopiedToClipboard(meeting._id)}
+														>
+															{window.location.host + "/home/" + meeting._id}
+														</StyledTableCell>
+													</StyledTableRow>
+												);
+											})}
+									</TableBody>
+								</Table>
+							</TableContainer>
+							<TablePagination
+								rowsPerPageOptions={[5, 10, 25]}
+								component="div"
+								count={allMeetings.length}
+								rowsPerPage={rowsPerPage}
+								page={page}
+								onPageChange={handleChangePage}
+								onRowsPerPageChange={handleChangeRowsPerPage}
+							/>
+						</Paper>
+					</Box>]
+				}
 			</ThemeProvider>
 		</div>
 	);

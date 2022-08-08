@@ -1,4 +1,3 @@
-import "../../../css/popbox.css";
 import React, {useState} from "react";
 import {Button, Link, TextField} from "@mui/material";
 import Auth from "../../../firebaseApp";

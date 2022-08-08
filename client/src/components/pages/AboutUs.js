@@ -2,7 +2,7 @@ import "../../css/about-us.css";
 
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import {Typography} from "@mui/material";
-import React, {useEffect} from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { Fade } from "react-awesome-reveal";
 
@@ -63,9 +63,9 @@ export default function AboutUs() {
 								 alt="sophie-gif"/>
 							<h3>Sophie Chai</h3>
 							<p className="right-description">Nulla dignissim, quam at consequat iaculis, risus felis vestibulum augue, eget sodales sapien ante in leo. Pellentesque tincidunt pellentesque augue. Pellentesque vestibulum, elit vitae mattis luctus, ligula nisi mollis enim, non viverra nibh ex eu magna. Cras eu semper neque, non commodo libero. Nunc sit amet volutpat sem, vitae tristique tortor.</p>
-							<a href="#" className="icon"><FaLinkedin/></a>
-							<a href="#" className="icon"><FaGithub/></a>
-							<a href="#" className="icon"><FaEnvelope/></a>
+							<a href="https://www.linkedin.com/in/sophie-chai-9115ba161/" className="icon"><FaLinkedin/></a>
+							<a href="https://github.com/sophiechai" className="icon"><FaGithub/></a>
+							<a href="mailto:chaisuefeisophie@gmail.com" className="icon"><FaEnvelope/></a>
 							</div>
 						</div>
 
