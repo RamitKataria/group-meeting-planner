@@ -372,10 +372,6 @@ export default function EnhancedTable() {
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
-	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allMeetings.length) : 0;
-
 	return (
 		<div className="">
 			<ThemeProvider theme={theme}>

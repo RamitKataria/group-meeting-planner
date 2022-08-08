@@ -19,7 +19,6 @@ import Stack from "@mui/material/Stack";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
 import {onAuthStateChanged, signOut} from "firebase/auth";
@@ -56,9 +55,8 @@ export default function Account() {
 	const submitAccount = async (event) => {
 		event.preventDefault();
 		const name = event.target.name.value;
-		const email = event.target.email.value; // should user be able to update email??
+		const email = event.target.email.value;
 		const content = {"name": name};
-		// update user based on firebaseID (temporary?)
 		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": content});
 		setCurrentUser(response);
 		toast("👤 Account Updated!");
@@ -98,8 +96,6 @@ export default function Account() {
 	}
 
 	const [currentUser, setCurrentUser] = useState({});
-
-	const dispatch = useDispatch();
 
 	return (
 		<div>

@@ -117,9 +117,6 @@ export default function RegisteredHome() {
 					<Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
 						{props.meeting.name}
 					</Typography>
-					{/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
-					{/*	adjective*/}
-					{/*</Typography>*/}
 					<Typography variant="body2" color="text.secondary">
 						{props.meeting.description}
 					</Typography>
@@ -135,16 +132,10 @@ export default function RegisteredHome() {
 		<ThemeProvider theme={theme}>
 			<Box
 				sx={{
-					// backgroundImage: 'url(https://images.unsplash.com/photo-1489769002049-ccd828976a6c?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=john-mark-arnold-ti4kGLkGgmU-unsplash.jpg)',
-					// backgroundRepeat: 'no-repeat',
-					// backgroundPosition: 'center center',
-					// backgroundSize: 'cover',
-					// height: '100%',
 					backgroundColor: (theme) =>
 						theme.palette.mode === 'light'
 							? theme.palette.grey[100]
-							: theme.palette.grey[900],
-							// backgroundSize: 'cover',
+							: theme.palette.grey[900]
 				}}
 			>
 				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
