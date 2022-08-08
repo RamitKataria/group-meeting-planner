@@ -18,7 +18,7 @@ async function getUserOrInit(firebaseUID) {
 router.get('/:userID/meetings', confirmAuthenticated, async function (req, res, next) {
 	try {
 		const user = await getUserOrInit(req.params.userID);
-		return res.send(user.meetings.map(m => m.id));
+		return res.send(user.meetings);
 	} catch (e) {
 		console.log(e);
 		return res.status(404).send('Not found');
