@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { validateFirebaseIdToken, deleteUserInFirebase, confirmAuthenticated} = require('../auth')
-const { User } = require("../db-models");
+const { Meeting, User } = require("../db-models");
 
 
 async function getUserOrInit(firebaseUID) {
@@ -46,6 +46,41 @@ router.patch('/:userID', confirmAuthenticated, async function (req, res) {
 	} catch (e) {
 		console.log(e);
 		return res.status(404).send('Not found');
+	}
+});
+
+router.post('/:userID/meetings', confirmAuthenticated, async function (req, res) {
+	try {
+		const newMeetingID = req.body;
+		if (typeof newMeetingID !== "string") {
+			return res.status(400).send('Body is not a string');
+		}
+		if (!Meeting.exists({_id: newMeetingID})) {
+			return res.status(400).send('Meeting does not exist');
+		}
+		const user = await getUserOrInit(req.params.userID);
+		user.meetings.push(newMeetingID);
+		return res.status(200).send(newMeetingID);
+	} catch (e) {
+		return res.status(500).send('Internal server error');
+	}
+});
+
+router.put('/:userID/calendar-link', confirmAuthenticated, async function (req, res) {
+	try {
+		const newLink = req.body;
+		if (typeof newLink !== "string") {
+			return res.status(400).send('Body is not a string');
+		}
+		// TODO: validate file
+		// if (!isValid(newLink)) {
+		// 	return res.status(400).send('Could not read file');
+		// }
+		const user = await getUserOrInit(req.params.userID);
+		user.ics = newLink;
+		return res.status(200).send('Calendar link set');
+	} catch (e) {
+		return res.status(500).send('Internal server error');
 	}
 });
 
