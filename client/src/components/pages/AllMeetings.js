@@ -284,7 +284,7 @@ export default function EnhancedTable() {
 	useEffect( () => {
 		async function populateAllCreatorsList() {
 			const response2 = await Promise.all(allMeetings.map((meeting) => {
-				setMeetingIDToCreatorMap(map => new Map(map.set(meeting._id, meeting.createdBy)));
+				setMeetingIDToCreatorMap(map => new Map(map.set(meeting.id, meeting.createdBy)));
 				return getUserBasedOnFirebaseId(meeting.createdBy);
 			}));
 			setAllCreators(response2);
@@ -314,7 +314,7 @@ export default function EnhancedTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			const newSelecteds = allMeetings.map((n) => n._id);
+			const newSelecteds = allMeetings.map((n) => n.id);
 			setSelected(newSelecteds);
 			return;
 		}
@@ -429,7 +429,7 @@ export default function EnhancedTable() {
 										{stableSort(allMeetings, getComparator(order, orderBy))
 											.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 											.map((meeting, index) => {
-												const isItemSelected = isSelected(meeting._id);
+												const isItemSelected = isSelected(meeting.id);
 												const labelId = `enhanced-table-checkbox-${index}`;
 
 												return (
@@ -445,7 +445,7 @@ export default function EnhancedTable() {
 															<Checkbox
 																color="primary"
 																checked={isItemSelected}
-																onClick={(event) => handleClick(event, meeting._id)}
+																onClick={(event) => handleClick(event, meeting.id)}
 																inputProps={{
 																	"aria-labelledby": labelId
 																}}
@@ -457,7 +457,7 @@ export default function EnhancedTable() {
 															scope="row"
 															align="right"
 															onClick={(event) => handleRedirectLink(event,
-																meeting._id
+																meeting.id
 															)}
 														>
 															{meeting.name}
@@ -465,14 +465,14 @@ export default function EnhancedTable() {
 														<StyledTableCell
 
 														align="right">{dateTimeFormat.format(new Date(meeting.dateTimeUpdated))}</StyledTableCell>
-														<StyledTableCell align="right">{returnCreatorName(meeting._id)}</StyledTableCell>
+														<StyledTableCell align="right">{returnCreatorName(meeting.id)}</StyledTableCell>
 
 														<StyledTableCell
 															sx={{textDecoration: 'underline', cursor: 'pointer'}}
 															align="right"
-															onClick={() => handleCopiedToClipboard(meeting._id)}
+															onClick={() => handleCopiedToClipboard(meeting.id)}
 														>
-															{window.location.host + "/home/" + meeting._id}
+															{window.location.host + "/home/" + meeting.id}
 														</StyledTableCell>
 													</StyledTableRow>
 												);

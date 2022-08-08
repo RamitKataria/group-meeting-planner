@@ -45,7 +45,7 @@ function MeetingCreation() {
         if (addMeeting.state === REQUEST_STATE.FULFILLED) {
             console.log(addMeeting.response);
             dispatch(resetAddMeeting());
-            navigate('../home/' + addMeeting.response._id);
+            navigate('../home/' + addMeeting.response.id);
         }
     }, [addMeeting, dispatch, navigate])
 

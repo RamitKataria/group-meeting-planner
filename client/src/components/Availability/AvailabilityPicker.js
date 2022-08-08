@@ -73,7 +73,7 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
     function changeAvailSlots(args) {
         dispatch(setUserSlots(args));
         dispatch(updateAvailAsync({
-            meetingId: meetingInfo._id,
+            meetingId: meetingInfo.id,
             userId: currentUser.uid,
             body: {
                 user: currentUser.uid,

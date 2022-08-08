@@ -5,6 +5,11 @@ mongoose.connect("mongodb+srv://" + process.env.ATLAS_USERNAME + ":" + process.e
 
 
 const MeetingSchema = new mongoose.Schema({
+    id: {
+      type: String,
+      index: true,
+      unique: true
+    },
     name: {
         type: String,
         required: [true, 'Why no meeting name?']
@@ -26,9 +31,19 @@ const Meeting = mongoose.model('Meeting', MeetingSchema);
 const UserSchema = new mongoose.Schema({
     ics: String,
     meetings: [ { type: String, ref: 'Meeting' }],
-    firebaseUID: String
+    firebaseUID: {
+        type: String,
+        index: true,
+        unique: true
+    }
 });
 
 const User = mongoose.model('User', UserSchema);
 
-module.exports = { Meeting, User }
+function removeBuiltInFields(obj) {
+    const objJSON = obj.toJSON();
+    ['_id', '__v'].forEach(i => delete objJSON[i]);
+    return objJSON;
+}
+
+module.exports = { Meeting, User, removeBuiltInFields }

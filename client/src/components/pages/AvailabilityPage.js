@@ -83,7 +83,7 @@ export default function AvailabilityPage() {
 	const dispatch = useDispatch();
 
 	const handleCopiedToClipboard = () => {
-		const link = window.location.host + "/home/" + meetingInfo._id;
+		const link = window.location.host + "/home/" + meetingInfo.id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
 				toast("🗒️ Copied to clipboard!");

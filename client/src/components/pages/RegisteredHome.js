@@ -111,7 +111,7 @@ export default function RegisteredHome() {
 						<Typography sx={{ fontSize: 14,}} color="text.secondary" gutterBottom>
 							{dateTimeFormat.format(new Date(props.meeting.dateTimeUpdated))}
 						</Typography>
-						<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={() => handleCopiedToClipboard(props.meeting._id)}></ContentCopyIcon>
+						<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={() => handleCopiedToClipboard(props.meeting.id)}></ContentCopyIcon>
 					</Box>
 
 					<Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
@@ -122,7 +122,7 @@ export default function RegisteredHome() {
 					</Typography>
 				</CardContent>
 				<CardActions>
-					<Button size="small" onClick={() => handleRedirectLink("./" + props.meeting._id)}>Go to Meeting</Button>
+					<Button size="small" onClick={() => handleRedirectLink("./" + props.meeting.id)}>Go to Meeting</Button>
 				</CardActions>
 			</Card>
 		);

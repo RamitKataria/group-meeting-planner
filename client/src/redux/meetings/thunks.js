@@ -26,7 +26,7 @@ export const deleteMeetingAsync = createAsyncThunk(
 export const updateMeetingAsync = createAsyncThunk(
     actionTypes.UPDATE_MEETING,
     async (meeting) => {
-        return await MeetingService.updateMeeting(meeting._id, {meeting});
+        return await MeetingService.updateMeeting(meeting.id, {meeting});
     }
 );
 
