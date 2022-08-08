@@ -29,16 +29,20 @@ const auth = getAuth();
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
 const validateFirebaseIdToken = async (req, res, next) => {
+    if (process.env.NODE_ENV === 'production' && !req.secure) {
+        console.log('Unencrypted request')
+        return next();
+    }
+
     if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
         !(req.cookies && req.cookies.__session)) {
-        console.error(
+        console.log(
             'No Firebase ID token was passed as a Bearer token in the Authorization header.',
             'Make sure you authorize your request by providing the following HTTP header:',
             'Authorization: Bearer <Firebase ID Token>',
             'or by passing a "__session" cookie.'
         );
-        next();
-        return;
+        return next();
     }
 
     let idToken;
@@ -50,17 +54,29 @@ const validateFirebaseIdToken = async (req, res, next) => {
         idToken = req.cookies.__session;
     } else {
         // No cookie
-        next();
-        return;
+        return next();
     }
 
     try {
         req.user = await auth.verifyIdToken(idToken);
-        next();
+        return next();
     } catch (error) {
-        console.error('Error while verifying Firebase ID token:', error);
-        res.status(403).send('Unauthorized');
+        console.log('Error while verifying Firebase ID token:', error);
+        req.user = null;
+        return next();
+        // res.status(403).send('Unauthorized');
     }
 };
 
-module.exports = { validateFirebaseIdToken };
+const deleteUserInFirebase = async (uid) => {
+    return await auth.deleteUser(uid);
+}
+
+const confirmAuthenticated = (req, res, next) => {
+    if (!req.user || req.user.uid !== req.params.userID) {
+        return res.status(403).send('Unauthorized');
+    }
+    return next();
+}
+
+module.exports = { validateFirebaseIdToken, deleteUserInFirebase, confirmAuthenticated };

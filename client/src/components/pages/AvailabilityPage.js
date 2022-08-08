@@ -79,7 +79,7 @@ export default function AvailabilityPage() {
 	const dispatch = useDispatch();
 
 	const handleCopiedToClipboard = () => {
-		const link = window.location.host + "/home/" + meetingInfo._id;
+		const link = window.location.host + "/home/" + meetingInfo.id;
 		navigator.clipboard.writeText(link)
 			.then(() => {
 				toast("🗒️ Copied to clipboard!");
@@ -278,7 +278,7 @@ function AvailableTable({listAvailable, listUnavailable}) {
 	}
 
 	function generateTableContent() {
-		var tableContent = [];
+		let tableContent = [];
 		for (let i = 0; i < Math.max(listAvailable.length, listUnavailable.length); i++) {
 			if (listAvailable[i] && listUnavailable[i]) {
 				tableContent.push([listAvailable[i], listUnavailable[i]]);

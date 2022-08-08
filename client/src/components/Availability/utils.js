@@ -5,8 +5,8 @@
  * @returns {[]}
  */
 export function usersAvailableAt(timeStamp, usersAvailability) {
-    var availables = [];
-    var unavailables = [];
+    let availables = [];
+    let unavailables = [];
     if (Array.isArray(usersAvailability)) {
         usersAvailability.forEach( (entry) => {
             if (entry.availableSlots && entry.availableSlots.includes(timeStamp)) {
@@ -34,8 +34,8 @@ export function usersAvailableAt(timeStamp, usersAvailability) {
  * @returns {Number}
  */
 export function fractionOfUsersAvailableAt(timeStamp, usersAvailability) {
-    var numAvailable = 0;
-    var numUsers = 0; 
+    let numAvailable = 0;
+    let numUsers = 0; 
     if (Array.isArray(usersAvailability)) {
         numUsers = usersAvailability.length; 
         usersAvailability.forEach( (entry) => {

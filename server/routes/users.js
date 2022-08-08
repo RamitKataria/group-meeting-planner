@@ -1,89 +1,110 @@
 const express = require('express');
 const router = express.Router();
-const {v4: uuidv4} = require('uuid');
 
-let usersData = require('../data/users');
-let items = usersData.items;
-const meetingsQueries = require("../queries/meetings");
-const usersQueries = require("../queries/users");
+const { deleteUserInFirebase, confirmAuthenticated} = require('../auth')
+const { Meeting, User, removeBuiltInFields } = require("../db-models");
 
-router.get('/:userId/meetings/:meetingId', async function (req, res, next) {
-	if (!req.user) {
-		return res.status(403).send('Unauthorized');
+
+async function getUserOrInit(firebaseUID) {
+	let user = await User.findOne({firebaseUID: firebaseUID});
+	if (user) {
+		return user;
 	}
-	const user = await usersQueries.getUser({"_id": req.params.userId});
-	const meetings = user.meetings;
+	user = new User({firebaseUID: firebaseUID});
+	await user.save();
+	return user;
+}
 
-	if (meetings.includes(req.params.meetingId)) {
-		const meeting = meetingsQueries.getMeetings({"_id": req.params.meetingId});
-		return res.send(meeting);
-	} else {
-		return res.status(404).send({message: 'Meeting Not found'});
-	}
-});
-
-router.get('/:userId/meetings', async function (req, res, next) {
+router.get('/:userID/meetings', confirmAuthenticated, async function (req, res) {
 	try {
-		if (!req.user) {
-			return res.status(403).send('Unauthorized');
-		}
-		const user = await usersQueries.getUser({firebaseUID: req.params.userId});
-		return res.send(user[0].meetings);
+		const user = await getUserOrInit(req.params.userID);
+		return res.send(user.meetings);
 	} catch (e) {
 		console.log(e);
-		return res.status(403).send('Internal server error');
+		return res.status(404).send('Not found');
 	}
-
 });
 
-// router.get('/:userId', async function (req, res, next) {
-// 	if (!req.user) {
-// 		return res.status(403).send('Unauthorized');
-// 	}
-// 	const user = await usersQueries.getUser({"_id": req.params.userId});
-//
-// 	return res.send(user[0]);
-// });
-
-router.get('/:userId', async function (req, res, next) {
-	if (!req.user) {
-		return res.status(403).send('Unauthorized');
+router.get('/:userID', confirmAuthenticated, async function (req, res) {
+	try {
+		const user = await getUserOrInit(req.params.userID);
+		return res.send(removeBuiltInFields(user));
+	} catch (e) {
+		console.log(e);
+		return res.status(404).send('Not found');
 	}
-	const user = await usersQueries.getUser({"firebaseUID": req.params.userId});
-	return res.send(user[0]);
 });
 
-router.patch('/:userId', async function (req, res) {
-	if (!req.user) {
-		return res.status(403).send('Unauthorized');
+router.patch('/:userID', confirmAuthenticated, async function (req, res) {
+	try {
+		const user = await getUserOrInit(req.params.userID);
+		const patches = req.body;
+		['id', '_id', 'firebaseUID'].forEach(key => delete patches[key]);
+		Object.assign(user, patches);
+		await user.save();
+		return res.send(removeBuiltInFields(user));
+	} catch (e) {
+		console.log(e);
+		return res.status(404).send('Not found');
 	}
-	const userArray = await usersQueries.getUser({"firebaseUID": req.params.userId});
-	const newUser = {...userArray, ...req.body, _id: userArray[0]._id, firebaseUID: userArray[0].firebaseUID};
-	await usersQueries.updateOneUser(userArray[0]._id, newUser);
-	const updatedUser = await usersQueries.getUser({"firebaseUID": req.params.userId});
-	return res.send(updatedUser[0]);
 });
 
-router.delete('/:userId', async function (req, res, next) {
-	if (!req.user) {
-		return res.status(403).send('Unauthorized');
+router.post('/:userID/meetings', confirmAuthenticated, async function (req, res) {
+	try {
+		const newMeetingID = req.body;
+		if (typeof newMeetingID !== "string") {
+			return res.status(400).send('Body is not a string');
+		}
+		if (!Meeting.exists({id: newMeetingID})) {
+			return res.status(400).send('Meeting does not exist');
+		}
+		const user = await getUserOrInit(req.params.userID);
+		user.meetings.push(newMeetingID);
+		return res.status(200).send(newMeetingID);
+	} catch (e) {
+		return res.status(500).send('Internal server error');
 	}
-	const user = await usersQueries.deleteOneUser(req.params.userId);
-
-	return res.send({message: 'Deleted'});
 });
 
-router.post('/', async function(req, res, next){
-	if (!req.user) {
-		return res.status(403).send('Unauthorized');
+router.put('/:userID/calendar-link', confirmAuthenticated, async function (req, res) {
+	try {
+		const newLink = req.body;
+		if (typeof newLink !== "string") {
+			return res.status(400).send('Body is not a string');
+		}
+		// TODO: validate file
+		// if (!isValid(newLink)) {
+		// 	return res.status(400).send('Could not read file');
+		// }
+		const user = await getUserOrInit(req.params.userID);
+		user.ics = newLink;
+		return res.status(200).send('Calendar link set');
+	} catch (e) {
+		return res.status(500).send('Internal server error');
 	}
-	if (req.body) {
-		const newUser = {...req.body, _id: uuidv4()};
+});
 
-		await usersQueries.insertOneRecipe(newUser);
-		return res.send(newUser);
+router.delete('/:userID', confirmAuthenticated, async function (req, res) {
+	try {
+		await deleteUserInFirebase(req.params.firebaseUID);
+		await User.deleteOne({firebaseUID: req.params.firebaseUID});
+		return res.status(200).send('Deleted');
+	} catch (e) {
+		return res.status(404).send('Not found');
 	}
-	return res.status(400).send({message: 'Invalid body'});
+});
+
+router.post('/', async function (req, res) {
+	try {
+		if (User.exists({firebaseUID: req.user.uid})) {
+			return res.status(400).send('User already exists');
+		}
+		const newUser = new User({firebaseUID: req.user.uid});
+		await newUser.save();
+		return res.status(200).send(removeBuiltInFields(newUser));
+	} catch (e) {
+		return res.status(400).send('Internal server error');
+	}
 });
 
 module.exports = router;

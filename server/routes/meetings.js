@@ -1,40 +1,31 @@
+const { nanoid } = require('nanoid');
 const express = require('express');
 const router = express.Router();
-const {v4: uuidv4} = require('uuid');
 
-let meetingsData = require('../data/meetings');
-let items = meetingsData.items;
-const meetingsQueries = require("../queries/meetings");
+const {confirmAuthenticated} = require("../auth");
+const {Meeting, removeBuiltInFields} = require("../db-models");
 
-const User = require('../model/user');
-const Meeting = require('../model/meeting');
-
-router.delete('/:meetingId', async function (req, res) {
-	if (!req.user) {
-		return res.status(403).send('Unauthorized');
+router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
+	try {
+		await Meeting.deleteOne({id: req.params.meetingID});
+		return res.status(200).send('Deleted');
+	} catch (e) {
+		return res.status(404).send('Not found');
 	}
-	const meetings = await meetingsQueries.deleteOneMeeting(req.params['meetingId']);
-
-	return res.send(meetings);
-})
-//
-// router.delete('/', function (req, res) {
-// 	const meetings = await meetingsQueries.deleteAllMeetings({});
-// 	return res.send(meetings);
-// })
+});
 
 /**
  * Modify availability slots of a given user in a given meeting, perserving all other meetingInfo
  */
-router.post("/availability/:meetingId/:userId", async function(req, res) {
+router.post("/availability/:meetingID/:userID", async function(req, res) {
 	try {
 		console.log(req.body)
-		const meetings = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
+		const meetings = await meetingsQueries.getMeetings({"id": req.params.meetingID});
 		if (meetings.length === 0) {
 			return res.status(400).send("Invalid meeting id")
 		}
-		var slots = meetings[0].userAvailability;
-		var idx = slots.findIndex(e => e.user === req.params.userId);
+		let slots = meetings[0].userAvailability;
+		let idx = slots.findIndex(e => e.user === req.params.userID);
 		if (idx === -1) {
 			// TODO: check that userId is authenticated
 			slots.push(req.body)
@@ -45,39 +36,34 @@ router.post("/availability/:meetingId/:userId", async function(req, res) {
 		const newMeeting = {
 			...meetings[0], 
 			userAvailability: slots, 
-			_id: req.params.meetingId
+			id: req.params.meetingID
 		};
-		const updatedmeeting = await meetingsQueries.updateOneMeeting(req.params.meetingId, newMeeting);
+		const updatedmeeting = await meetingsQueries.updateOneMeeting(req.params.meetingID, newMeeting);
 		return res.send(updatedmeeting);
 	} 
 	catch (e) {
 		res.status(400).send("Internal Server Error\n");
 	}
-})
+});
 
-router.patch('/:meetingId', async function (req, res) {
+router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
-		const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
-		if (meeting.length === 0) {
-			res.status(400).send("Invalid meeting id")
-		}
-		const newMeeting = {...meeting[0], ...req.body, _id: req.params.meetingId};
-		const updatedmeeting = await meetingsQueries.updateOneMeeting(req.params.meetingId, newMeeting);
-		return res.send(updatedmeeting);
-	}
-	catch (e) {
+		const meeting = await Meeting.findOne({id: req.params.meetingID});
+		const patches = removeBuiltInFields(req.body);
+		Object.assign(meeting, patches);
+		await meeting.save();
+		return res.send(meeting);
+	} catch (e) {
 		console.log(e);
-		res.status(400).send("Internal Server Error\n");
+		return res.status(404).send('Not found');
 	}
-})
+});
 
-router.get('/:meetingId', async function (req, res, next) {
+router.get('/:meetingID', async function (req, res) {
 	try {
-		const meeting = await Meeting.findOne({"_id": req.params.meetingId}).lean();
-		
+		const meeting = await Meeting.findOne({id: req.params.meetingID});
 		const populatedMeeting = await populateUsers(meeting)
-		// console.log(populatedMeeting)
-		return res.send(populatedMeeting);
+		return res.send(removeBuiltInFields(populatedMeeting));
 	} catch (e) {
 		console.log(e);
 		res.status(400).send("Internal Server Error");
@@ -85,21 +71,23 @@ router.get('/:meetingId', async function (req, res, next) {
 });
 
 router.post('/', async function (req, res) {
-	if (req.body) {
-		const newMeeting = {...req.body, _id: uuidv4()};
-		await meetingsQueries.insertOneMeeting(newMeeting);
-		return res.send(newMeeting);
+	try {
+		const newMeeting = new Meeting(req.body);
+		newMeeting.id = nanoid();
+		await newMeeting.save();
+		return res.send(removeBuiltInFields(newMeeting));
+	} catch (e) {
+		return res.status(400).send({message: 'Invalid body'});
 	}
-	return res.status(400).send({message: 'Invalid body'});
-})
+});
 
 
 /**
  * Replace all user ids with user objects 
  */
 async function populateUsers(meeting) {
-	var userAvailability = []
-	var createdBy = {}
+	let userAvailability = []
+	let createdBy = {}
 
 	try {
 		userAvailability = await Promise.all(
