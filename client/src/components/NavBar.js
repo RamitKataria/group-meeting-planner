@@ -16,7 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate, Navigate} from "react-router-dom";
 import GuestHome from "./pages/GuestHome";
 import RegisteredHome from "./pages/RegisteredHome";
 import AboutUs from "./pages/AboutUs";
@@ -94,13 +94,6 @@ export default function NavBar() {
 			setUserState(user);
 		})
 	}, []);
-
-	useEffect(() => {
-		if (userState !== null) {
-			// avoids redirection when a link is entered. Initially placed to redirect to ./ after signed in
-			// navigate('./');
-		}
-	}, [userState])
 
 	const openDrawer = () => {
 		setOpen(true);
@@ -234,7 +227,10 @@ export default function NavBar() {
 						height: '100vh',
 						overflow: 'auto',
 						p: '0',
-						m: '0',
+						ml: theme.spacing(7),
+						[theme.breakpoints.up('sm')]: {
+							ml: theme.spacing(9),
+						},
 					}}
 				>
 					<Routes>
@@ -248,6 +244,7 @@ export default function NavBar() {
 								<Route key="registered-home-route" exact path="/home" element={<RegisteredHome/>}/>,
 								<Route key="all-meetings-route" exact path="/all-meetings" element={<AllMeetings/>}/>,
 								<Route key="account-route" exact path="/account" element={<Account/>}/>,
+								<Route key="sign-in-route" exact path="/signin" element={ <Navigate to="/" /> }/>
 							]) :
 						[
 							<Route key="guest-home-root-route" exact path="/" element={<GuestHome/>}/>,
@@ -258,7 +255,6 @@ export default function NavBar() {
 					</Routes>
 
 					<Container maxWidth="lg"
-							   // sx={{ borderTop: 1, borderColor: 'primary.main' }}
 					>
 						<Copyright sx={{ pt: 4 }} />
 					</Container>

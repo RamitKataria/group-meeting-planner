@@ -336,8 +336,8 @@ export default function EnhancedTable() {
 		const meetingsIDAfterDelete = allMeetingsID.filter( ( el ) => !selected.includes( el ) );
 		// update meetings field in user to meetingsIDAfterDelete
 		await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"meetings": meetingsIDAfterDelete}});
-		setUpdate(!update);
 		setSelected([]);
+		window.location.reload(true);
 	}
 
 	const handleChangePage = (event, newPage) => {

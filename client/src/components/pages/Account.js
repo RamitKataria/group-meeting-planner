@@ -32,12 +32,14 @@ export default function Account() {
 	const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
 	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("");
+	const [currentUserEmail, setCurrentUserEmail] = useState("");
 
 	useEffect(() => {
 		onAuthStateChanged(Auth, (user) => {
 			if (user) {
 				const uid = user.uid;
 				setCurrentUserID(uid);
+				setCurrentUserEmail(user.email);
 			}
 		});
 	}, []);
@@ -143,7 +145,7 @@ export default function Account() {
 									<label htmlFor="email">Email</label>
 									<input
 										name="email"
-										defaultValue={currentUser.email}
+										defaultValue={currentUserEmail}
 										type="email"
 										required
 										disabled
