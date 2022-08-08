@@ -71,14 +71,15 @@ router.get('/:meetingID', async function (req, res, next) {
 });
 
 router.post('/', async function (req, res) {
-	if (req.body) {
+	try {
 		const newMeeting = new Meeting(req.body);
 		newMeeting.id = nanoid();
 		await newMeeting.save();
 		return res.send(removeBuiltInFields(newMeeting));
+	} catch (e) {
+		return res.status(400).send({message: 'Invalid body'});
 	}
-	return res.status(400).send({message: 'Invalid body'});
-})
+});
 
 
 /**
