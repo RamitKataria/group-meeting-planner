@@ -94,4 +94,17 @@ router.delete('/:userID', confirmAuthenticated, async function (req, res, next) 
 	}
 });
 
+router.post('/', async function (req, res) {
+	try {
+		if (User.exists({firebaseUID: req.user.uid})) {
+			return res.status(400).send('User already exists');
+		}
+		const newUser = new User({firebaseUID: req.user.uid});
+		await newUser.save();
+		return res.status(200).send(removeBuiltInFields(newUser));
+	} catch (e) {
+		return res.status(400).send('Internal server error');
+	}
+});
+
 module.exports = router;
