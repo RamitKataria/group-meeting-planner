@@ -91,7 +91,7 @@ function multiDatesToRange(multiDates) {
     const earliest = multiDates.reduce((previous, current) => {
         return previous > current ? current : previous;
     })
-    var latest = multiDates.reduce((previous, current) => {
+    let latest = multiDates.reduce((previous, current) => {
         return previous > current ? previous : current;
     })
     return [earliest, latest]

@@ -278,7 +278,7 @@ function AvailableTable({listAvailable, listUnavailable}) {
 	}
 
 	function generateTableContent() {
-		var tableContent = [];
+		let tableContent = [];
 		for (let i = 0; i < Math.max(listAvailable.length, listUnavailable.length); i++) {
 			if (listAvailable[i] && listUnavailable[i]) {
 				tableContent.push([listAvailable[i], listUnavailable[i]]);

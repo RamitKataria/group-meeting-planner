@@ -24,8 +24,8 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 		if (meetings.length === 0) {
 			return res.status(400).send("Invalid meeting id")
 		}
-		var slots = meetings[0].userAvailability;
-		var idx = slots.findIndex(e => e.user === req.params.userID);
+		let slots = meetings[0].userAvailability;
+		let idx = slots.findIndex(e => e.user === req.params.userID);
 		if (idx === -1) {
 			// TODO: check that userId is authenticated
 			slots.push(req.body)
@@ -86,8 +86,8 @@ router.post('/', async function (req, res) {
  * Replace all user ids with user objects 
  */
 async function populateUsers(meeting) {
-	var userAvailability = []
-	var createdBy = {}
+	let userAvailability = []
+	let createdBy = {}
 
 	try {
 		userAvailability = await Promise.all(

@@ -19,8 +19,8 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
     const hourInMilliS = 60 * 60 * 1000;
     
     // convert meetingInfo to availabilityTable format
-    var dates = state.dates;
-    var timeRange = state.timeRanges[0]; 
+    let dates = state.dates;
+    let timeRange = state.timeRanges[0]; 
     if (Array.isArray(meetingInfo.range) && Array.isArray(meetingInfo.range[0])) {
         dates = meetingInfo.range.map(arr => {
             const day = new Date(arr[0]);
