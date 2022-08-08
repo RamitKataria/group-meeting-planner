@@ -81,6 +81,7 @@ router.post('/', async function(req, res, next){
 		const newUser = {...req.body, _id: uuidv4()};
 
 		await usersQueries.insertOneRecipe(newUser);
+		console.log('new user added: \n' + newUser)
 		return res.send(newUser);
 	}
 	return res.status(400).send({message: 'Invalid body'});

@@ -74,8 +74,7 @@ router.get('/:meetingId', async function (req, res, next) {
 		const meeting = await meetingsQueries.getOneLeanMeeting({"_id": req.params.meetingId});
 		
 		const populatedMeeting = await populateUsers(meeting)
-		// const populatedMeeting = meeting
-		console.log(populatedMeeting)
+		// console.log(populatedMeeting)
 		return res.send(populatedMeeting);
 	} catch (e) {
 		res.status(400).send("Internal Server Error");
@@ -97,7 +96,7 @@ router.post('/', async function (req, res) {
  */
 async function populateUsers(meeting) {
 	var userAvailability = []
-	// TODO: query creator as well
+	var createdBy = {}
 
 	try {
 		userAvailability = await Promise.all(
@@ -113,14 +112,20 @@ async function populateUsers(meeting) {
 				}
 			})
 		)
+		
+		createdBy = await usersQueries.getOneLeanUser({"firebaseUID": createdBy}); 
 
 		return {
 			...meeting,
+			createdByInfo: {
+				name: createdBy.name,
+				email: createdBy.email,
+			},
 			userAvailability: userAvailability,
 		}
 	} catch (e) {
-		console.log('Error when populating users');
-		throw e;
+		console.log('Failed to populate users in meetingInfo');
+		return meeting;
 	}
 }
 
