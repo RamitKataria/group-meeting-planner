@@ -1,7 +1,7 @@
 const Meeting = require('../model/meeting');
 
 const meetingsQueries = {
-    // get one/all meetings
+    // get all meetings satisfying the filter
     getMeetings: async function (filter) {
         const meetings = await Meeting.find(filter);
         return meetings;
@@ -27,7 +27,12 @@ const meetingsQueries = {
     insertOneMeeting: async function (meeting) {
         const newMeeting = await Meeting.insertMany(meeting);
         return newMeeting;
-    }
+    },
+    // get a meeting as javascript objet
+    getOneLeanMeeting: async function (filter) {
+        const meetings = await Meeting.findOne(filter).lean();
+        return meetings;
+    },
 }
 
 module.exports = meetingsQueries;

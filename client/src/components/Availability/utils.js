@@ -10,14 +10,14 @@ export function usersAvailableAt(timeStamp, usersAvailability) {
     if (Array.isArray(usersAvailability)) {
         usersAvailability.forEach( (entry) => {
             if (entry.availableSlots && entry.availableSlots.includes(timeStamp)) {
-                if (entry.name) { // TODO: displayName?
-                    availables.push(entry.name);
+                if (entry.userInfo) { 
+                    availables.push(entry.userInfo.name);
                 } else {
                     availables.push(entry.user);
                 }
             } else {
-                if (entry.name) { // TODO: displayName?
-                    unavailables.push(entry.name);
+                if (entry.userInfo) { 
+                    unavailables.push(entry.userInfo.name);
                 } else {
                     unavailables.push(entry.user);
                 }

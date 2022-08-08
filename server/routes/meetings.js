@@ -5,7 +5,9 @@ const {v4: uuidv4} = require('uuid');
 let meetingsData = require('../data/meetings');
 let items = meetingsData.items;
 const meetingsQueries = require("../queries/meetings");
-const usersQueries = require("../queries/users");
+
+const User = require('../model/user');
+const Meeting = require('../model/meeting');
 
 router.delete('/:meetingId', async function (req, res) {
 	if (!req.user) {
@@ -49,7 +51,6 @@ router.post("/availability/:meetingId/:userId", async function(req, res) {
 		return res.send(updatedmeeting);
 	} 
 	catch (e) {
-		console.log(e);
 		res.status(400).send("Internal Server Error\n");
 	}
 })
@@ -72,10 +73,13 @@ router.patch('/:meetingId', async function (req, res) {
 
 router.get('/:meetingId', async function (req, res, next) {
 	try {
-		const meeting = await meetingsQueries.getMeetings({"_id": req.params.meetingId});
-
-		return res.send(meeting[0]);
+		const meeting = await Meeting.findOne({"_id": req.params.meetingId}).lean();
+		
+		const populatedMeeting = await populateUsers(meeting)
+		// console.log(populatedMeeting)
+		return res.send(populatedMeeting);
 	} catch (e) {
+		console.log(e);
 		res.status(400).send("Internal Server Error");
 	}
 });
@@ -88,5 +92,45 @@ router.post('/', async function (req, res) {
 	}
 	return res.status(400).send({message: 'Invalid body'});
 })
+
+
+/**
+ * Replace all user ids with user objects 
+ */
+async function populateUsers(meeting) {
+	var userAvailability = []
+	var createdBy = {}
+
+	try {
+		userAvailability = await Promise.all(
+			meeting.userAvailability.map(async (availEntry) => {
+				const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
+				
+				return {
+					...availEntry,
+					userInfo: {
+						name: user.name,
+						email: user.email,
+					},
+				}
+			})
+		)
+		
+		createdBy = await User.findOne({"firebaseUID": meeting.createdBy}).lean();
+		
+		return {
+			...meeting,
+			createdByInfo: {
+				name: createdBy.name,
+				email: createdBy.email,
+			},
+			userAvailability: userAvailability,
+		}
+	} catch (e) {
+		console.log('Failed to populate users in meetingInfo\n');
+		console.log(e);
+		return meeting;
+	}
+}
 
 module.exports = router;

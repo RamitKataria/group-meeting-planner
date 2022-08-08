@@ -1,10 +1,15 @@
 const User = require('../model/user');
 
 const usersQueries = {
-	// get one user
+	
 	getUser: async function (filter) {
 		const users = await User.find(filter);
 		return users;
+	},
+	// get one user as javascript object
+	getOneLeanUser: async function (filter) {
+		const user = await User.findOne(filter).lean();
+		return user;
 	},
 	// delete one user
 	deleteOneUser: async function (id) {
