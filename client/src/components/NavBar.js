@@ -21,7 +21,7 @@ import GuestHome from "./pages/GuestHome";
 import RegisteredHome from "./pages/RegisteredHome";
 import AboutUs from "./pages/AboutUs";
 import AvailabilityPage from "./pages/AvailabilityPage";
-import NewMeeting from "./pages/NewMeeting";
+import MeetingCreation from "./MeetingCreation";
 import AllMeetings from "./pages/AllMeetings";
 import Account from "./pages/Account";
 import SignIn from "./pages/SignUp/SignIn";
@@ -234,7 +234,7 @@ export default function NavBar() {
 					}}
 				>
 					<Routes>
-						<Route key="new-meeting-route" exact path="/new-meeting" element={<NewMeeting/>}/>,
+						<Route key="new-meeting-route" exact path="/new-meeting" element={<MeetingCreation/>}/>,
 						<Route key="about-us-route" exact path="/about-us" element={<AboutUs/>}/>
 						<Route key="availability-route" exact path="/home/:meetingId" element={<AvailabilityPage/>}/>
 
@@ -244,7 +244,6 @@ export default function NavBar() {
 								<Route key="registered-home-route" exact path="/home" element={<RegisteredHome/>}/>,
 								<Route key="all-meetings-route" exact path="/all-meetings" element={<AllMeetings/>}/>,
 								<Route key="account-route" exact path="/account" element={<Account/>}/>,
-								<Route key="sign-in-route" exact path="/signin" element={ <Navigate to="/" /> }/>
 							]) :
 						[
 							<Route key="guest-home-root-route" exact path="/" element={<GuestHome/>}/>,

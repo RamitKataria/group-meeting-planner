@@ -1,6 +1,5 @@
 * {
     font-family: 'Merriweather', sans-serif;
-    /*line-height: 2;*/
 }
 
 .form-account, .form-ics {
@@ -68,23 +67,4 @@ input[type="button"]:hover {
     border-radius: 20px;
     box-shadow: 5px 5px 5px #eee;
     text-shadow: none;
-}
-
-.message-warning, .message-success {
-    /*display: none;*/
-    font-size: 14px;
-    line-height: 2;
-    text-align: left;
-    margin-top: 15px;
-    width: 100%;
-    position: relative;
-    float: left;
-}
-
-.message-warning {
-    color: #ff6163;
-}
-
-.message-success {
-    color: #008C2C;
 }

@@ -1,5 +1,4 @@
 import "../../css/home.css";
-// import AvailabilityPage from "./AvailabilityPage";
 import React from "react";
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
@@ -35,13 +34,10 @@ export default function GuestHome() {
 		<ThemeProvider theme={theme}>
 			<Box
 				sx={{
-				// backgroundImage: 'url(https://images.unsplash.com/photo-1489769002049-ccd828976a6c?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=john-mark-arnold-ti4kGLkGgmU-unsplash.jpg)',
-				// backgroundRepeat: 'no-repeat',
 					backgroundColor: (theme) =>
 						theme.palette.mode === 'light'
 							? theme.palette.grey[100]
 							: theme.palette.grey[900],
-				// backgroundSize: 'cover',
 				}}
 			>
 				<Box sx={{mx: "auto", my: 5, width: "70%"}}>
