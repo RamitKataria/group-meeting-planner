@@ -37,8 +37,10 @@ router.get('/:userID', confirmAuthenticated, async function (req, res, next) {
 
 router.patch('/:userID', confirmAuthenticated, async function (req, res) {
 	try {
-		let user = await getUserOrInit(req.params.userID);
-		user = {...user, ...req.body, _id: user._id, firebaseUID: user.firebaseUID};
+		const user = await getUserOrInit(req.params.userID);
+		const patches = req.body;
+		['id', '_id', 'firebaseUID'].forEach(key => delete patches[key]);
+		Object.assign(user, patches);
 		await user.save();
 		return res.send(user);
 	} catch (e) {
