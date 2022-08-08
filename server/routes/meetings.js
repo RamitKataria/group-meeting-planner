@@ -5,7 +5,9 @@ const {v4: uuidv4} = require('uuid');
 let meetingsData = require('../data/meetings');
 let items = meetingsData.items;
 const meetingsQueries = require("../queries/meetings");
-const usersQueries = require("../queries/users");
+
+const User = require('../model/user');
+const Meeting = require('../model/meeting');
 
 router.delete('/:meetingId', async function (req, res) {
 	if (!req.user) {
@@ -77,6 +79,7 @@ router.get('/:meetingId', async function (req, res, next) {
 		// console.log(populatedMeeting)
 		return res.send(populatedMeeting);
 	} catch (e) {
+		console.log(e);
 		res.status(400).send("Internal Server Error");
 	}
 });
