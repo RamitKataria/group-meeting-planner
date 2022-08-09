@@ -183,7 +183,7 @@ export default function AvailabilityPage() {
 								variant="h7"
 								component="div"
 							>
-								Choose Your Time Zone
+								Time Zone:
 							</Typography>
 							<TimezoneSelect
 								value={selectedTimezone}
