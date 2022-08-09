@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const {confirmAuthenticated} = require("../auth");
-const {Meeting, User, removeBuiltInFields} = require("../db-models");
+const {Meeting, User, removeForbiddenFields} = require("../db-models");
 const { getAuth } = require('firebase-admin/auth');
 
 router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
@@ -11,6 +11,7 @@ router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
 		await Meeting.deleteOne({id: req.params.meetingID});
 		return res.status(200).send('Deleted');
 	} catch (e) {
+		console.log(e);
 		return res.status(404).send('Not found');
 	}
 });
@@ -52,43 +53,49 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 	} 
 	catch (e) {
 		console.log(e);
-		res.status(400).send("Internal Server Error\n");
+		res.status(500).send("Internal Server Error\n");
 	}
 });
 
 router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
 		const meeting = await Meeting.findOne({id: req.params.meetingID});
-		const patches = removeBuiltInFields(req.body);
+		if (!meeting) {
+			return res.status(404).send('Not found');
+		}
+		const patches = removeForbiddenFields(req.body);
 		Object.assign(meeting, patches);
 		await meeting.save();
-		return res.send(meeting);
+		return res.send(removeForbiddenFields(meeting));
 	} catch (e) {
 		console.log(e);
-		return res.status(404).send('Not found');
+		res.status(500).send("Internal Server Error");
 	}
 });
 
 router.get('/:meetingID', async function (req, res) {
 	try {
 		const meetingObj = await Meeting.findOne({id: req.params.meetingID}).lean();
+		if (!meetingObj) {
+			return res.status(404).send('Not found');
+		}
 		const populatedMeeting = await populateUsers(meetingObj)
-		return res.send(removeBuiltInFields(populatedMeeting));
+		return res.send(removeForbiddenFields(populatedMeeting));
 	} catch (e) {
 		console.log(e);
-		res.status(400).send("Internal Server Error");
+		res.status(500).send("Internal Server Error");
 	}
 });
 
 router.post('/', async function (req, res) {
 	try {
-		const newMeeting = new Meeting(req.body);
+		const newMeeting = new Meeting(removeForbiddenFields(req.body));
 		newMeeting.id = nanoid();
 		await newMeeting.save();
-		return res.send(removeBuiltInFields(newMeeting));
+		return res.send(removeForbiddenFields(newMeeting));
 	} catch (e) {
 		console.log(e);
-		return res.status(400).send({message: 'Invalid body'});
+		res.status(500).send("Internal Server Error");
 	}
 });
 

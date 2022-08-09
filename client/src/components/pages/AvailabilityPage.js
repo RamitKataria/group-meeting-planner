@@ -20,7 +20,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../Availability/AvailabilityPicker";
 import {getMeeting} from "../../redux/meetings/service";
-import {getUserBasedOnFirebaseId} from "../../redux/users/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
@@ -29,6 +28,7 @@ import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Stack from "@mui/material/Stack";
+import TimezoneSelect from 'react-timezone-select'
 
 import {useSelector} from "react-redux";
 import Auth from "../../firebaseApp"
@@ -41,6 +41,9 @@ export default function AvailabilityPage() {
 	const [meetingInfo, setMeetingInfo] = useState({});
 	const [creatorInfo, setCreatorInfo] = useState({});
 	const [openGuestDialog, setOpenGuestDialog] = React.useState(false);
+
+	// make use of the new Intl browser API to set user's own timezone
+	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
@@ -75,8 +78,6 @@ export default function AvailabilityPage() {
 			email: '',
 		})
 	}
-
-	const dispatch = useDispatch();
 
 	const handleCopiedToClipboard = () => {
 		const link = window.location.host + "/home/" + meetingInfo.id;
@@ -116,6 +117,12 @@ export default function AvailabilityPage() {
 
 	const handleClose = () => {
 		setOpenGuestDialog(false);
+	};
+
+	const handleTimeZone = (event) => {
+		// timezone in String eg: "America/Vancouver"
+		setSelectedTimezone(event.value);
+		console.log(JSON.stringify(event, null, 2));
 	};
 
 	if (loading) {
@@ -170,11 +177,25 @@ export default function AvailabilityPage() {
 								</table>
 							</Box>
 						</Paper>
+						<Box sx={{my:4}}>
+							<Typography
+								sx={{flex: '1 1 100%', fontWeight: 'bold'}}
+								variant="h7"
+								component="div"
+							>
+								Time Zone:
+							</Typography>
+							<TimezoneSelect
+								value={selectedTimezone}
+								onChange={handleTimeZone}
+							/>
+						</Box>
 						<AvailableTable
 							listAvailable={availabilityInfo.available}
 							listUnavailable={availabilityInfo.unavailable}/>
 					</Grid>
 					<Grid item lg={7} sm={12}>
+
 						<Box sx={{justifyContent:'space-around', display:'flex', mb: 3}}>
 							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} >
 								Import ICS

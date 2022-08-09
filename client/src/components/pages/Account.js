@@ -21,7 +21,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
-import {onAuthStateChanged, signOut} from "firebase/auth";
+import {onAuthStateChanged, signOut, updateProfile} from "firebase/auth";
 
 import { getUserBasedOnFirebaseId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
 
@@ -31,6 +31,7 @@ export default function Account() {
 	const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
 	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
 	const [currentUserID, setCurrentUserID] = useState("");
+	const [currentUserName, setCurrentUserName] = useState("");
 	const [currentUserEmail, setCurrentUserEmail] = useState("");
 
 	useEffect(() => {
@@ -39,6 +40,7 @@ export default function Account() {
 				const uid = user.uid;
 				setCurrentUserID(uid);
 				setCurrentUserEmail(user.email);
+				setCurrentUserName(user.displayName);
 			}
 		});
 	}, []);
@@ -55,11 +57,13 @@ export default function Account() {
 	const submitAccount = async (event) => {
 		event.preventDefault();
 		const name = event.target.name.value;
-		const email = event.target.email.value;
-		const content = {"name": name};
-		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": content});
-		setCurrentUser(response);
-		toast("👤 Account Updated!");
+		updateProfile(Auth.currentUser, {
+			displayName: name
+		}).then(() => {
+			toast("👤 Account Updated!");
+		}).catch((error) => {
+			toast("👤 ERR! Account NOT Updated!");
+		});
 	};
 
 	const submitIcs = async (event) => {
@@ -133,7 +137,7 @@ export default function Account() {
 									<label htmlFor="name">Name</label>
 									<input
 										name="name"
-										defaultValue={currentUser.name}
+										defaultValue={currentUserName}
 										type="text"
 										required
 									/>

@@ -2,51 +2,49 @@ const express = require('express');
 const router = express.Router();
 
 const { deleteUserInFirebase, confirmAuthenticated} = require('../auth')
-const { Meeting, User, removeBuiltInFields } = require("../db-models");
+const { Meeting, User, removeForbiddenFields } = require("../db-models");
 
-
-async function getUserOrInit(firebaseUID) {
-	let user = await User.findOne({firebaseUID: firebaseUID});
-	if (user) {
-		return user;
-	}
-	user = new User({firebaseUID: firebaseUID});
-	await user.save();
-	return user;
-}
 
 router.get('/:userID/meetings', confirmAuthenticated, async function (req, res) {
 	try {
-		const user = await getUserOrInit(req.params.userID);
+		const user = await User.findOne({firebaseUID: req.user.uid}).lean();
+		if (!user) {
+			return res.status(404).send('Not found');
+		}
 		return res.send(user.meetings);
 	} catch (e) {
 		console.log(e);
-		return res.status(404).send('Not found');
+		return res.status(500).send('Internal server error');
 	}
 });
 
 router.get('/:userID', confirmAuthenticated, async function (req, res) {
 	try {
-		const user = await getUserOrInit(req.params.userID);
-		return res.send(removeBuiltInFields(user));
+		const user = await User.findOne({firebaseUID: req.user.uid}).lean();
+		if (!user) {
+			return res.status(404).send('Not found');
+		}
+		return res.send(removeForbiddenFields(user));
 	} catch (e) {
 		console.log(e);
-		return res.status(404).send('Not found');
+		return res.status(500).send('Internal server error');
 	}
 });
 
 router.patch('/:userID', confirmAuthenticated, async function (req, res) {
 	try {
-		const user = await getUserOrInit(req.params.userID);
-		const patches = req.body;
-		['id', '_id', 'firebaseUID'].forEach(key => delete patches[key]);
+		const user = await User.findOne({firebaseUID: req.user.uid});
+		if (!user) {
+			return res.status(404).send('Not found');
+		}
+		const patches = removeForbiddenFields(req.body);
 		Object.assign(user, patches);
 		console.log('patching user\n' + JSON.stringify(patches))
 		await user.save();
-		return res.send(user);
+		return res.send(removeForbiddenFields(user));
 	} catch (e) {
 		console.log(e);
-		return res.status(404).send('Not found');
+		return res.status(500).send('Internal server error');
 	}
 });
 
@@ -56,13 +54,17 @@ router.post('/:userID/meetings', confirmAuthenticated, async function (req, res)
 		if (typeof newMeetingID !== "string") {
 			return res.status(400).send('Body is not a string');
 		}
-		if (!Meeting.exists({id: newMeetingID})) {
-			return res.status(400).send('Meeting does not exist');
+		if (!(await Meeting.exists({id: newMeetingID}))) {
+			return res.status(404).send('Meeting does not exist');
 		}
-		const user = await getUserOrInit(req.params.userID);
+		const user = await User.findOne({firebaseUID: req.user.uid});
+		if (!user) {
+			return res.status(404).send('User Not found');
+		}
 		user.meetings.push(newMeetingID);
 		return res.status(200).send(newMeetingID);
 	} catch (e) {
+		console.log(e);
 		return res.status(500).send('Internal server error');
 	}
 });
@@ -77,10 +79,14 @@ router.put('/:userID/calendar-link', confirmAuthenticated, async function (req, 
 		// if (!isValid(newLink)) {
 		// 	return res.status(400).send('Could not read file');
 		// }
-		const user = await getUserOrInit(req.params.userID);
+		const user = await User.findOne({firebaseUID: req.user.uid});
+		if (!user) {
+			return res.status(404).send('User Not found');
+		}
 		user.ics = newLink;
 		return res.status(200).send('Calendar link set');
 	} catch (e) {
+		console.log(e);
 		return res.status(500).send('Internal server error');
 	}
 });
@@ -91,20 +97,22 @@ router.delete('/:userID', confirmAuthenticated, async function (req, res) {
 		await User.deleteOne({firebaseUID: req.params.firebaseUID});
 		return res.status(200).send('Deleted');
 	} catch (e) {
+		console.log(e);
 		return res.status(404).send('Not found');
 	}
 });
 
 router.post('/', async function (req, res) {
 	try {
-		if (User.exists({firebaseUID: req.user.uid})) {
+		if (await User.exists({firebaseUID: req.user.uid})) {
 			return res.status(400).send('User already exists');
 		}
 		const newUser = new User({firebaseUID: req.user.uid});
 		await newUser.save();
-		return res.status(200).send(removeBuiltInFields(newUser));
+		return res.status(200).send(removeForbiddenFields(newUser));
 	} catch (e) {
-		return res.status(400).send('Internal server error');
+		console.log(e);
+		return res.status(500).send('Internal server error');
 	}
 });
 
