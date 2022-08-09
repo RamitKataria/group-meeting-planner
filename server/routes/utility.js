@@ -362,3 +362,5 @@ function readICS(range,url){
     return data;
 
 }
+
+module.exports = readICS;
