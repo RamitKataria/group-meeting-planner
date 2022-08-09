@@ -1,5 +1,4 @@
 import "../../css/availability-page.css";
-import { useDispatch } from "react-redux";
 import {useEffect, useState} from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
@@ -28,7 +27,7 @@ import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Stack from "@mui/material/Stack";
-import TimezoneSelect from 'react-timezone-select'
+import TimezoneSelect, { allTimezones } from 'react-timezone-select'
 
 import {useSelector} from "react-redux";
 import Auth from "../../firebaseApp"
@@ -43,7 +42,8 @@ export default function AvailabilityPage() {
 	const [openGuestDialog, setOpenGuestDialog] = React.useState(false);
 
 	// make use of the new Intl browser API to set user's own timezone
-	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
+	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
+	const [allTimeZones, setAllTimeZones] = useState(allTimezones);
 
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
@@ -63,7 +63,12 @@ export default function AvailabilityPage() {
 		}
 		populateMeetingInfo();
 
-		}, []);
+		// overwrite timezone labels.
+		Object.keys(allTimeZones).forEach(function(key) {
+			allTimeZones[key] = key;
+		});
+
+	}, []);
 
 	useEffect(() => {
 		onAuthStateChanged(Auth, (user) => {
@@ -188,6 +193,9 @@ export default function AvailabilityPage() {
 							<TimezoneSelect
 								value={selectedTimezone}
 								onChange={handleTimeZone}
+								timezones={{
+									...allTimeZones
+								}}
 							/>
 						</Box>
 						<AvailableTable
