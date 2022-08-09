@@ -4,6 +4,7 @@ const router = express.Router();
 
 const {confirmAuthenticated} = require("../auth");
 const {Meeting, User, removeBuiltInFields} = require("../db-models");
+const { getAuth } = require('firebase-admin/auth');
 
 router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
@@ -76,9 +77,9 @@ router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 
 router.get('/:meetingID', async function (req, res) {
 	try {
-		const meetingObj = await Meeting.findOne({id: req.params.meetingID});
-		// const populatedMeeting = await populateUsers(meetingObj)
-		return res.send(removeBuiltInFields(meetingObj));
+		const meetingObj = await Meeting.findOne({id: req.params.meetingID}).lean();
+		const populatedMeeting = await populateUsers(meetingObj)
+		return res.send(removeBuiltInFields(populatedMeeting));
 	} catch (e) {
 		console.log(e);
 		res.status(400).send("Internal Server Error");
@@ -108,24 +109,24 @@ async function populateUsers(meetingObj) {
 	try {
 		userAvailability = await Promise.all(
 			meetingObj.userAvailability.map(async (availEntry) => {
-				const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
-				
+				// const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
+				const user = await getAuth().getUser(availEntry.user);
 				return {
 					...availEntry,
 					userInfo: {
-						name: user.name,
+						name: user.displayName,
 						email: user.email,
 					},
 				}
 			})
 		)
 		
-		createdBy = await User.findOne({"firebaseUID": meetingObj.createdBy}).lean();
-		
-		return new Meeting ({
+		// createdBy = await User.findOne({"firebaseUID": meetingObj.createdBy}).lean();
+		createdBy = await getAuth().getUser(meetingObj.createdBy);
+		return ({
 			...meetingObj,
 			createdByInfo: {
-				name: createdBy.name,
+				name: createdBy.displayName,
 				email: createdBy.email,
 			},
 			userAvailability: userAvailability,
@@ -133,7 +134,7 @@ async function populateUsers(meetingObj) {
 	} catch (e) {
 		console.log('Failed to populate users in meetingInfo\n');
 		console.log(e);
-		return new Meeting(meetingObj);
+		return meetingObj;
 	}
 }
 
