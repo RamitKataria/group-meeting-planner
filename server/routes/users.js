@@ -41,8 +41,9 @@ router.patch('/:userID', confirmAuthenticated, async function (req, res) {
 		const patches = req.body;
 		['id', '_id', 'firebaseUID'].forEach(key => delete patches[key]);
 		Object.assign(user, patches);
+		console.log('patching user\n' + JSON.stringify(patches))
 		await user.save();
-		return res.send(removeBuiltInFields(user));
+		return res.send(user);
 	} catch (e) {
 		console.log(e);
 		return res.status(404).send('Not found');

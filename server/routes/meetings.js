@@ -45,14 +45,8 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 		const updatedmeeting = await Meeting.findOneAndUpdate(
 			{id: req.params.meetingID}, newMeeting
 		);
-
-		// add meeting reference to user document (if needed)
-		const meetingIdx = user.meetings.findIndex(meeting => meeting === req.params.meetingID);
-		if (meetingIdx === -1) {
-			user.meetings.push(req.params.meetingID)
-		}
-		console.log('Write Availability - User\n' + user)
-		user.save();
+		
+		await addMeetingToUser(user, req.params.meetingID); 
 
 		return res.send(updatedmeeting);
 	} 
@@ -100,6 +94,20 @@ router.post('/', async function (req, res) {
 
 
 /**
+ * add meeting reference to user document if it does not exist
+ * @param {User} user 
+ * @param {*} meetingID 
+ */
+async function addMeetingToUser(user, meetingID) {
+	const meetingIdx = user.meetings.findIndex(meeting => meeting === meetingID);
+	if (meetingIdx === -1) {
+		user.meetings.push(req.params.meetingID)
+	}
+	console.log('Write Availability - User\n' + user)
+	await user.save();
+}
+
+/**
  * Replace all user ids with user objects 
  */
 async function populateUsers(meetingObj) {
@@ -109,7 +117,6 @@ async function populateUsers(meetingObj) {
 	try {
 		userAvailability = await Promise.all(
 			meetingObj.userAvailability.map(async (availEntry) => {
-				// const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
 				const user = await getAuth().getUser(availEntry.user);
 				return {
 					...availEntry,
@@ -121,7 +128,6 @@ async function populateUsers(meetingObj) {
 			})
 		)
 		
-		// createdBy = await User.findOne({"firebaseUID": meetingObj.createdBy}).lean();
 		createdBy = await getAuth().getUser(meetingObj.createdBy);
 		return ({
 			...meetingObj,

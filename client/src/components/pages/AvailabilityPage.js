@@ -54,7 +54,7 @@ export default function AvailabilityPage() {
 			if (response.createdByInfo) {
 				setCreatorInfo({name: response.createdByInfo.name})
 			} else {
-				setCreatorInfo({name: 'Missing'})
+				setCreatorInfo({name: 'Guest'})
 			}
 			setLoading(false);
 		}
@@ -68,9 +68,9 @@ export default function AvailabilityPage() {
 		})
 	}, []);
 
-	// TODO: remove? fallback for user not logged in
 	if (!currentUser) {
 		setCurrentUser({
+			displayName: 'Guest',
 			uid: '',
 			email: '',
 		})
