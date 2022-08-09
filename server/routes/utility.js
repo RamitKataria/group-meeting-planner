@@ -1,6 +1,5 @@
 const axios = require('axios');
 const ical = require('cal-parser');
-
 function readICS(range,url){
 // offset between local timezone and UTC
     let offset = range[0][0].getTimezoneOffset()/60;
