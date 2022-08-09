@@ -7,40 +7,40 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import DialogContentText from "@mui/material/DialogContentText";
+import {toast, ToastContainer} from "react-toastify";
 
 export default function ForgotPasswordButton() {
+
     const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState(null);
 
-    const style = {
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', // width: 400,
-        bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
-    };
-
-    const handleSubmit = async (e) => {
+    const handleSubmitResetPassword = async (e) => {
         e.preventDefault();
-        if (email !==""){
-            console.log(email);
-            console.log(typeof email);
-            sendPasswordResetEmail(Auth,email)
-                .then(() => {
-                    alert("Email has been sent to you, Please check and verify");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    alert(`${errorCode}: ${errorMessage}`);
-                });
-        }else{
-            alert("please write down your email address");
-        }
-
-
-
+        sendPasswordResetEmail(Auth, email)
+            .then(() => {
+                toast.success('Email has been sent to you!');
+            })
+            .catch((error) => {
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
+                // alert(`${errorCode}: ${errorMessage}`);
+                toast.error('Email does not exist!');
+            });
     };
 
     return (<>
         <Link href="#" variant="body2" onClick={() => setIsOpen(true)}>Forgot Password?</Link>
+
+        <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            newestOnTop={false}
+            closeOnClick
+            hideProgressBar
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+        />
 
         <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
             <DialogTitle>Reset Password</DialogTitle>
@@ -49,7 +49,7 @@ export default function ForgotPasswordButton() {
                     Tell us the email address associated with your account, and we’ll send you an email with a link
                     to reset your password.
                 </DialogContentText>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmitResetPassword}>
                     <TextField
                         required
                         autofocus
