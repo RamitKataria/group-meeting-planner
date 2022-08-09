@@ -37,6 +37,7 @@ import {
 } from "../../redux/users/service";
 import Stack from "@mui/material/Stack";
 import {LinearProgress} from "@mui/material";
+import LoadingBar from "../LoadingBar";
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -230,14 +231,6 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired
 };
-
-function LoadingBar	() {
-	return (
-		<Stack sx={{ width: '100%', color: '#DF7861'}}>
-			<LinearProgress color="inherit" />
-		</Stack>
-	)
-}
 
 export default function EnhancedTable() {
 	const [currentUserID, setCurrentUserID] = useState(""); // temporary
