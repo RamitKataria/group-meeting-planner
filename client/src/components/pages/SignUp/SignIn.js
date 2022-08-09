@@ -75,6 +75,7 @@ export default function SignIn() {
                     <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
                         <Paper elevation={8} sx={{width: 500}}>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{px:7, py: 7}}>
+                            <Box component="div" sx={{px:7, py: 7}}>
                                 <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
                                     <Avatar sx={{bgcolor: 'black'}}>
                                         <LockOutlinedIcon />
@@ -92,10 +93,13 @@ export default function SignIn() {
                                     justifyContent="center"
                                     alignItems="center"
                                     spacing={2}
+                                    component="form"
+                                    onSubmit={handleSubmit}
                                 >
                                     <TextField
                                         required
                                         fullWidth
+                                        type="email"
                                         id="email"
                                         label="Email Address"
                                         name="email"
@@ -124,16 +128,12 @@ export default function SignIn() {
                                             )
                                         }}
                                     />
-                                </Stack>
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary"/>}
-                                    label="Remember me"
-                                    sx={{mt: 2}}
-                                />
 
-                                <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
-                                    Log in
-                                </Button>
+                                    <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
+                                        Log in
+                                    </Button>
+                                </Stack>
+
 
                                 <Box display="flex" justifyContent="space-between" sx={{mt: 2}}>
                                     <ForgotPasswordButton/>

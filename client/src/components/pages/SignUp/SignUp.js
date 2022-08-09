@@ -58,83 +58,85 @@ export default function SignIn() {
             <Box sx={{mx: "auto", my: 5, width: "70%"}}>
                 <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
                 <Paper elevation={8} sx={{width: 500}}>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{px:7, py: 7}}>
-                        <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
-                            <Avatar sx={{bgcolor: 'black'}}>
-                                <LockOutlinedIcon />
-                            </Avatar>
-                        </Box>
-                        <Typography
-                            sx={{flex: '1 1 100%', fontWeight: 'bold', mb: 5, textAlign: "center"}}
-                            variant="h4"
-                            component="h1"
-                        >
-                            Sign Up !
-                        </Typography>
+                            <Box component="div" sx={{px: 7, py: 7}}>
+                                <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
+                                    <Avatar sx={{bgcolor: 'black'}}>
+                                        <LockOutlinedIcon/>
+                                    </Avatar>
+                                </Box>
+                                <Typography
+                                    sx={{flex: '1 1 100%', fontWeight: 'bold', mb: 5, textAlign: "center"}}
+                                    variant="h4"
+                                    component="h1"
+                                >
+                                    Sign Up !
+                                </Typography>
 
-                        <Stack
-                            direction="column"
-                            justifyContent="center"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <TextField
-                                autoComplete="name"
-                                name="name"
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                autoFocus
-                            />
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                            <TextField
-                                required
-                                id="password"
-                                name="password"
-                                fullWidth
-                                label="Password"
-                                type={showPassword ? 'text' : 'password'}
-                                autoComplete="new-password"
-                                InputProps={{
-                                    endAdornment:(
-                                    <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                    >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }}
-                            />
-                        </Stack>
+                                <Stack
+                                    direction="column"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    spacing={2}
+                                    component="form"
+                                    onSubmit={handleSubmit}
+                                >
+                                    <TextField
+                                        autoComplete="name"
+                                        name="name"
+                                        fullWidth
+                                        id="name"
+                                        label="Name"
+                                        autoFocus
+                                    />
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Email Address"
+                                        name="email"
+                                        autoComplete="email"
+                                    />
+                                    <TextField
+                                        required
+                                        id="password"
+                                        name="password"
+                                        fullWidth
+                                        label="Password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        autoComplete="new-password"
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        aria-label="toggle password visibility"
+                                                        onClick={handleClickShowPassword}
+                                                        edge="end"
+                                                    >
+                                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                    <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit"
+                                            sx={{mt: 3}}>
+                                        Sign Up
+                                    </Button>
+                                </Stack>
+                                <Box display="flex" justifyContent="end" sx={{mt: 2}}>
+                                    <Link href="../signin" variant="body2">
+                                        Already have an account?
+                                    </Link>
+                                </Box>
 
-                        <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
-                            Sign Up
-                        </Button>
+                                <Divider style={{width: '100%', backgroundColor: 'Gainsboro'}}
+                                         sx={{ borderBottomWidth: 1.5, my: 3 }}/>
+                                <AuthProviders/>
 
-                        <Box display="flex" justifyContent="end" sx={{mt: 2}}>
-                            <Link href="../signin" variant="body2" >
-                                Already have an account?
-                            </Link>
-                        </Box>
-
-                        <Divider style={{width:'100%', backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5, mt: 3, mb: 2 }}/>
-                        <AuthProviders/>
-
+                            </Box>
+                        </Paper>
                     </Box>
-                </Paper>
                 </Box>
-            </Box>
         </ThemeProvider>
     )
 }
