@@ -27,9 +27,9 @@ function MeetingCreation() {
     const navigate = useNavigate();
 
     function handleCreateMeeting() {
-        const instance = creationSliceToInstance(meetingCreationSlice); 
-        dispatch(addMeetingsAsync(instance));
-        console.log(instance)
+        const meetingInstance = creationSliceToInstance(meetingCreationSlice); 
+        dispatch(addMeetingsAsync(meetingInstance));
+        console.log(meetingInstance)
     }
 
     function handleNameChange(e) {
