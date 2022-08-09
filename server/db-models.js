@@ -40,10 +40,10 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 
-function removeBuiltInFields(obj) {
+function removeForbiddenFields(obj) {
     const objJSON = obj.toJSON();
-    ['_id', '__v'].forEach(i => delete objJSON[i]);
+    ['_id', '__v', 'firebaseUID'].forEach(i => delete objJSON[i]);
     return objJSON;
 }
 
-module.exports = { Meeting, User, removeBuiltInFields }
+module.exports = { Meeting, User, removeForbiddenFields }
