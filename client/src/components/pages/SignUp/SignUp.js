@@ -21,6 +21,7 @@ import {theme} from '../../../theme/color-theme'
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import LoadingBar from "../../LoadingBar";
+import {toast, ToastContainer} from "react-toastify";
 
 export default function SignIn() {
     const dispatch = useDispatch();
@@ -49,15 +50,19 @@ export default function SignIn() {
                 updateProfile(Auth.currentUser, {
                     displayName: data.get('name')
                 }).catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    alert(`${errorCode}: ${errorMessage}`);
+                    // const errorCode = error.code;
+                    // const errorMessage = error.message;
+                    // alert(`${errorCode}: ${errorMessage}`);
+                    setLoading(false);
+                    toast.error('Some other error!');
                 });
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                alert(`${errorCode}: ${errorMessage}`);
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
+                // alert(`${errorCode}: ${errorMessage}`);
+                setLoading(false);
+                toast.error('Email has existed!');
             });
     };
 
@@ -72,6 +77,17 @@ export default function SignIn() {
                 <Box sx={{mx: "auto", my: 5, width: "70%"}}>
                     <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
                         <Paper elevation={8} sx={{width: 500}}>
+                            <ToastContainer
+                                position="top-right"
+                                autoClose={5000}
+                                hideProgressBar
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                            />
                             <Box component="div" sx={{px: 7, py: 7}}>
                                 <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
                                     <Avatar sx={{bgcolor: 'black'}}>
