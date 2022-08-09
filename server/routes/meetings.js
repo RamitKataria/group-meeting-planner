@@ -87,11 +87,19 @@ router.get('/:meetingID', async function (req, res) {
 	}
 });
 
+/**
+ * Create meeting instance, add to user document
+ */
 router.post('/', async function (req, res) {
 	try {
 		const newMeeting = new Meeting(removeForbiddenFields(req.body));
 		newMeeting.id = nanoid();
 		await newMeeting.save();
+		const user = await User.findOne({firebaseUID: newMeeting.createdBy});
+		
+		if (user) {
+			await addMeetingToUser(user, newMeeting.id);
+		}
 		return res.send(removeForbiddenFields(newMeeting));
 	} catch (e) {
 		console.log(e);
@@ -106,12 +114,17 @@ router.post('/', async function (req, res) {
  * @param {*} meetingID 
  */
 async function addMeetingToUser(user, meetingID) {
-	const meetingIdx = user.meetings.findIndex(meeting => meeting === meetingID);
-	if (meetingIdx === -1) {
-		user.meetings.push(meetingID)
+	try {
+		const meetingIdx = user.meetings.findIndex(meeting => meeting === meetingID);
+		if (meetingIdx === -1) {
+			user.meetings.push(meetingID)
+		}
+		console.log('Write Availability - User\n' + user)
+		await user.save();
+	} catch (e) {
+		console.log("Failed to add meeting to user: " + user.firebaseUID)
+		console.log(e);
 	}
-	console.log('Write Availability - User\n' + user)
-	await user.save();
 }
 
 /**
