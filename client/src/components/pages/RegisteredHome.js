@@ -38,6 +38,7 @@ export default function RegisteredHome() {
 	const navigate = useNavigate();
 	const [linkMeetingID, setLinkMeetingID] = useState("");
 	const [currentUserID, setCurrentUserID] = useState("");
+	const [currentUserName, setCurrentUserName] = useState("");
 	const [currentUser, setCurrentUser] = useState({}); // user info
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
 
@@ -46,6 +47,7 @@ export default function RegisteredHome() {
 			if (user) {
 				const uid = user.uid;
 				setCurrentUserID(uid);
+				setCurrentUserName(user.displayName);
 			}
 		});
 	}, []);
@@ -155,7 +157,7 @@ export default function RegisteredHome() {
 										variant="h3"
 										component="div"
 									>
-										Welcome back {currentUser.name} !
+										Welcome back {currentUserName} !
 									</Typography>
 
 									<Typography

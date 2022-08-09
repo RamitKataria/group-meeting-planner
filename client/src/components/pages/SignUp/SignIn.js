@@ -2,7 +2,6 @@ import {Button, Divider, FormControlLabel, LinearProgress, Link, TextField} from
 import ForgotPasswordButton from "./ForgotPasswordButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
@@ -23,14 +22,8 @@ import {theme} from '../../../theme/color-theme'
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import Auth from "../../../firebaseApp";
-
-function LoadingBar	() {
-    return (
-        <Stack sx={{ width: '100%', color: '#DF7861'}}>
-            <LinearProgress color="inherit" />
-        </Stack>
-    )
-}
+import {toast, ToastContainer} from "react-toastify";
+import LoadingBar from "../../LoadingBar";
 
 export default function SignIn() {
     const dispatch = useDispatch();
@@ -47,9 +40,9 @@ export default function SignIn() {
         });
     }, []);
 
-    const handleSubmit = async (e) => {
-        setLoading(true);
+    const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         const data = new FormData(e.currentTarget);
         signInWithEmailAndPassword(Auth, data.get('email'), data.get('password'))
             .then((userCredential) => {
@@ -57,9 +50,11 @@ export default function SignIn() {
                 dispatch(setUser(user.toJSON()));
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                alert(`${errorCode}: ${errorMessage}`);
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
+                // alert(`${errorCode}: ${errorMessage}`);
+                setLoading(false);
+                toast.error('Wrong username or password!');
             });
     };
 
@@ -74,7 +69,18 @@ export default function SignIn() {
                 <Box sx={{mx: "auto", my: 5, width: "70%"}}>
                     <Box component="div" sx={{justifyContent: "center", display: "flex", pt: 5}}>
                         <Paper elevation={8} sx={{width: 500}}>
-                            <Box component="form" noValidate onSubmit={handleSubmit} sx={{px:7, py: 7}}>
+                            <ToastContainer
+                                position="top-right"
+                                autoClose={5000}
+                                hideProgressBar
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                            />
+                            <Box component="div" sx={{px:7, py: 7}}>
                                 <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
                                     <Avatar sx={{bgcolor: 'black'}}>
                                         <LockOutlinedIcon />
@@ -92,10 +98,13 @@ export default function SignIn() {
                                     justifyContent="center"
                                     alignItems="center"
                                     spacing={2}
+                                    component="form"
+                                    onSubmit={handleSubmit}
                                 >
                                     <TextField
                                         required
                                         fullWidth
+                                        type="email"
                                         id="email"
                                         label="Email Address"
                                         name="email"
@@ -124,16 +133,12 @@ export default function SignIn() {
                                             )
                                         }}
                                     />
-                                </Stack>
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary"/>}
-                                    label="Remember me"
-                                    sx={{mt: 2}}
-                                />
 
-                                <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
-                                    Log in
-                                </Button>
+                                    <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
+                                        Log in
+                                    </Button>
+                                </Stack>
+
 
                                 <Box display="flex" justifyContent="space-between" sx={{mt: 2}}>
                                     <ForgotPasswordButton/>
