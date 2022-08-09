@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const {confirmAuthenticated} = require("../auth");
-const {Meeting, removeBuiltInFields} = require("../db-models");
+const {Meeting, User, removeBuiltInFields} = require("../db-models");
 
 router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
@@ -19,29 +19,44 @@ router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
  */
 router.post("/availability/:meetingID/:userID", async function(req, res) {
 	try {
-		console.log(req.body)
-		const meetings = await meetingsQueries.getMeetings({"id": req.params.meetingID});
-		if (meetings.length === 0) {
-			return res.status(400).send("Invalid meeting id")
+		const meeting = await Meeting.findOne({id: req.params.meetingID});
+		if (!meeting) {
+			return res.status(404).send("Meeting Not Found")
 		}
-		let slots = meetings[0].userAvailability;
-		let idx = slots.findIndex(e => e.user === req.params.userID);
+		const user = await User.findOne({firebaseUID: req.params.userID});
+		if (!user) {
+			return res.status(404).send("User Not Found")
+		}
+		
+		// add avail entry to meeting document
+		const availEntries = meeting.userAvailability;
+		const idx = availEntries.findIndex(entry => entry.user === req.params.userID);
 		if (idx === -1) {
-			// TODO: check that userId is authenticated
-			slots.push(req.body)
+			availEntries.push(req.body)
 		} else {
-			slots[idx] = req.body
+			availEntries[idx] = req.body
 		}
-
 		const newMeeting = {
-			...meetings[0], 
-			userAvailability: slots, 
+			...meeting, 
+			userAvailability: availEntries, 
 			id: req.params.meetingID
 		};
-		const updatedmeeting = await meetingsQueries.updateOneMeeting(req.params.meetingID, newMeeting);
+		const updatedmeeting = await Meeting.findOneAndUpdate(
+			{id: req.params.meetingID}, newMeeting
+		);
+
+		// add meeting reference to user document (if needed)
+		const meetingIdx = user.meetings.findIndex(meeting => meeting === req.params.meetingID);
+		if (meetingIdx === -1) {
+			user.meetings.push(req.params.meetingID)
+		}
+		console.log('Write Availability - User\n' + user)
+		user.save();
+
 		return res.send(updatedmeeting);
 	} 
 	catch (e) {
+		console.log(e);
 		res.status(400).send("Internal Server Error\n");
 	}
 });
@@ -61,9 +76,9 @@ router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 
 router.get('/:meetingID', async function (req, res) {
 	try {
-		const meeting = await Meeting.findOne({id: req.params.meetingID});
-		const populatedMeeting = await populateUsers(meeting)
-		return res.send(removeBuiltInFields(populatedMeeting));
+		const meetingObj = await Meeting.findOne({id: req.params.meetingID});
+		// const populatedMeeting = await populateUsers(meetingObj)
+		return res.send(removeBuiltInFields(meetingObj));
 	} catch (e) {
 		console.log(e);
 		res.status(400).send("Internal Server Error");
@@ -77,6 +92,7 @@ router.post('/', async function (req, res) {
 		await newMeeting.save();
 		return res.send(removeBuiltInFields(newMeeting));
 	} catch (e) {
+		console.log(e);
 		return res.status(400).send({message: 'Invalid body'});
 	}
 });
@@ -85,13 +101,13 @@ router.post('/', async function (req, res) {
 /**
  * Replace all user ids with user objects 
  */
-async function populateUsers(meeting) {
+async function populateUsers(meetingObj) {
 	let userAvailability = []
 	let createdBy = {}
 
 	try {
 		userAvailability = await Promise.all(
-			meeting.userAvailability.map(async (availEntry) => {
+			meetingObj.userAvailability.map(async (availEntry) => {
 				const user = await User.findOne({"firebaseUID": availEntry.user}).lean();
 				
 				return {
@@ -104,20 +120,20 @@ async function populateUsers(meeting) {
 			})
 		)
 		
-		createdBy = await User.findOne({"firebaseUID": meeting.createdBy}).lean();
+		createdBy = await User.findOne({"firebaseUID": meetingObj.createdBy}).lean();
 		
-		return {
-			...meeting,
+		return new Meeting ({
+			...meetingObj,
 			createdByInfo: {
 				name: createdBy.name,
 				email: createdBy.email,
 			},
 			userAvailability: userAvailability,
-		}
+		})
 	} catch (e) {
 		console.log('Failed to populate users in meetingInfo\n');
 		console.log(e);
-		return meeting;
+		return new Meeting(meetingObj);
 	}
 }
 
