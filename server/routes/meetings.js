@@ -108,7 +108,7 @@ router.post('/', async function (req, res) {
 async function addMeetingToUser(user, meetingID) {
 	const meetingIdx = user.meetings.findIndex(meeting => meeting === meetingID);
 	if (meetingIdx === -1) {
-		user.meetings.push(req.params.meetingID)
+		user.meetings.push(meetingID)
 	}
 	console.log('Write Availability - User\n' + user)
 	await user.save();
