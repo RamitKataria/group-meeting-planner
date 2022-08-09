@@ -41,9 +41,12 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema);
 
 function removeForbiddenFields(obj) {
-    const objJSON = obj.toJSON();
-    ['_id', '__v', 'firebaseUID'].forEach(i => delete objJSON[i]);
-    return objJSON;
+    let retval = obj;
+    if (obj.toJSON) {
+        retval = obj.toJSON();
+    }
+    ['_id', '__v', 'firebaseUID'].forEach(i => delete retval[i]);
+    return retval;
 }
 
 module.exports = { Meeting, User, removeForbiddenFields }
