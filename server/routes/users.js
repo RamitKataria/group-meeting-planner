@@ -39,6 +39,7 @@ router.patch('/:userID', confirmAuthenticated, async function (req, res) {
 		}
 		const patches = removeForbiddenFields(req.body);
 		Object.assign(user, patches);
+		console.log('patching user\n' + JSON.stringify(patches))
 		await user.save();
 		return res.send(removeForbiddenFields(user));
 	} catch (e) {
