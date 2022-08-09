@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import AvailabilityTable from "./AvailabilityTable";
 import {useDispatch, useSelector} from "react-redux";
 import "../../css/availability-picker.css"
-import { setUserSlots, setOthersAvailability } from "../../redux/availability";
+import { setUserSlots, setOthersAvailability, setGuestDialogue } from "../../redux/availability";
 import { updateAvailAsync } from "../../redux/meetings/thunks";
+import { current } from "@reduxjs/toolkit";
 
 // root/index component of Availability components
 const AvailabilityPicker = ({meetingInfo, currentUser}) => {
@@ -70,16 +71,23 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
         }
     }, [meetingInfo, currentUser])
 
+    /**
+     * Behaviour upon clicking an availability slot
+     */
     function changeAvailSlots(args) {
-        dispatch(setUserSlots(args));
-        dispatch(updateAvailAsync({
-            meetingId: meetingInfo.id,
-            userId: currentUser.uid,
-            body: {
-                user: currentUser.uid,
-                availableSlots: args.map(e => new Date(e))
-            }
-        }))
+        if (currentUser.uid === '') {
+            dispatch(setGuestDialogue(true));
+        } else {
+            dispatch(setUserSlots(args));
+            dispatch(updateAvailAsync({
+                meetingId: meetingInfo.id,
+                userId: currentUser.uid,
+                body: {
+                    user: currentUser.uid,
+                    availableSlots: args.map(e => new Date(e))
+                }
+            }))
+        }
     }
 
     return (

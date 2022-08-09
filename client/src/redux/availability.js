@@ -15,6 +15,7 @@ const init = {
     },
     available: [],
     unavailable: [],
+    guestDialogue: false,
 }
 
 const availabilitySlice = createSlice({
@@ -38,6 +39,9 @@ const availabilitySlice = createSlice({
         },
         setUnavailable(state, action) {
             state.unavailable = action.payload;
+        }, 
+        setGuestDialogue(state, action) {
+            state.guestDialogue = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -60,5 +64,5 @@ const availabilitySlice = createSlice({
 })
 
 
-export const { setUserSlots, setDates, setTimeRanges, setOthersAvailability, setAvailable, setUnavailable } = availabilitySlice.actions
+export const { setUserSlots, setDates, setTimeRanges, setOthersAvailability, setAvailable, setUnavailable, setGuestDialogue } = availabilitySlice.actions
 export default availabilitySlice.reducer

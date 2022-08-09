@@ -158,7 +158,7 @@ async function populateUsers(meetingObj) {
 			userAvailability: userAvailability,
 		})
 	} catch (e) {
-		console.log('Failed to populate users in meetingInfo\n');
+		console.log('Failed to populate users in meetingInfo');
 		console.log(e);
 		return meetingObj;
 	}

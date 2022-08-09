@@ -31,16 +31,18 @@ import Stack from "@mui/material/Stack";
 import TimezoneSelect from 'react-timezone-select'
 
 import {useSelector} from "react-redux";
+import { setGuestDialogue } from "../../redux/availability";
 import Auth from "../../firebaseApp"
-import {onAuthStateChanged} from "firebase/auth";
+import {onAuthStateChanged, signInAnonymously} from "firebase/auth";
 
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const { meetingId } = useParams();
 	const [meetingInfo, setMeetingInfo] = useState({});
 	const [creatorInfo, setCreatorInfo] = useState({});
-	const [openGuestDialog, setOpenGuestDialog] = React.useState(false);
+	// const [openGuestDialog, setOpenGuestDialog] = useState(false);
 
 	// make use of the new Intl browser API to set user's own timezone
 	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
@@ -108,15 +110,18 @@ export default function AvailabilityPage() {
 		const email = event.target.email.value;
 		alert(name + " " + email);
 		// TODO: create guest account in firebase.
+		// signInAnonymously(Auth);
 		handleClose();
 	}
 
 	const handleClickOpen = () => {
-		setOpenGuestDialog(true);
+		// setOpenGuestDialog(true);
+		dispatch(setGuestDialogue(true));
 	};
 
 	const handleClose = () => {
-		setOpenGuestDialog(false);
+		// setOpenGuestDialog(false);
+		dispatch(setGuestDialogue(false));
 	};
 
 	const handleTimeZone = (event) => {
@@ -214,31 +219,8 @@ export default function AvailabilityPage() {
 				</Grid>
 
 
-
-				<Dialog open={openGuestDialog} onClose={handleClose}>
-					<DialogTitle>Enjoy more features?</DialogTitle>
-					<DialogContent>
-						<Stack
-							direction="column"
-							justifyContent="center"
-							alignItems="center"
-							spacing={2}
-						>
-							<Button variant="contained" sx={{minWidth:150}} startIcon={<LoginIcon />}
-									onClick={() => handleRedirectLink("signup")} >
-								Register/Sign Up
-							</Button>
-
-							<Button variant="contained" sx={{minWidth:150}} startIcon={<PersonAddIcon />}
-									onClick={() => handleRedirectLink("signin")} >
-								Log In
-							</Button>
-						</Stack>
-
-					</DialogContent>
-
-					<DialogTitle sx={{pb:0}}>Or continue as guest?</DialogTitle>
-					<DialogContent >
+				<Dialog open={availabilityInfo.guestDialogue} onClose={handleClose}>
+					{false && <DialogContent sx ={{'padding-bottom': '0em'}}>
 						<form onSubmit={createGuestAccount}>
 							<TextField
 								autoFocus
@@ -265,6 +247,29 @@ export default function AvailabilityPage() {
 								<Button type="submit">Go</Button>
 							</DialogActions>
 						</form>
+					</DialogContent>}
+
+					<DialogTitle sx ={{'padding': '1.5em', }}> 
+						Log in to continue
+					</DialogTitle>
+					<DialogContent>
+						<Stack
+							direction="column"
+							justifyContent="center"
+							alignItems="center"
+							spacing={2}
+						>
+							<Button variant="contained" sx={{minWidth:150}} startIcon={<LoginIcon />}
+									onClick={() => handleRedirectLink("signup")} >
+								Register/Sign Up
+							</Button>
+
+							<Button variant="contained" sx={{minWidth:150}} startIcon={<PersonAddIcon />}
+									onClick={() => handleRedirectLink("signin")} >
+								Log In
+							</Button>
+						</Stack>
+
 					</DialogContent>
 				</Dialog>
 			</Box>
