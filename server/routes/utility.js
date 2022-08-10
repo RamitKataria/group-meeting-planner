@@ -43,7 +43,7 @@ function readICS(range,url){
             slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i,0));
         }
     }
-
+    console.log(slot)
 // Find event whose dtstart or dtend date is equal to the dates in range
     function FindDates(neededEvent,event) {
         for (let i = 0; i < dates.length; i += 3) {
