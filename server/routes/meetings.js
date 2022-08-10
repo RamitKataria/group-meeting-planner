@@ -180,32 +180,29 @@ async function populateUsers(meetingObj) {
 	try {
 		userAvailability = await Promise.all(
 			meetingObj.userAvailability.map(async (availEntry) => {
-				const user = await getAuth().getUser(availEntry.user);
-				if (user) {
-					return {
-						...availEntry,
-						userInfo: {
-							name: user.displayName,
-							email: user.email,
-						},
-					}
-				}
+				const user = await getUserOrGuest(availEntry.user);
 				return {
-					// cover edge case for robustne
 					...availEntry,
 					userInfo: {
-						name: availEntry.user,
+						name: user.displayName,
+						email: user.email,
 					},
 				}
 			})
 		)
 		
-		createdBy = await getAuth().getUser(meetingObj.createdBy);
+		let createdBy = undefined;
+		try {
+			createdBy = await getUserOrGuest(meetingObj.createdBy);
+		} catch (e) {
+			console.log('Invalid ');
+			console.log(e)
+		}
 		return ({
 			...meetingObj,
 			createdByInfo: {
-				name: createdBy ? createdBy.displayName : meetingObj.createdBy,
-				email: createdBy ? createdBy.email : '',
+				name: createdBy.displayName,
+				email: createdBy.email,
 			},
 			userAvailability: userAvailability,
 		})
@@ -213,6 +210,21 @@ async function populateUsers(meetingObj) {
 		console.log('Failed to populate users in meetingInfo');
 		console.log(e);
 		return meetingObj;
+	}
+}
+
+async function getUserOrGuest(idOrName) {
+	try {
+		user = await getAuth().getUser(idOrName);
+		return user;
+	} catch (e) {
+		if (e.code == 'auth/invalid-uid') {
+			return {
+				name: idOrName,
+				email: '',
+			}
+		}
+		throw e;
 	}
 }
 
