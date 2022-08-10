@@ -85,28 +85,10 @@ const updateAvailability = async (meetingId, userId, content) => {
   return data;
 }
 
-export const readICSAndUpdate = async(meetingId, userId) => {
-  const link = url + 'availability/ics/' + meetingId + '/' + userId;
-  const response = await fetch(link, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    const errorMsg = data?.message;
-    throw new Error(errorMsg)
-  }
-  return data;
-}
-
 export default {
   addMeeting: addMeeting,
   getMeeting: getMeeting,
   deleteMeeting: deleteMeeting,
   updateMeeting: updateMeeting,
-  updateAvailability: updateAvailability, 
-  readICSAndUpdate: readICSAndUpdate,
+  updateAvailability: updateAvailability
 };
