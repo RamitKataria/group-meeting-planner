@@ -78,6 +78,6 @@ Tom Mo: Created time range picker and date selector, created restful requests fo
 
 Sophie Chai: create navbar, style all the pages, link our app with MongoDB, create restful requests for meeting and users on the backend, create user account page and about us page, dispatch “import ICS” function at the frontend 
 
-Ramit Kataria: Use firebase for user authentication, link backend and mongodb to firebase, deploy our app on heroku and cloudflare
+Ramit Kataria: Use firebase for user authentication, link backend and mongodb to firebase, deploy our app on heroku and cloudflare, created drag-to-select component for availability table
 
 May Tang: create forgetpassword button for the signIn page, and create the “Import ICS” function  at the backend, style SignUp/login page a bit
