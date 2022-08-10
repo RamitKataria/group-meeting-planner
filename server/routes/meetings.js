@@ -5,6 +5,7 @@ const router = express.Router();
 const {confirmAuthenticated} = require("../auth");
 const {Meeting, User, removeForbiddenFields} = require("../db-models");
 const { getAuth } = require('firebase-admin/auth');
+const readICS = require('./utility')
 
 router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
@@ -56,6 +57,44 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 		res.status(500).send("Internal Server Error\n");
 	}
 });
+
+
+/**
+ * Fill meeting with available slots using ICS information
+ */
+router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
+	try {
+		const meeting = await Meeting.findOne({ id: req.params.meetingId }).lean();
+		const user = await User.findOne({ firebaseUID: req.params.userId }).lean();
+
+		// given meeting range & ICS link, return available slots inside meeting range
+		const availSlots = await readICS(meeting.range, user.ics);
+
+		// remove availability of current user.
+		meeting.userAvailability = meeting.userAvailability.filter(object => {
+			return object.user !== req.params.userId;
+		});
+
+		// push new availability from ics.
+		meeting.userAvailability.push({
+			user: req.params.userId,
+			availableSlots: availSlots,
+		})
+
+		// save meeting to mongoose
+		await Meeting.findOneAndUpdate(
+			{id: req.params.meetingId}, meeting
+		);
+
+		// return meeting
+		res.status(200).send(removeForbiddenFields(meeting)); 
+	}
+	catch(e) {
+		console.log(e);
+		res.status(500).send("Internal Server Error");
+	}
+})
+
 
 router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
