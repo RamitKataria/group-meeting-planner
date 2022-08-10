@@ -91,6 +91,13 @@ function readICS(range,url){
 
                 neededEvent.push(event);
             }
+
+            if ( (event.dtstart.value.getUTCFullYear()+1 === RangeDates[i] )
+                &&(event.dtend.value.getUTCFullYear() === RangeDates[i + 3] && event.dtend.value.getUTCMonth() === RangeDates[i + 4]
+                    && event.dtend.value.getUTCDate() > RangeDates[i+5])) {
+
+                neededEvent.push(event);
+            }
             
         }
     }
@@ -344,13 +351,14 @@ function readICS(range,url){
 
 
         //console.log(busySlot);
-        console.log(slot);
+        // console.log(slot);
         //console.log(finalSlot);
 
         return finalSlot;
 
-    })
-        .catch((error)=>{return error.message;});
+    }).catch((error) => {
+        throw new Error(error.message);
+    });
 
     return data;
 
