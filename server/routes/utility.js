@@ -84,6 +84,14 @@ function readICS(range,url){
 
                 neededEvent.push(event);
             }
+            
+            if ( (event.dtstart.value.getUTCFullYear() === RangeDates[i] && event.dtstart.value.getUTCMonth()+1 === RangeDates[i + 1])
+                &&(event.dtend.value.getUTCFullYear() === RangeDates[i + 3] && event.dtend.value.getUTCMonth() === RangeDates[i + 4]
+                    && event.dtend.value.getUTCDate() > RangeDates[i+5])) {
+
+                neededEvent.push(event);
+            }
+            
         }
     }
 
