@@ -70,13 +70,22 @@ router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
 		// given meeting range & ICS link, return available slots inside meeting range
 		const availSlots = await readICS(meeting.range, user.ics);
 
+		// remove availability of current user.
+		meeting.userAvailability = meeting.userAvailability.filter(object => {
+			return object.user !== req.params.userId;
+		});
+
+		// push new availability from ics.
 		meeting.userAvailability.push({
 			user: req.params.userId,
 			availableSlots: availSlots,
 		})
 
 		// save meeting to mongoose
-		Meeting.findByIdAndUpdate(req.params.meetingId, meeting); 
+		await Meeting.findOneAndUpdate(
+			{id: req.params.meetingId}, meeting
+		);
+
 		// return meeting
 		res.status(200).send(removeForbiddenFields(meeting)); 
 	}

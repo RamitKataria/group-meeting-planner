@@ -15,14 +15,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../Availability/AvailabilityPicker";
 import {getMeeting, readICSAndUpdate} from "../../redux/meetings/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
-import {LinearProgress, Typography, Box} from "@mui/material";
+import {Typography, Box} from "@mui/material";
 import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -32,7 +31,8 @@ import TimezoneSelect, { allTimezones } from 'react-timezone-select'
 import {useSelector, useDispatch} from "react-redux";
 import { setGuestDialogue } from "../../redux/availability";
 import Auth from "../../firebaseApp"
-import {onAuthStateChanged, signInAnonymously} from "firebase/auth";
+import {onAuthStateChanged} from "firebase/auth";
+import LoadingBar from "../LoadingBar";
 
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
@@ -41,7 +41,6 @@ export default function AvailabilityPage() {
 	const { meetingId } = useParams();
 	const [meetingInfo, setMeetingInfo] = useState({});
 	const [creatorInfo, setCreatorInfo] = useState({});
-	// const [openGuestDialog, setOpenGuestDialog] = useState(false);
 
 	// make use of the new Intl browser API to set user's own timezone
 	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
@@ -98,27 +97,22 @@ export default function AvailabilityPage() {
 	}
 
 	const handleRedirectLink = (page) => {
-			navigate("../" + page);
+		navigate("../" + page);
 	}
 
 	const importICS = async () => {
-		// TODO: populate ics into table, disabled for guest.
-		await readICSAndUpdate(meetingId, currentUser.uid);
+		const response = await readICSAndUpdate(meetingId, currentUser.uid);
+		setMeetingInfo(response);
+		toast("📅 ICS imported!!");
 	}
 
-	// const removeICS = () => {
-	//
+	// const createGuestAccount = (event) => {
+	// 	event.preventDefault();
+	// 	const name = event.target.name.value;
+	// 	const email = event.target.email.value;
+	// 	alert(name + " " + email);
+	// 	handleClose();
 	// }
-
-	const createGuestAccount = (event) => {
-		event.preventDefault();
-		const name = event.target.name.value;
-		const email = event.target.email.value;
-		alert(name + " " + email);
-		// TODO: create guest account in firebase.
-		// signInAnonymously(Auth);
-		handleClose();
-	}
 
 	const handleClickOpen = () => {
 		// setOpenGuestDialog(true);
@@ -210,15 +204,9 @@ export default function AvailabilityPage() {
 					</Grid>
 					<Grid item lg={7} sm={12}>
 
-						<Box sx={{justifyContent:'space-around', display:'flex', mb: 3}}>
+						<Box sx={{justifyContent:'flex-end', display:'flex', mb: 3}}>
 							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} >
 								Import ICS
-							</Button>
-							{/*<Button variant="contained" startIcon={<ClearIcon />} onClick={removeICS} >*/}
-							{/*	Remove ICS*/}
-							{/*</Button>*/}
-							<Button variant="outlined" onClick={handleClickOpen}>
-								Temp Guest Dialog
 							</Button>
 						</Box>
 						<AvailabilityPicker
@@ -229,34 +217,34 @@ export default function AvailabilityPage() {
 
 
 				<Dialog open={availabilityInfo.guestDialogue} onClose={handleClose}>
-					{false && <DialogContent sx ={{'padding-bottom': '0em'}}>
-						<form onSubmit={createGuestAccount}>
-							<TextField
-								autoFocus
-								margin="dense"
-								id="name"
-								label="Enter your name:"
-								type="text"
-								name="name"
-								fullWidth
-								variant="standard"
-								required
-							/>
-							<TextField
-								margin="dense"
-								id="email"
-								label="Email (optional):"
-								type="email"
-								name="email"
-								fullWidth
-								variant="standard"
-							/>
-							<DialogActions sx={{mt:2}}>
-								<Button onClick={handleClose}>Cancel</Button>
-								<Button type="submit">Go</Button>
-							</DialogActions>
-						</form>
-					</DialogContent>}
+					{/*{false && <DialogContent sx ={{'padding-bottom': '0em'}}>*/}
+					{/*	<form onSubmit={createGuestAccount}>*/}
+					{/*		<TextField*/}
+					{/*			autoFocus*/}
+					{/*			margin="dense"*/}
+					{/*			id="name"*/}
+					{/*			label="Enter your name:"*/}
+					{/*			type="text"*/}
+					{/*			name="name"*/}
+					{/*			fullWidth*/}
+					{/*			variant="standard"*/}
+					{/*			required*/}
+					{/*		/>*/}
+					{/*		<TextField*/}
+					{/*			margin="dense"*/}
+					{/*			id="email"*/}
+					{/*			label="Email (optional):"*/}
+					{/*			type="email"*/}
+					{/*			name="email"*/}
+					{/*			fullWidth*/}
+					{/*			variant="standard"*/}
+					{/*		/>*/}
+					{/*		<DialogActions sx={{mt:2}}>*/}
+					{/*			<Button onClick={handleClose}>Cancel</Button>*/}
+					{/*			<Button type="submit">Go</Button>*/}
+					{/*		</DialogActions>*/}
+					{/*	</form>*/}
+					{/*</DialogContent>}*/}
 
 					<DialogTitle sx ={{'padding': '1.5em', }}> 
 						Log in to continue
@@ -284,15 +272,6 @@ export default function AvailabilityPage() {
 			</Box>
 		</div>
 	);
-}
-
-function LoadingBar	() {
-	return (
-		<Stack sx={{ width: '100%', color: '#DF7861'}}>
-		{/* TODO: use theme */}
-			<LinearProgress color="inherit" />
-		</Stack>
-	)
 }
 
 function AvailableTable({listAvailable, listUnavailable}) {

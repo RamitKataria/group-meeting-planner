@@ -1,10 +1,13 @@
 const axios = require('axios');
 const ical = require('cal-parser');
+
 function readICS(range,url){
+
 // offset between local timezone and UTC
     let offset = range[0][0].getTimezoneOffset()/60;
     let RangeDates=[];
     let dates = [];
+
 // list for finding events with the same dates in range
     for (let time of range){
         dates.push(time[0].getUTCFullYear());
@@ -19,7 +22,6 @@ function readICS(range,url){
         }
     }
 
-
 // list for finding events whose ranges include dates in range
     for (let time of range){
         RangeDates.push(time[0].getUTCFullYear());
@@ -30,13 +32,9 @@ function readICS(range,url){
         RangeDates.push(time[1].getUTCMonth());
 
         RangeDates.push(time[1].getUTCDate());
-
-
     }
     // console.log(dates);
     // console.log(RangeDates);
-
-
 
 // Find all the slots for range
     let slot = [];
@@ -44,9 +42,6 @@ function readICS(range,url){
         for(let i = time[0].getHours(); i<time[1].getHours();i++){
             slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i,0));
         }
-
-
-
     }
 
 // Find event whose dtstart or dtend date is equal to the dates in range
@@ -57,7 +52,6 @@ function readICS(range,url){
                 (event.dtend.value.getUTCFullYear() === dates[i] && event.dtend.value.getUTCMonth() === dates[i + 1]
                     && event.dtend.value.getUTCDate() === dates[i + 2])) {
                 neededEvent.push(event);
-
             }
         }
     }
@@ -90,7 +84,6 @@ function readICS(range,url){
 
                 neededEvent.push(event);
             }
-
         }
     }
 
@@ -102,8 +95,6 @@ function readICS(range,url){
             SameDate(busySlot,event)
             Equal1(busySlot,event)
             greater1(busySlot,event)
-
-
         }
     }
 
@@ -122,7 +113,6 @@ function readICS(range,url){
                     //console.log(event.dtstart.value.getUTCDate());
                     //console.log(new Date(year, month - 1, event.dtstart.value.getUTCDate(), i - offset, 0));
                     busySlot.push(new Date(event.dtstart.value.getUTCFullYear(), event.dtstart.value.getUTCMonth(), event.dtstart.value.getUTCDate(), i - offset, 0));
-
                 }
             }
         }
@@ -134,7 +124,6 @@ function readICS(range,url){
             for (let i = event.dtstart.value.getUTCHours(); i <= 23; i++) {
                 busySlot.push(new Date(event.dtstart.value.getUTCFullYear(), event.dtstart.value.getUTCMonth(), event.dtstart.value.getUTCDate(), i - offset, 0));
             }
-
             if (event.dtend.value.getUTCMinutes() === 0) {
                 for (let i = event.dtend.value.getUTCHours() - 1; i >= 0; i--) {
                     busySlot.push(new Date(event.dtstart.value.getUTCFullYear(), event.dtstart.value.getUTCMonth(), event.dtend.value.getUTCDate(), i - offset, 0));
@@ -143,7 +132,6 @@ function readICS(range,url){
             } else if (event.dtend.value.getUTCMinutes() !== 0) {
                 for (let i = event.dtend.value.getUTCHours(); i >= 0; i--) {
                     busySlot.push(new Date(event.dtstart.value.getUTCFullYear(), event.dtstart.value.getUTCMonth(), event.dtend.value.getUTCDate(), i - offset, 0));
-
                 }
             }
 
@@ -205,8 +193,6 @@ function readICS(range,url){
 
             }
         }
-
-
     }
 
 // Find the nonavailable slots for event whose dtstart and dtend dates are in the different month(maybe also in the different year)
@@ -350,7 +336,7 @@ function readICS(range,url){
 
 
         //console.log(busySlot);
-        //console.log(slot);
+        console.log(slot);
         //console.log(finalSlot);
 
         return finalSlot;
