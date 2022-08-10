@@ -160,7 +160,7 @@ export default function RegisteredHome() {
 										variant="h3"
 										component="div"
 									>
-										Welcome back {currentUserName} !
+										Welcome back {currentUserName}!
 									</Typography>
 
 									<Typography

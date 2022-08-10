@@ -33,6 +33,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { setGuestDialogue } from "../../redux/availability";
 import Auth from "../../firebaseApp"
 import {onAuthStateChanged, signInAnonymously} from "firebase/auth";
+import DialogContentText from "@mui/material/DialogContentText";
 
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
@@ -257,15 +258,22 @@ export default function AvailabilityPage() {
 						</form>
 					</DialogContent>}
 
-					<DialogTitle sx ={{'padding': '1.5em', }}> 
-						Log in to continue
+					<DialogTitle>
+						Oops!
 					</DialogTitle>
 					<DialogContent>
+						<DialogContentText>
+							You don't have an account with us!
+						</DialogContentText>
+						<DialogContentText>
+							Guest account feature coming soon. Please log in or sign up for now.
+						</DialogContentText>
 						<Stack
 							direction="column"
 							justifyContent="center"
 							alignItems="center"
 							spacing={2}
+							sx={{mt:4}}
 						>
 							<Button variant="contained" sx={{minWidth:150}} startIcon={<LoginIcon />}
 									onClick={() => handleRedirectLink("signup")} >
@@ -277,7 +285,6 @@ export default function AvailabilityPage() {
 								Log In
 							</Button>
 						</Stack>
-
 					</DialogContent>
 				</Dialog>
 			</Box>
