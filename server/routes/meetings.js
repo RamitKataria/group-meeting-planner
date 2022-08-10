@@ -92,8 +92,10 @@ router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
 			{id: req.params.meetingId}, meeting
 		);
 
+		const populatedMeeting = await populateUsers(meeting);
+
 		// return meeting
-		res.status(200).send(removeForbiddenFields(meeting)); 
+		res.status(200).send(removeForbiddenFields(populatedMeeting));
 	}
 	catch(e) {
 		console.log("Invalid ICS!");
