@@ -63,11 +63,13 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
  * Fill meeting with available slots using ICS information
  */
 router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
+	let meeting;
 	try {
-		const meeting = await Meeting.findOne({ id: req.params.meetingId }).lean();
+		meeting = await Meeting.findOne({ id: req.params.meetingId }).lean();
 		const user = await User.findOne({ firebaseUID: req.params.userId }).lean();
 
 		// given meeting range & ICS link, return available slots inside meeting range
+		// throw an error if ICS file is empty or invalid.
 		const availSlots = await readICS(meeting.range, user.ics);
 
 		// remove availability of current user.
@@ -90,8 +92,8 @@ router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
 		res.status(200).send(removeForbiddenFields(meeting)); 
 	}
 	catch(e) {
-		console.log(e);
-		res.status(500).send("Internal Server Error");
+		console.log("Invalid ICS!");
+		res.status(200).send({});
 	}
 })
 
