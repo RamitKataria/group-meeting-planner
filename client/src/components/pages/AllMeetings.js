@@ -31,7 +31,7 @@ import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {getMeeting} from "../../redux/meetings/service";
 import {
-	getMeetingsBasedOnFirebaseId,
+	getMeetingsBasedOnUserId,
 	updateUserBasedOnUserId,
 	getUserBasedOnFirebaseId
 } from "../../redux/users/service";
@@ -259,7 +259,7 @@ export default function EnhancedTable() {
 
 	useEffect( () => {
 		async function populateAllMeetingsList() {
-			const currentUserMeetingsID = await getMeetingsBasedOnFirebaseId(currentUserID);
+			const currentUserMeetingsID = await getMeetingsBasedOnUserId(currentUserID);
 			setAllMeetingsID(currentUserMeetingsID);
 
 			const response = await Promise.all(currentUserMeetingsID.map((meetingID) => {
