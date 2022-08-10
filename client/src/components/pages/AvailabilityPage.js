@@ -64,6 +64,7 @@ export default function AvailabilityPage() {
 
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
+	const [importICSBtnDisabled, setImportICSBtnDisabled] = useState(false);
 	const availabilityInfo = useSelector((state) => state.availability);
 
 	useEffect(() => {
@@ -99,6 +100,7 @@ export default function AvailabilityPage() {
 			uid: '',
 			email: '',
 		})
+		setImportICSBtnDisabled(true);
 	}
 
 	const handleCopiedToClipboard = () => {
@@ -228,7 +230,7 @@ export default function AvailabilityPage() {
 					<Grid item lg={7} sm={12}>
 
 						<Box sx={{justifyContent:'flex-end', display:'flex', mb: 3}}>
-							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} >
+							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} disabled={importICSBtnDisabled}>
 								Import ICS
 							</Button>
 						</Box>
