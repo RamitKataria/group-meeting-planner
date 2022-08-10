@@ -321,6 +321,8 @@ function readICS(range,url){
         const parsed = ical.parseString(response.data);
         let neededEvent = [];
 
+        console.log('Parsed ICS\n' + JSON.stringify(parsed))
+
         for (const event of parsed.events) {
             FindDates(neededEvent,event);
             FindRange(neededEvent,event);
