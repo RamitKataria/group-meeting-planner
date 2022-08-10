@@ -20,9 +20,10 @@ router.get('/:userID/meetings', confirmAuthenticated, async function (req, res) 
 
 router.get('/:userID', confirmAuthenticated, async function (req, res) {
 	try {
-		const user = await User.findOne({firebaseUID: req.user.uid}).lean();
+		let user = await User.findOne({firebaseUID: req.user.uid}).lean();
 		if (!user) {
-			return res.status(404).send('Not found');
+			user = new User({firebaseUID: req.user.uid});
+			await user.save();
 		}
 		return res.send(removeForbiddenFields(user));
 	} catch (e) {

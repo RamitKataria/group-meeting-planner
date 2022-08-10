@@ -22,6 +22,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import LoadingBar from "../../LoadingBar";
 import {toast, ToastContainer} from "react-toastify";
+import {addUser} from "../../../redux/users/service";
 
 export default function SignIn() {
     const dispatch = useDispatch();
@@ -56,6 +57,7 @@ export default function SignIn() {
                     setLoading(false);
                     toast.error('Some other error!');
                 });
+                addUser();
             })
             .catch((error) => {
                 // const errorCode = error.code;

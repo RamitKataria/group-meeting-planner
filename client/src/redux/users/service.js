@@ -14,6 +14,17 @@ export const getMeetingsBasedOnUserId = async (userId) => {
   return response.json();
 };
 
+export const addUser = async () => {
+  const link =  url;
+  const response = await fetch(link, {
+    method: 'POST',
+    headers: {
+      'Authorization': await getAuthHeader()
+    }
+  });
+  return response.json();
+};
+
 export const getUserBasedOnFirebaseId = async (userId) => {
   const link = url + userId;
   const response = await fetch(link, {
