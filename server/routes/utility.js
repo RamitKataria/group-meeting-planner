@@ -38,20 +38,10 @@ function readICS(range,url){
 
 // Find all the slots for range
     let slot = [];
-    for(let time of range){
-        if(time[0].getUTCDate() === time[1].getUTCDate()){
-            for(let i = time[0].getUTCHours(); i<time[1].getUTCHours();i++){
-                slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i-offset,0));
-            }
-        }
-        if(time[0].getUTCDate() !== time[1].getUTCDate()){
-            for(let i = time[0].getUTCHours(); i < 24; i++){
-                slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i-offset,0));
-            }
-            for(let i = 0; i < time[1].getUTCHours(); i++){
-                console.log(time[1].getUTCDate());
-                slot.push(new Date(time[1].getUTCFullYear(), time[1].getUTCMonth(), time[1].getUTCDate(), i - offset, 0));
-            }
+    const hoursInMilliS = 60*60*1000;
+    for (let time of range) {
+        for (let timestamp = time[0].getTime(); timestamp<time[1].getTime(); timestamp = timestamp+hoursInMilliS) {
+            slot.push(new Date(timestamp));
         }
     }
    
@@ -365,9 +355,9 @@ function readICS(range,url){
         }
 
 
-        console.log(busySlot);
-        console.log(slot);
-        console.log(finalSlot);
+        // console.log(busySlot);
+        // console.log(slot);
+        // console.log(finalSlot);
 
         return finalSlot;
 
