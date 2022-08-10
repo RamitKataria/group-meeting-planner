@@ -321,7 +321,7 @@ function readICS(range,url){
         const parsed = ical.parseString(response.data);
         let neededEvent = [];
 
-        console.log('Parsed ICS\n' + response.data)
+        // console.log('Parsed ICS\n' + response.data)
 
         for (const event of parsed.events) {
             FindDates(neededEvent,event);
@@ -331,7 +331,7 @@ function readICS(range,url){
 
         //return an array without duplicate neededEvent
         let uniqueNeeded = [...new Set(neededEvent)]
-        // console.log(uniqueNeeded);
+        console.log(uniqueNeeded);
 
         let busySlot = [];
         for (let event of uniqueNeeded) {
