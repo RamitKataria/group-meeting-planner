@@ -181,11 +181,20 @@ async function populateUsers(meetingObj) {
 		userAvailability = await Promise.all(
 			meetingObj.userAvailability.map(async (availEntry) => {
 				const user = await getAuth().getUser(availEntry.user);
+				if (user) {
+					return {
+						...availEntry,
+						userInfo: {
+							name: user.displayName,
+							email: user.email,
+						},
+					}
+				}
 				return {
+					// cover edge case for robustne
 					...availEntry,
 					userInfo: {
-						name: user.displayName,
-						email: user.email,
+						name: availEntry.user,
 					},
 				}
 			})
@@ -195,8 +204,8 @@ async function populateUsers(meetingObj) {
 		return ({
 			...meetingObj,
 			createdByInfo: {
-				name: createdBy.displayName,
-				email: createdBy.email,
+				name: createdBy ? createdBy.displayName : meetingObj.createdBy,
+				email: createdBy ? createdBy.email : '',
 			},
 			userAvailability: userAvailability,
 		})
