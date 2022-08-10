@@ -110,7 +110,7 @@ export default function RegisteredHome() {
 						pauseOnHover
 					/>
 					<Box sx={{justifyContent: 'space-between', display: 'flex'}}>
-						<Typography sx={{ fontSize: 14,}} color="text.secondary" gutterBottom>
+						<Typography sx={{ fontSize: 14}} color="text.secondary" gutterBottom>
 							{dateTimeFormat.format(new Date(props.meeting.dateTimeUpdated))}
 						</Typography>
 						<ContentCopyIcon sx={{cursor: 'pointer'}} fontSize="small" onClick={() => handleCopiedToClipboard(props.meeting.id)}></ContentCopyIcon>
@@ -119,8 +119,11 @@ export default function RegisteredHome() {
 					<Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
 						{props.meeting.name}
 					</Typography>
-					<Typography variant="body2" color="text.secondary">
+					<Typography sx={{ mb: 1.5 }} color="text.secondary">
 						{props.meeting.description}
+					</Typography>
+					<Typography variant="body2" color="text.secondary">
+						Created By: {props.meeting.createdByInfo.name}
 					</Typography>
 				</CardContent>
 				<CardActions>
