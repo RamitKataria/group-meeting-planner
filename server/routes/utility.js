@@ -39,11 +39,24 @@ function readICS(range,url){
 // Find all the slots for range
     let slot = [];
     for(let time of range){
-        for(let i = time[0].getHours(); i<time[1].getHours();i++){
-            slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i,0));
+        if(time[0].getUTCDate() === time[1].getUTCDate()){
+            for(let i = time[0].getUTCHours(); i<time[1].getUTCHours();i++){
+                slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i-offset,0));
+            }
+        }
+        if(time[0].getUTCDate() !== time[1].getUTCDate()){
+            for(let i = time[0].getUTCHours(); i < 24; i++){
+                slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i-offset,0));
+            }
+            for(let i = 0; i < time[1].getUTCHours(); i++){
+                console.log(time[1].getUTCDate());
+                slot.push(new Date(time[1].getUTCFullYear(), time[1].getUTCMonth(), time[1].getUTCDate(), i - offset, 0));
+            }
         }
     }
-    console.log(slot)
+   
+    console.log('Slots for range\n' + slot)
+
 // Find event whose dtstart or dtend date is equal to the dates in range
     function FindDates(neededEvent,event) {
         for (let i = 0; i < dates.length; i += 3) {
