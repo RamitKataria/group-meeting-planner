@@ -125,9 +125,9 @@ export default function AvailabilityPage() {
 	};
 
 	const handleTimeZone = (event) => {
-		// timezone in String eg: "America/Vancouver"
+		// timezone object
 		setSelectedTimezone(event.value);
-		console.log(JSON.stringify(event, null, 2));
+		console.log(JSON.stringify(event));
 	};
 
 	if (loading) {
@@ -214,7 +214,9 @@ export default function AvailabilityPage() {
 						</Box>
 						<AvailabilityPicker
 							meetingInfo={meetingInfo}
-							currentUser={currentUser}/>
+							currentUser={currentUser}
+							timezoneLabel={selectedTimezone}
+							/>
 					</Grid>
 				</Grid>
 

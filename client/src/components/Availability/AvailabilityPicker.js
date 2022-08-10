@@ -7,7 +7,7 @@ import { updateAvailAsync } from "../../redux/meetings/thunks";
 import { current } from "@reduxjs/toolkit";
 
 // root/index component of Availability components
-const AvailabilityPicker = ({meetingInfo, currentUser}) => {
+const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel='UTC'}) => {
     const state = useSelector((state) => state.availability);
     const dispatch = useDispatch();
 
@@ -18,17 +18,23 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
     };
 
     const hourInMilliS = 60 * 60 * 1000;
-    
+    // const offsetInHours = timezoneOffset ? timezoneOffset : -(new Date().getTimezoneOffset() / 60)
+    // console.log(offsetInHours)
     // convert meetingInfo to availabilityTable format
-    let dates = state.dates;
-    let timeRange = state.timeRanges[0]; 
+    // let dates = [new Date().getTime()];
+    // let timeRanges = [9, 17]; 
+    let newRanges = [];
     if (Array.isArray(meetingInfo.range) && Array.isArray(meetingInfo.range[0])) {
-        dates = meetingInfo.range.map(arr => {
-            const day = new Date(arr[0]);
-            day.setHours(0);
-            return day;
-        })
-        timeRange = meetingInfo.range[0].map(time => new Date(time).getHours())
+        // dates = meetingInfo.range.map(arr => {
+        //     const day = new Date(arr[0]);
+        //     day.setHours(0);
+        //     return day;
+        // })
+        // timeRanges = meetingInfo.range[0].map(time => new Date(time).getHours())
+        
+        for (let i = 0; i < meetingInfo.range.length; i++) {
+            newRanges.push(meetingInfo.range[i].map(time => new Date(time)))
+        }
     }
     
     
@@ -90,15 +96,18 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
         }
     }
 
+    function timeRangeInMilliS(timeRanges) {
+        return timeRanges = timeRanges.map(x => x * hourInMilliS);
+    }
+
     return (
         <AvailabilityTable
-            days={dates.map(d => new Date(d))}
-            timeRange={timeRange.map(x => x * hourInMilliS)} 
             timeUnit={hourInMilliS}
-            // setUserSlots={(args) => dispatch(setUserSlots(args))}
+            timeZoneLabel={timezoneLabel}
             setUserSlots={changeAvailSlots}
             selectedSlots={state.userAvailability}
             othersAvailability={state.othersAvailability}
+            ranges={newRanges}
         />
     );
 };
