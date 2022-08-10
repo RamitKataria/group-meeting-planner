@@ -22,7 +22,7 @@ router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
  */
 router.post("/availability/:meetingID/:userID", async function(req, res) {
 	try {
-		const meeting = await Meeting.findOne({id: req.params.meetingID});
+		const meeting = await Meeting.findOne({id: req.params.meetingID}).lean();
 		if (!meeting) {
 			return res.status(404).send("Meeting Not Found")
 		}
@@ -41,16 +41,18 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 		}
 		const newMeeting = {
 			...meeting, 
+			dateTimeUpdated: new Date(),
 			userAvailability: availEntries, 
 			id: req.params.meetingID
 		};
-		const updatedmeeting = await Meeting.findOneAndUpdate(
+		console.log('post meeting avail', newMeeting)
+		await Meeting.findOneAndUpdate(
 			{id: req.params.meetingID}, newMeeting
 		);
 		
 		await addMeetingToUser(user, req.params.meetingID); 
 
-		return res.send(updatedmeeting);
+		return res.send(removeForbiddenFields(newMeeting));
 	} 
 	catch (e) {
 		console.log(e);
@@ -80,6 +82,8 @@ router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
 			user: req.params.userId,
 			availableSlots: availSlots,
 		})
+
+		meeting.dateTimeUpdated = new Date();
 
 		// save meeting to mongoose
 		await Meeting.findOneAndUpdate(
@@ -158,7 +162,7 @@ async function addMeetingToUser(user, meetingID) {
 		if (meetingIdx === -1) {
 			user.meetings.push(meetingID)
 		}
-		console.log('Write Availability - User\n' + user)
+		// console.log('Write Availability - User\n' + user)
 		await user.save();
 	} catch (e) {
 		console.log("Failed to add meeting to user: " + user.firebaseUID)
