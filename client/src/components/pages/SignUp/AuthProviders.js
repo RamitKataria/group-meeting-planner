@@ -24,7 +24,6 @@ export default function AuthProviders() {
                 // The signed-in user info.
                 const user = result.user;
                 dispatch(setUser(user.toJSON()));
-                return addUser();
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;
