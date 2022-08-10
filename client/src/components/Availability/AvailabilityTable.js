@@ -45,19 +45,6 @@ const AvailabilityTable = ({
         }
     }
 
-    // const slots = days.map(() => []);
-    // for (let i = 0; i < days.length; i++) {
-    //     const start = days[i].getTime() + timeRanges[0];
-    //     const end = days[i].getTime() + timeRanges[1];
-    //     for (
-    //         let slot = start;
-    //         new Date(slot).getTime() <= end - timeUnit;
-    //         slot += timeUnit
-    //     ) {
-    //         slots[i].push(new Date(slot));
-    //     }
-    // }
-
     const slots  = ranges.map(() => [])
     for (let i = 0; i < ranges.length; i++) {
         const start = ranges[i][0].getTime()
