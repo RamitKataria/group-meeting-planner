@@ -53,7 +53,6 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
                     d => new Date(d).getTime()
                 )))
             }
-            
 
             const othersAvailability = meetingInfo.userAvailability.filter((entry) => {
                 if (entry.user && currentUser.uid) {
