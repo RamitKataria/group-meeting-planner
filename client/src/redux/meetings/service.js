@@ -22,7 +22,6 @@ const addMeeting = async (content) => {
 };
 
 export const getMeeting = async (meetingId) => {
-  // console.log("meetingID: " + meetingId);
   const link = url + meetingId;
   const response = await fetch(link, {
     method: 'GET',

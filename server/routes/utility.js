@@ -351,13 +351,14 @@ function readICS(range,url){
 
 
         //console.log(busySlot);
-        console.log(slot);
+        // console.log(slot);
         //console.log(finalSlot);
 
         return finalSlot;
 
-    })
-        .catch((error)=>{return error.message;});
+    }).catch((error) => {
+        throw new Error(error.message);
+    });
 
     return data;
 

@@ -16,7 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
-import {Route, Routes, useNavigate, Navigate} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import GuestHome from "./pages/GuestHome";
 import RegisteredHome from "./pages/RegisteredHome";
 import AboutUs from "./pages/AboutUs";
@@ -39,19 +39,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-
-function Copyright(props) {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{'Copyright © '}
-			<Link color="inherit" href="./about-us">
-				Dip Honey Donut
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
 
 const drawerWidth = 280;
 
@@ -117,6 +104,19 @@ export default function NavBar() {
 			const errorMessage = error.message;
 			alert(`${errorCode}: ${errorMessage}`);
 		});
+	}
+
+	function Copyright(props) {
+		return (
+			<Typography variant="body2" color="text.secondary" align="center" {...props}>
+				{'Copyright © '}
+				<Link color="inherit" onClick={() => navigate("/about-us")} sx={{cursor: 'pointer'}}>
+					Dip Honey Donut
+				</Link>{' '}
+				{new Date().getFullYear()}
+				{'.'}
+			</Typography>
+		);
 	}
 
 	return (
