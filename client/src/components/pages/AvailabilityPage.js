@@ -1,5 +1,4 @@
 import "../../css/availability-page.css";
-import { useDispatch } from "react-redux";
 import {useEffect, useState} from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
@@ -16,24 +15,38 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../Availability/AvailabilityPicker";
-import {getMeeting} from "../../redux/meetings/service";
+import {getMeeting, readICSAndUpdate} from "../../redux/meetings/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
-import {LinearProgress, Typography, Box} from "@mui/material";
+import {Typography, Box} from "@mui/material";
 import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Stack from "@mui/material/Stack";
-import TimezoneSelect from 'react-timezone-select'
+import TimezoneSelect, { allTimezones } from 'react-timezone-select'
 
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import { setGuestDialogue } from "../../redux/availability";
 import Auth from "../../firebaseApp"
-import {onAuthStateChanged, signInAnonymously} from "firebase/auth";
+import DialogContentText from "@mui/material/DialogContentText";
+import {onAuthStateChanged} from "firebase/auth";
+import LoadingBar from "../LoadingBar";
+
+const useViewport = () => {
+	const [width, setWidth] = React.useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleWindowResize = () => setWidth(window.innerWidth);
+		window.addEventListener("resize", handleWindowResize);
+		return () => window.removeEventListener("resize", handleWindowResize);
+	}, []);
+
+	// Return the width so we can use it in our components
+	return { width };
+}
 
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
@@ -42,10 +55,12 @@ export default function AvailabilityPage() {
 	const { meetingId } = useParams();
 	const [meetingInfo, setMeetingInfo] = useState({});
 	const [creatorInfo, setCreatorInfo] = useState({});
-	// const [openGuestDialog, setOpenGuestDialog] = useState(false);
 
 	// make use of the new Intl browser API to set user's own timezone
-	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
+	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
+	const [allTimeZones, setAllTimeZones] = useState(allTimezones);
+	// const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+	const { width } = useViewport();
 
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
@@ -65,7 +80,12 @@ export default function AvailabilityPage() {
 		}
 		populateMeetingInfo();
 
-		}, []);
+		// overwrite timezone labels.
+		Object.keys(allTimeZones).forEach(function(key) {
+			allTimeZones[key] = key;
+		});
+
+	}, []);
 
 	useEffect(() => {
 		onAuthStateChanged(Auth, (user) => {
@@ -93,26 +113,27 @@ export default function AvailabilityPage() {
 	}
 
 	const handleRedirectLink = (page) => {
-			navigate("../" + page);
+		navigate("../" + page);
 	}
 
-	const importICS = () => {
-		// TODO: populate ics into table, disabled for guest.
+	const importICS = async () => {
+		const response = await readICSAndUpdate(meetingId, currentUser.uid);
+		if (Object.keys(response).length === 0) {
+			toast.error("Invalid ICS!!");
+		} else {
+			setMeetingInfo(response);
+			toast("📅 ICS imported!!");
+		}
+
 	}
 
-	const removeICS = () => {
-		// TODO: remove ics from table, disabled for guest.
-	}
-
-	const createGuestAccount = (event) => {
-		event.preventDefault();
-		const name = event.target.name.value;
-		const email = event.target.email.value;
-		alert(name + " " + email);
-		// TODO: create guest account in firebase.
-		// signInAnonymously(Auth);
-		handleClose();
-	}
+	// const createGuestAccount = (event) => {
+	// 	event.preventDefault();
+	// 	const name = event.target.name.value;
+	// 	const email = event.target.email.value;
+	// 	alert(name + " " + email);
+	// 	handleClose();
+	// }
 
 	const handleClickOpen = () => {
 		// setOpenGuestDialog(true);
@@ -193,23 +214,22 @@ export default function AvailabilityPage() {
 							<TimezoneSelect
 								value={selectedTimezone}
 								onChange={handleTimeZone}
+								timezones={{
+									...allTimeZones
+								}}
 							/>
 						</Box>
+						{width >= 1200 ?
 						<AvailableTable
 							listAvailable={availabilityInfo.available}
 							listUnavailable={availabilityInfo.unavailable}/>
+						: null}
 					</Grid>
 					<Grid item lg={7} sm={12}>
 
-						<Box sx={{justifyContent:'space-around', display:'flex', mb: 3}}>
+						<Box sx={{justifyContent:'flex-end', display:'flex', mb: 3}}>
 							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} >
 								Import ICS
-							</Button>
-							<Button variant="contained" startIcon={<ClearIcon />} onClick={removeICS} >
-								Remove ICS
-							</Button>
-							<Button variant="outlined" onClick={handleClickOpen}>
-								Temp Guest Dialog
 							</Button>
 						</Box>
 						<AvailabilityPicker
@@ -217,49 +237,61 @@ export default function AvailabilityPage() {
 							currentUser={currentUser}
 							timezoneLabel={selectedTimezone}
 							/>
+						{width < 1200 ?
+							<AvailableTable
+								listAvailable={availabilityInfo.available}
+								listUnavailable={availabilityInfo.unavailable}/>
+						: null}
 					</Grid>
 				</Grid>
 
 
 				<Dialog open={availabilityInfo.guestDialogue} onClose={handleClose}>
-					{false && <DialogContent sx ={{'padding-bottom': '0em'}}>
-						<form onSubmit={createGuestAccount}>
-							<TextField
-								autoFocus
-								margin="dense"
-								id="name"
-								label="Enter your name:"
-								type="text"
-								name="name"
-								fullWidth
-								variant="standard"
-								required
-							/>
-							<TextField
-								margin="dense"
-								id="email"
-								label="Email (optional):"
-								type="email"
-								name="email"
-								fullWidth
-								variant="standard"
-							/>
-							<DialogActions sx={{mt:2}}>
-								<Button onClick={handleClose}>Cancel</Button>
-								<Button type="submit">Go</Button>
-							</DialogActions>
-						</form>
-					</DialogContent>}
+					{/*{false && <DialogContent sx ={{'padding-bottom': '0em'}}>*/}
+					{/*	<form onSubmit={createGuestAccount}>*/}
+					{/*		<TextField*/}
+					{/*			autoFocus*/}
+					{/*			margin="dense"*/}
+					{/*			id="name"*/}
+					{/*			label="Enter your name:"*/}
+					{/*			type="text"*/}
+					{/*			name="name"*/}
+					{/*			fullWidth*/}
+					{/*			variant="standard"*/}
+					{/*			required*/}
+					{/*		/>*/}
+					{/*		<TextField*/}
+					{/*			margin="dense"*/}
+					{/*			id="email"*/}
+					{/*			label="Email (optional):"*/}
+					{/*			type="email"*/}
+					{/*			name="email"*/}
+					{/*			fullWidth*/}
+					{/*			variant="standard"*/}
+					{/*		/>*/}
+					{/*		<DialogActions sx={{mt:2}}>*/}
+					{/*			<Button onClick={handleClose}>Cancel</Button>*/}
+					{/*			<Button type="submit">Go</Button>*/}
+					{/*		</DialogActions>*/}
+					{/*	</form>*/}
+					{/*</DialogContent>}*/}
 
-					<DialogTitle sx ={{'padding': '1.5em', }}> 
-						Log in to continue
+					<DialogTitle>
+						Oops!
 					</DialogTitle>
 					<DialogContent>
+						<DialogContentText>
+							You don't have an account with us!
+						</DialogContentText>
+						<DialogContentText>
+							Guest account feature coming soon. Please log in or sign up for now.
+						</DialogContentText>
 						<Stack
 							direction="column"
 							justifyContent="center"
 							alignItems="center"
 							spacing={2}
+							sx={{mt:4}}
 						>
 							<Button variant="contained" sx={{minWidth:150}} startIcon={<LoginIcon />}
 									onClick={() => handleRedirectLink("signup")} >
@@ -271,21 +303,11 @@ export default function AvailabilityPage() {
 								Log In
 							</Button>
 						</Stack>
-
 					</DialogContent>
 				</Dialog>
 			</Box>
 		</div>
 	);
-}
-
-function LoadingBar	() {
-	return (
-		<Stack sx={{ width: '100%', color: '#DF7861'}}>
-		{/* TODO: use theme */}
-			<LinearProgress color="inherit" />
-		</Stack>
-	)
 }
 
 function AvailableTable({listAvailable, listUnavailable}) {

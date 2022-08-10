@@ -39,7 +39,6 @@ const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel='UTC'}) => 
                     d => new Date(d).getTime()
                 )))
             }
-            
 
             const othersAvailability = meetingInfo.userAvailability.filter((entry) => {
                 if (entry.user && currentUser.uid) {

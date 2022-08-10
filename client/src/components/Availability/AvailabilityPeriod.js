@@ -27,14 +27,23 @@ const AvailabilityPeriod = ({
         dispatch(setAvailable([]));
         dispatch(setUnavailable([]));
     }
+
+    const availAlpha = fractionAvailable ? Math.max(0.1, fractionAvailable) : 0
+
+    const cellColour = {
+        backgroundColor: selected ?
+        '#5fa2db' : 
+        'rgb(236, 120, 97, ' + availAlpha + ')'
+    }
     
     return (
         <>
-            <td className={"availability-table-cell" 
-            + (selected ? " selected" : "")
-            + availabilityClass(fractionAvailable)}
-                onMouseEnter={onEnter} onMouseLeave={onLeave}
-                id={start}>
+            <td 
+            className={"availability-table-cell" 
+                + (selected ? " selected" : "")}
+            onMouseEnter={onEnter} onMouseLeave={onLeave}
+            id={start}
+            style={cellColour}>
             </td>
         </>
     );

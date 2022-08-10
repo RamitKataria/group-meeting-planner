@@ -5,6 +5,7 @@ const router = express.Router();
 const {confirmAuthenticated} = require("../auth");
 const {Meeting, User, removeForbiddenFields} = require("../db-models");
 const { getAuth } = require('firebase-admin/auth');
+const readICS = require('./utility')
 
 router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
@@ -21,7 +22,7 @@ router.delete('/:meetingID', confirmAuthenticated, async function (req, res) {
  */
 router.post("/availability/:meetingID/:userID", async function(req, res) {
 	try {
-		const meeting = await Meeting.findOne({id: req.params.meetingID});
+		const meeting = await Meeting.findOne({id: req.params.meetingID}).lean();
 		if (!meeting) {
 			return res.status(404).send("Meeting Not Found")
 		}
@@ -40,22 +41,66 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
 		}
 		const newMeeting = {
 			...meeting, 
+			dateTimeUpdated: new Date(),
 			userAvailability: availEntries, 
 			id: req.params.meetingID
 		};
-		const updatedmeeting = await Meeting.findOneAndUpdate(
+		console.log('post meeting avail', newMeeting)
+		await Meeting.findOneAndUpdate(
 			{id: req.params.meetingID}, newMeeting
 		);
 		
 		await addMeetingToUser(user, req.params.meetingID); 
 
-		return res.send(updatedmeeting);
+		return res.send(removeForbiddenFields(newMeeting));
 	} 
 	catch (e) {
 		console.log(e);
 		res.status(500).send("Internal Server Error\n");
 	}
 });
+
+
+/**
+ * Fill meeting with available slots using ICS information
+ */
+router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
+	let meeting;
+	try {
+		meeting = await Meeting.findOne({ id: req.params.meetingId }).lean();
+		const user = await User.findOne({ firebaseUID: req.params.userId }).lean();
+
+		// given meeting range & ICS link, return available slots inside meeting range
+		// throw an error if ICS file is empty or invalid.
+		const availSlots = await readICS(meeting.range, user.ics);
+
+		// remove availability of current user.
+		meeting.userAvailability = meeting.userAvailability.filter(object => {
+			return object.user !== req.params.userId;
+		});
+
+		// push new availability from ics.
+		meeting.userAvailability.push({
+			user: req.params.userId,
+			availableSlots: availSlots,
+		})
+
+		meeting.dateTimeUpdated = new Date();
+
+		// save meeting to mongoose
+		await Meeting.findOneAndUpdate(
+			{id: req.params.meetingId}, meeting
+		);
+
+		// return meeting
+		res.status(200).send(removeForbiddenFields(meeting)); 
+	}
+	catch(e) {
+		console.log("Invalid ICS!");
+		res.status(200).send({});
+	}
+})
+
 
 router.patch('/:meetingID', confirmAuthenticated, async function (req, res) {
 	try {
@@ -119,7 +164,7 @@ async function addMeetingToUser(user, meetingID) {
 		if (meetingIdx === -1) {
 			user.meetings.push(meetingID)
 		}
-		console.log('Write Availability - User\n' + user)
+		// console.log('Write Availability - User\n' + user)
 		await user.save();
 	} catch (e) {
 		console.log("Failed to add meeting to user: " + user.firebaseUID)
@@ -137,7 +182,7 @@ async function populateUsers(meetingObj) {
 	try {
 		userAvailability = await Promise.all(
 			meetingObj.userAvailability.map(async (availEntry) => {
-				const user = await getAuth().getUser(availEntry.user);
+				const user = await getUserOrGuest(availEntry.user);
 				return {
 					...availEntry,
 					userInfo: {
@@ -148,7 +193,13 @@ async function populateUsers(meetingObj) {
 			})
 		)
 		
-		createdBy = await getAuth().getUser(meetingObj.createdBy);
+		let createdBy = undefined;
+		try {
+			createdBy = await getUserOrGuest(meetingObj.createdBy);
+		} catch (e) {
+			console.log('Invalid ');
+			console.log(e)
+		}
 		return ({
 			...meetingObj,
 			createdByInfo: {
@@ -161,6 +212,21 @@ async function populateUsers(meetingObj) {
 		console.log('Failed to populate users in meetingInfo');
 		console.log(e);
 		return meetingObj;
+	}
+}
+
+async function getUserOrGuest(idOrName) {
+	try {
+		user = await getAuth().getUser(idOrName);
+		return user;
+	} catch (e) {
+		if (e.code == 'auth/invalid-uid') {
+			return {
+				name: idOrName,
+				email: '',
+			}
+		}
+		throw e;
 	}
 }
 

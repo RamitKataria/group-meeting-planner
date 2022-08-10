@@ -35,8 +35,6 @@ import {
 	updateUserBasedOnUserId,
 	getUserBasedOnFirebaseId
 } from "../../redux/users/service";
-import Stack from "@mui/material/Stack";
-import {LinearProgress} from "@mui/material";
 import LoadingBar from "../LoadingBar";
 
 function descendingComparator(a, b, orderBy) {
@@ -236,8 +234,8 @@ export default function EnhancedTable() {
 	const [currentUserID, setCurrentUserID] = useState(""); // temporary
 	const [allMeetings, setAllMeetings] = useState([]); // meetings (including details) belonged to user
 	const [allMeetingsID, setAllMeetingsID] = useState([]); // meetingsID (only IDs) belonged to user
-	const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
-	const [allCreators, setAllCreators] = useState([]); // users (creators) info of all meetings
+	// const [meetingIDToCreatorMap, setMeetingIDToCreatorMap] = useState(new Map()); // to ensure proper assignment
+	// const [allCreators, setAllCreators] = useState([]); // users (creators) info of all meetings
 	const [selected, setSelected] = useState([]); // all selected meetingsID for deletion
 	const [update, setUpdate] = useState(false); // for useEffect update after deletion
 
@@ -265,39 +263,38 @@ export default function EnhancedTable() {
 			setAllMeetingsID(currentUserMeetingsID);
 
 			const response = await Promise.all(currentUserMeetingsID.map((meetingID) => {
-				setMeetingIDToCreatorMap(map => new Map(map.set(meetingID, "")));
+				// setMeetingIDToCreatorMap(map => new Map(map.set(meetingID, "")));
 				return getMeeting(meetingID);
 			}));
 			setAllMeetings(response);
+			setLoading(false);
 		}
 		if (currentUserID !== "")
 			populateAllMeetingsList();
 	}, [update]);
 
-	useEffect( () => {
-		async function populateAllCreatorsList() {
-			const response2 = await Promise.all(allMeetings.map((meeting) => {
-				setMeetingIDToCreatorMap(map => new Map(map.set(meeting.id, meeting.createdBy)));
-				return getUserBasedOnFirebaseId(meeting.createdBy);
-			}));
-			setAllCreators(response2);
-			setLoading(false);
-		}
-		populateAllCreatorsList();
+	// useEffect( () => {
+	// 	async function populateAllCreatorsList() {
+	// 		const response2 = await Promise.all(allMeetings.map((meeting) => {
+	// 			setMeetingIDToCreatorMap(map => new Map(map.set(meeting.id, meeting.createdBy)));
+	// 			return getUserBasedOnFirebaseId(meeting.createdBy);
+	// 		}));
+	// 		setAllCreators(response2);
+	// 	}
+	// 	populateAllCreatorsList();
+	//
+	// }, [allMeetings]);
 
-	}, [allMeetings]);
-
-	const returnCreatorName = (meetingID) => {
-		const creatorID = meetingIDToCreatorMap.get(meetingID);
-		if (allCreators.length > 0) {
-			const foundCreator = allCreators.find(obj => {
-				return obj.firebaseUID === creatorID;
-			})
-			return foundCreator.name;
-		}
-		return "";
-
-	}
+	// const returnCreatorName = (meetingID) => {
+	// 	const creatorID = meetingIDToCreatorMap.get(meetingID);
+	// 	if (allCreators.length > 0) {
+	// 		const foundCreator = allCreators.find(obj => {
+	// 			return obj.firebaseUID === creatorID;
+	// 		})
+	// 		return foundCreator.name;
+	// 	}
+	// 	return "";
+	// }
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -458,7 +455,7 @@ export default function EnhancedTable() {
 														<StyledTableCell
 
 														align="right">{dateTimeFormat.format(new Date(meeting.dateTimeUpdated))}</StyledTableCell>
-														<StyledTableCell align="right">{returnCreatorName(meeting.id)}</StyledTableCell>
+														<StyledTableCell align="right">{meeting.createdByInfo.name}</StyledTableCell>
 
 														<StyledTableCell
 															sx={{textDecoration: 'underline', cursor: 'pointer'}}
