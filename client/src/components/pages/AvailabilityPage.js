@@ -19,7 +19,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ClearIcon from '@mui/icons-material/Clear';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import AvailabilityPicker from "../Availability/AvailabilityPicker";
-import {getMeeting} from "../../redux/meetings/service";
+import {getMeeting, readICSAndUpdate} from "../../redux/meetings/service";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import * as React from "react";
@@ -96,13 +96,14 @@ export default function AvailabilityPage() {
 			navigate("../" + page);
 	}
 
-	const importICS = () => {
+	const importICS = async () => {
 		// TODO: populate ics into table, disabled for guest.
+		await readICSAndUpdate(meetingId, currentUser.uid);
 	}
 
-	const removeICS = () => {
-		// TODO: remove ics from table, disabled for guest.
-	}
+	// const removeICS = () => {
+	//
+	// }
 
 	const createGuestAccount = (event) => {
 		event.preventDefault();
@@ -205,9 +206,9 @@ export default function AvailabilityPage() {
 							<Button variant="contained" startIcon={<SaveAltIcon />} onClick={importICS} >
 								Import ICS
 							</Button>
-							<Button variant="contained" startIcon={<ClearIcon />} onClick={removeICS} >
-								Remove ICS
-							</Button>
+							{/*<Button variant="contained" startIcon={<ClearIcon />} onClick={removeICS} >*/}
+							{/*	Remove ICS*/}
+							{/*</Button>*/}
 							<Button variant="outlined" onClick={handleClickOpen}>
 								Temp Guest Dialog
 							</Button>

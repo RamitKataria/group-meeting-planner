@@ -64,14 +64,14 @@ router.post("/availability/:meetingID/:userID", async function(req, res) {
  */
 router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
 	try {
-		const meeting = await Meeting.findOne({ id: req.params.meetingID }).lean();
+		const meeting = await Meeting.findOne({ id: req.params.meetingId }).lean();
 		const user = await User.findOne({ firebaseUID: req.params.userId }).lean();
 
 		// given meeting range & ICS link, return available slots inside meeting range
-		const availSlots = await readICS(meeing.range, user.ics);
+		const availSlots = await readICS(meeting.range, user.ics);
 
 		meeting.userAvailability.push({
-			user: userId,
+			user: req.params.userId,
 			availableSlots: availSlots,
 		})
 

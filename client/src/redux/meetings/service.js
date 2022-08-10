@@ -85,10 +85,10 @@ const updateAvailability = async (meetingId, userId, content) => {
   return data;
 }
 
-export const readICSAndUpdate = async(meetingId, userId) => {
+export const readICSAndUpdate = async (meetingId, userId) => {
   const link = url + 'availability/ics/' + meetingId + '/' + userId;
   const response = await fetch(link, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
