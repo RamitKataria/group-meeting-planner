@@ -35,6 +35,19 @@ import DialogContentText from "@mui/material/DialogContentText";
 import {onAuthStateChanged} from "firebase/auth";
 import LoadingBar from "../LoadingBar";
 
+const useViewport = () => {
+	const [width, setWidth] = React.useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleWindowResize = () => setWidth(window.innerWidth);
+		window.addEventListener("resize", handleWindowResize);
+		return () => window.removeEventListener("resize", handleWindowResize);
+	}, []);
+
+	// Return the width so we can use it in our components
+	return { width };
+}
+
 export default function AvailabilityPage() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -46,6 +59,8 @@ export default function AvailabilityPage() {
 	// make use of the new Intl browser API to set user's own timezone
 	const [selectedTimezone, setSelectedTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
 	const [allTimeZones, setAllTimeZones] = useState(allTimezones);
+	// const [windowSize, setWindowSize] = React.useState(window.innerWidth);
+	const { width } = useViewport();
 
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(Auth.currentUser);
@@ -103,8 +118,13 @@ export default function AvailabilityPage() {
 
 	const importICS = async () => {
 		const response = await readICSAndUpdate(meetingId, currentUser.uid);
-		setMeetingInfo(response);
-		toast("📅 ICS imported!!");
+		if (Object.keys(response).length === 0) {
+			toast.error("Invalid ICS!!");
+		} else {
+			setMeetingInfo(response);
+			toast("📅 ICS imported!!");
+		}
+
 	}
 
 	// const createGuestAccount = (event) => {
@@ -199,9 +219,11 @@ export default function AvailabilityPage() {
 								}}
 							/>
 						</Box>
+						{width >= 1200 ?
 						<AvailableTable
 							listAvailable={availabilityInfo.available}
 							listUnavailable={availabilityInfo.unavailable}/>
+						: null}
 					</Grid>
 					<Grid item lg={7} sm={12}>
 
@@ -213,6 +235,11 @@ export default function AvailabilityPage() {
 						<AvailabilityPicker
 							meetingInfo={meetingInfo}
 							currentUser={currentUser}/>
+						{width < 1200 ?
+							<AvailableTable
+								listAvailable={availabilityInfo.available}
+								listUnavailable={availabilityInfo.unavailable}/>
+						: null}
 					</Grid>
 				</Grid>
 
