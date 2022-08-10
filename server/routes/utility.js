@@ -38,11 +38,14 @@ function readICS(range,url){
 
 // Find all the slots for range
     let slot = [];
-    for(let time of range){
-        for(let i = time[0].getHours(); i<time[1].getHours();i++){
-            slot.push(new Date(time[0].getUTCFullYear(),time[0].getUTCMonth(),time[0].getUTCDate(),i,0));
+    const hoursInMilliS = 60*60*1000;
+    for (let time of range) {
+        for (let timestamp = time[0].getTime(); timestamp<time[1].getTime(); timestamp = timestamp+hoursInMilliS) {
+            slot.push(new Date(timestamp));
         }
     }
+   
+    console.log('Slots for range\n' + slot)
 
 // Find event whose dtstart or dtend date is equal to the dates in range
     function FindDates(neededEvent,event) {
@@ -321,6 +324,8 @@ function readICS(range,url){
         const parsed = ical.parseString(response.data);
         let neededEvent = [];
 
+        // console.log('Parsed ICS\n' + response.data)
+
         for (const event of parsed.events) {
             FindDates(neededEvent,event);
             FindRange(neededEvent,event);
@@ -329,7 +334,7 @@ function readICS(range,url){
 
         //return an array without duplicate neededEvent
         let uniqueNeeded = [...new Set(neededEvent)]
-        //console.log(uniqueNeeded);
+        // console.log(uniqueNeeded);
 
         let busySlot = [];
         for (let event of uniqueNeeded) {
@@ -350,9 +355,9 @@ function readICS(range,url){
         }
 
 
-        //console.log(busySlot);
+        // console.log(busySlot);
         // console.log(slot);
-        //console.log(finalSlot);
+        // console.log(finalSlot);
 
         return finalSlot;
 

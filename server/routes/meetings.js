@@ -99,6 +99,7 @@ router.put('/availability/ics/:meetingId/:userId', async function (req, res) {
 	}
 	catch(e) {
 		console.log("Invalid ICS!");
+		console.log(e);
 		res.status(200).send({});
 	}
 })
