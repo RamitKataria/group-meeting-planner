@@ -8,6 +8,7 @@ import Auth from "../../../firebaseApp";
 import {setUser} from "../../../redux/user";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {addUser} from "../../../redux/users/service";
 
 export default function AuthProviders() {
     const dispatch = useDispatch();
@@ -21,16 +22,18 @@ export default function AuthProviders() {
             // The signed-in user info.
             const user = result.user;
             dispatch(setUser(user.toJSON()));
+            addUser();
         }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        alert(`${errorCode}: ${errorMessage}`);
-    });
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            alert(`${errorCode}: ${errorMessage}`);
+        }
+    );
 
     const handleGoogleSignIn = async (e) => {
         const provider = new GoogleAuthProvider();
