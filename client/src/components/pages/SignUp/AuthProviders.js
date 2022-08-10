@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -14,26 +14,30 @@ export default function AuthProviders() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    getRedirectResult(Auth)
-        .then((result) => {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            // The signed-in user info.
-            const user = result.user;
-            dispatch(setUser(user.toJSON()));
-            addUser();
-        }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            alert(`${errorCode}: ${errorMessage}`);
-        }
-    );
+    useEffect(() => {
+        getRedirectResult(Auth)
+            .then((result) => {
+                console.log("IN AUTH");
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                dispatch(setUser(user.toJSON()));
+                return addUser();
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                alert(`${errorCode}: ${errorMessage}`);
+            }
+        );
+    }, [])
+
 
     const handleGoogleSignIn = async (e) => {
         const provider = new GoogleAuthProvider();
