@@ -35,8 +35,6 @@ import {
 	updateUserBasedOnUserId,
 	getUserBasedOnFirebaseId
 } from "../../redux/users/service";
-import Stack from "@mui/material/Stack";
-import {LinearProgress} from "@mui/material";
 import LoadingBar from "../LoadingBar";
 
 function descendingComparator(a, b, orderBy) {
@@ -269,6 +267,7 @@ export default function EnhancedTable() {
 				return getMeeting(meetingID);
 			}));
 			setAllMeetings(response);
+			setLoading(false);
 		}
 		if (currentUserID !== "")
 			populateAllMeetingsList();
@@ -281,7 +280,6 @@ export default function EnhancedTable() {
 				return getUserBasedOnFirebaseId(meeting.createdBy);
 			}));
 			setAllCreators(response2);
-			setLoading(false);
 		}
 		populateAllCreatorsList();
 
@@ -296,7 +294,6 @@ export default function EnhancedTable() {
 			return foundCreator.name;
 		}
 		return "";
-
 	}
 
 	const handleRequestSort = (event, property) => {
