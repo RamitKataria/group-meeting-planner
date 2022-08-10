@@ -34,8 +34,6 @@ const validateFirebaseIdToken = async (req, res, next) => {
         return next();
     }
 
-    console.log(req.headers.authorization);
-
     if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
         !(req.cookies && req.cookies.__session)) {
         console.log(
