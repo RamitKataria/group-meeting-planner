@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import AvailabilityPeriod from "./AvailabilityPeriod";
 import { usersAvailableAt, fractionOfUsersAvailableAt } from "./utils";
 
+const locale = 'en-CA';
+
 const AvailabilityTable = ({ 
-    days, timeRange, timeUnit, setUserSlots, selectedSlots, othersAvailability 
+    timeZoneLabel, timeUnit, setUserSlots, selectedSlots, othersAvailability, ranges
 }) => {
     const [selectionMode, setSelectionMode] = useState(null);
     const [currSelection, setCurrSelection] = useState(selectedSlots);
@@ -43,10 +45,10 @@ const AvailabilityTable = ({
         }
     }
 
-    const slots = days.map(() => []);
-    for (let i = 0; i < days.length; i++) {
-        const start = days[i].getTime() + timeRange[0];
-        const end = days[i].getTime() + timeRange[1];
+    const slots  = ranges.map(() => [])
+    for (let i = 0; i < ranges.length; i++) {
+        const start = ranges[i][0].getTime()
+        const end = ranges[i][1].getTime();
         for (
             let slot = start;
             new Date(slot).getTime() <= end - timeUnit;
@@ -56,7 +58,8 @@ const AvailabilityTable = ({
         }
     }
 
-    const colDateFormat = new Intl.DateTimeFormat('default', {month: 'short', day: 'numeric'})
+    const colDateFormat = new Intl.DateTimeFormat('default', {month: 'short', day: 'numeric', timeZone: timeZoneLabel})
+    const timeFormat = new Intl.DateTimeFormat('default', {hour: 'numeric', minute: 'numeric', timeZone: timeZoneLabel})
 
     useEffect(() => {
         setCurrSelection(selectedSlots)
@@ -68,15 +71,15 @@ const AvailabilityTable = ({
             <thead>
             <tr>
                 <th></th>
-                {days.map((d, i) => <th key={i} className='date'>
-                    {colDateFormat.format(d)}</th>)}
+                {ranges.map((range, i) => <th key={i} className='date'>
+                    {colDateFormat.format(range[0])}</th>)}
             </tr>
             </thead>
             <tbody>
                 {slots[0].map((pStart, i) => (
                     <tr key={i}>
-                        <th className="hour">{formatDate(pStart)}</th>
-                        {days.map((d, j) => (
+                        <th className="hour">{timeFormat.format(pStart)}</th>
+                        {ranges.map((range, j) => (
                             <AvailabilityPeriod
                                 key={j}
                                 start={slots[j][i].getTime()}
@@ -94,20 +97,5 @@ const AvailabilityTable = ({
         </table>
     );
 };
-
-function formatDate(date) {
-  return (
-    [
-      padTo2Digits(date.getHours()),
-      padTo2Digits(date.getMinutes()),
-    //   padTo2Digits(date.getSeconds()),
-    ].join(':')
-  );
-}
-
-function padTo2Digits(num) {
-    return num.toString().padStart(2, '0');
-}
-// https://bobbyhadz.com/blog/javascript-format-date-mm-dd-yyyy-hh-mm-ss
 
 export default AvailabilityTable;

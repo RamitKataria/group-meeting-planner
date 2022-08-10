@@ -1,34 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import AvailabilityTable from "./AvailabilityTable";
 import {useDispatch, useSelector} from "react-redux";
 import "../../css/availability-picker.css"
 import { setUserSlots, setOthersAvailability, setGuestDialogue } from "../../redux/availability";
 import { updateAvailAsync } from "../../redux/meetings/thunks";
-import { current } from "@reduxjs/toolkit";
 
-// root/index component of Availability components
-const AvailabilityPicker = ({meetingInfo, currentUser}) => {
+const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel='UTC'}) => {
     const state = useSelector((state) => state.availability);
     const dispatch = useDispatch();
 
-    const [showEveryone, setShowEveryone] = useState(false);
-
-    const toggleShowEveryone = () => {
-      setShowEveryone(!showEveryone);
-    };
-
     const hourInMilliS = 60 * 60 * 1000;
-    
-    // convert meetingInfo to availabilityTable format
-    let dates = state.dates;
-    let timeRange = state.timeRanges[0]; 
+    let newRanges = [];
     if (Array.isArray(meetingInfo.range) && Array.isArray(meetingInfo.range[0])) {
-        dates = meetingInfo.range.map(arr => {
-            const day = new Date(arr[0]);
-            day.setHours(0);
-            return day;
-        })
-        timeRange = meetingInfo.range[0].map(time => new Date(time).getHours())
+       for (let i = 0; i < meetingInfo.range.length; i++) {
+            newRanges.push(meetingInfo.range[i].map(time => new Date(time)))
+        }
     }
     
     
@@ -41,9 +27,9 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
                     if (entry.user && currentUser.uid) { // firebase user
                         return entry.user === currentUser.uid;
                     } 
-                    // TODO: remove
-                    else if (entry.user.displayName && currentUser.displayName) { 
-                        return entry.user.displayName === currentUser.displayName;
+                    // edge case for robustness
+                    else if (entry.userInfo.displayName && currentUser.displayName) { 
+                        return entry.userInfo.displayName === currentUser.displayName;
                     }
                     else return false;
                 }
@@ -91,13 +77,12 @@ const AvailabilityPicker = ({meetingInfo, currentUser}) => {
 
     return (
         <AvailabilityTable
-            days={dates.map(d => new Date(d))}
-            timeRange={timeRange.map(x => x * hourInMilliS)} 
             timeUnit={hourInMilliS}
-            // setUserSlots={(args) => dispatch(setUserSlots(args))}
+            timeZoneLabel={timezoneLabel}
             setUserSlots={changeAvailSlots}
             selectedSlots={state.userAvailability}
             othersAvailability={state.othersAvailability}
+            ranges={newRanges}
         />
     );
 };

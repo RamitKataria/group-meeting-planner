@@ -3,10 +3,6 @@ import { updateAvailAsync } from "./meetings/thunks";
 import { REQUEST_STATE } from './utils';
 
 const init = {
-    dates: [
-        new Date().getTime()
-    ],
-    timeRanges: [[9 , 17]],
     userAvailability: [],
     othersAvailability: [],
     updateAvailability: {
@@ -24,12 +20,6 @@ const availabilitySlice = createSlice({
     reducers: {
         setUserSlots(state, action) {
             state.userAvailability = action.payload;
-        },
-        setDates(state, action) {
-            state.dates = action.payload;
-        },
-        setTimeRanges(state, action) {
-            state.timeRanges = action.payload;
         },
         setOthersAvailability(state, action) {
             state.othersAvailability = action.payload;
