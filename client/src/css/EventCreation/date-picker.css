@@ -13,9 +13,9 @@
     /* --rc-color-primary: purple;
     --rc-color-primary-light: rgba(128, 0, 128, 0.4);
     --rc-color-primary-lighter: rgba(128, 0, 128, 0.1); */
-    --rc-color-accent:purple;
-    --rc-color-accent-light:rgba(128, 0, 128, 0.4);
-    --rc-color-accent-lighter:rgba(128, 0, 128, 0.1);
+    --rc-color-accent: purple;
+    --rc-color-accent-light: rgba(128, 0, 128, 0.4);
+    --rc-color-accent-lighter: rgba(128, 0, 128, 0.1);
     --rc-color-primary: var(--primary-color-main);
     --rc-color-primary-lighter: var(var(--primary-color-light));
     --rc-color-bg-dom-in-range-active: #ecb3901f;
@@ -32,7 +32,7 @@ div.rc_body-days-of-month .rc_body-cell.rc_in_range .rc_body-cell_value:hover {
 
 /* Make all selected dates round */
 
-div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_end .rc_body-cell_value{
+div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_end .rc_body-cell_value {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
@@ -43,10 +43,10 @@ div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_start .rc_
 }
 
 /* Round dates when range is not yet selected */
-div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_mode .rc_body-cell_value{
+div.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_mode .rc_body-cell_value {
     border-radius: 20px;
 }
- 
+
 
 /* Make multi-day selection round */
 div.rc_body-days-of-month .rc_body-cell.rc_selected .rc_body-cell_value {

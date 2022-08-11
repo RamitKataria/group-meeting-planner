@@ -2,13 +2,13 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const guestSlice = createSlice({
     name: "guest",
-    initialState: { value: []},
+    initialState: {value: []},
     reducers: {
         addGuest: (state, action) => {
-                state.value.push(action.payload);
+            state.value.push(action.payload);
         },
     },
 });
 
-export const { addGuest } = guestSlice.actions;
+export const {addGuest} = guestSlice.actions;
 export default guestSlice.reducer;

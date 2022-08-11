@@ -13,7 +13,7 @@ table.availability-table {
     min-height: 24px;
 }
 
-table.availability-table{
+table.availability-table {
     border-collapse: collapse;
     padding: 0;
     user-select: none;

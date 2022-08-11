@@ -11,6 +11,6 @@ router.get('/', function (req, res, next) {
 
 router.use('/meetings', meetingsRouter);
 router.use('/users', usersRouter);
-router.use('/sendmail',emailRouter);
+router.use('/sendmail', emailRouter);
 
 module.exports = router;

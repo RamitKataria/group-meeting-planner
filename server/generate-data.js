@@ -3,6 +3,7 @@ const User = require('./model/user');
 // const User = require('./model');
 const mongoose = require("mongoose");
 const {Types} = require("mongoose");
+
 // const GuestUser = require('./model');
 
 function generateUsers() {
@@ -55,10 +56,10 @@ function generateUsers() {
         name: "Sophie Chai",
         auth: [{}]
     });
-    
+
     // Save a users to db
-    User.insertMany([ramit,tom,may,sophie], function(err) {
-        if(err) {
+    User.insertMany([ramit, tom, may, sophie], function (err) {
+        if (err) {
             console.log(err);
         } else {
             console.log("Save users to (db: meetingsDB, collection: users)!!");
@@ -80,7 +81,7 @@ function generateMeetings() {
         range: [],
         userAvailability: [
             {
-                user: { _id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
+                user: {_id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
                 availableSlots: []
             },
             {
@@ -94,7 +95,7 @@ function generateMeetings() {
         ]
     });
 
-    const boxing = new Meeting(	{
+    const boxing = new Meeting({
         _id: "fc73754b-00be-4fa4-b02f-1efad9cffe05",
         name: "Boxing Day",
         description: "let's go boxing!",
@@ -106,19 +107,19 @@ function generateMeetings() {
         range: [],
         userAvailability: [
             {
-                user: { _id: "d515b255-0691-4778-9796-cb4f41840136" }, // ramit
+                user: {_id: "d515b255-0691-4778-9796-cb4f41840136"}, // ramit
                 availableSlots: []
             },
             {
-                user: { _id: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9" }, // tom
+                user: {_id: "ea0f9ae2-2c9e-40eb-9bae-c40054addcf9"}, // tom
                 availableSlots: []
             },
         ]
     });
 
     // Save a meetings to db
-    Meeting.insertMany([hiking, boxing], function(err) {
-        if(err) {
+    Meeting.insertMany([hiking, boxing], function (err) {
+        if (err) {
             console.log(err);
         } else {
             console.log("Save meetings to (db: meetingsDB, collection: meetings)!!");
@@ -132,10 +133,11 @@ function populate() {
     Meeting.find({}).populate('createdBy').exec(function (err, story) {
         if (err)
             console.log(err);
-       else
-           console.log('Sucess!! :)');
+        else
+            console.log('Sucess!! :)');
     });
 }
+
 function generateData() {
     generateUsers();
     generateMeetings();

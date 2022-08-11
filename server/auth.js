@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { initializeApp, applicationDefault} = require('firebase-admin/app');
-const { getAuth } = require("firebase-admin/auth");
+const {initializeApp, applicationDefault} = require('firebase-admin/app');
+const {getAuth} = require("firebase-admin/auth");
 
 
 const serviceAccountCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS_CONTENT;
@@ -21,7 +21,6 @@ const app = initializeApp({
 });
 
 const auth = getAuth();
-
 
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -49,7 +48,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
         // Read the ID Token from the Authorization header.
         idToken = req.headers.authorization.split('Bearer ')[1];
-    } else if(req.cookies) {
+    } else if (req.cookies) {
         // Read the ID Token from cookie.
         idToken = req.cookies.__session;
     } else {
@@ -79,4 +78,4 @@ const confirmAuthenticated = (req, res, next) => {
     return next();
 }
 
-module.exports = { validateFirebaseIdToken, deleteUserInFirebase, confirmAuthenticated };
+module.exports = {validateFirebaseIdToken, deleteUserInFirebase, confirmAuthenticated};

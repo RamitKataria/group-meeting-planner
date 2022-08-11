@@ -18,7 +18,7 @@ export default function AvailabilityText({listAvailable, listUnavailable}) {
                     <div>{name}</div>
                 ))}
             </div>
-            
+
         </div>
     )
 }

@@ -6,15 +6,14 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSelector, useDispatch } from 'react-redux';
-import {storeMeetingName, resetAddMeeting, storeDescription, setCurrUser} from '../../redux/meetingCreation';
-import { addMeetingsAsync } from "../../redux/meetings/thunks";
-import { creationSliceToInstance } from "./utils";
-import { useEffect } from "react";
-import { REQUEST_STATE } from "../../redux/utils";
+import {useDispatch, useSelector} from 'react-redux';
+import {resetAddMeeting, setCurrUser, storeDescription, storeMeetingName} from '../../redux/meetingCreation';
+import {addMeetingsAsync} from "../../redux/meetings/thunks";
+import {creationSliceToInstance} from "./utils";
+import React, {useEffect} from "react";
+import {REQUEST_STATE} from "../../redux/utils";
 import {useNavigate} from "react-router-dom";
 import {Typography} from "@mui/material";
-import React from "react";
 import Box from "@mui/material/Box";
 
 import Auth from "../../firebaseApp"
@@ -27,7 +26,7 @@ function MeetingCreation() {
     const navigate = useNavigate();
 
     function handleCreateMeeting() {
-        const meetingInstance = creationSliceToInstance(meetingCreationSlice); 
+        const meetingInstance = creationSliceToInstance(meetingCreationSlice);
         dispatch(addMeetingsAsync(meetingInstance));
         console.log(meetingInstance)
     }
@@ -40,7 +39,7 @@ function MeetingCreation() {
         dispatch(storeDescription(e.target.value))
     }
 
-    useEffect( () => {
+    useEffect(() => {
         console.log(addMeeting)
         if (addMeeting.state === REQUEST_STATE.FULFILLED) {
             console.log(addMeeting.response);
@@ -50,10 +49,10 @@ function MeetingCreation() {
     }, [addMeeting, dispatch, navigate])
 
     useEffect(() => {
-		onAuthStateChanged(Auth, (user) => {
-			dispatch(setCurrUser(user.toJSON()));
-		})
-	}, []);
+        onAuthStateChanged(Auth, (user) => {
+            dispatch(setCurrUser(user.toJSON()));
+        })
+    }, []);
 
     return (
         <div>
@@ -70,7 +69,7 @@ function MeetingCreation() {
                     <Grid item xs={6}>
                         <div className="input">
                             <div className="input item padding "></div>
-                                <Input
+                            <Input
                                 value={meetingCreationSlice['name']}
                                 onChange={handleNameChange}
                                 className="input item"
@@ -120,7 +119,8 @@ function MeetingCreation() {
 function CreateMeetingBtn(props) {
     return (
         <div id='confirm'>
-            <Button variant="contained" sx={{mt: 5}} startIcon={<BorderColorIcon />} onClick={props.handleClick} disabled={props.loading}>
+            <Button variant="contained" sx={{mt: 5}} startIcon={<BorderColorIcon/>} onClick={props.handleClick}
+                    disabled={props.loading}>
                 Create Meeting
             </Button>
 
@@ -128,12 +128,12 @@ function CreateMeetingBtn(props) {
                 <CircularProgress
                     size={24}
                     sx={{
-                    // color: green[500],
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    marginTop: '-12px',
-                    marginLeft: '-12px',
+                        // color: green[500],
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
                     }}
                 />
             )}

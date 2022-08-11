@@ -15,19 +15,19 @@
     font-size: 14px;
 }
 
-.form-account input, .form-ics input{
+.form-account input, .form-ics input {
     display: block;
     width: 90%;
     border-radius: 10px;
     font-size: 14px;
     padding: 5px 10px;
-    border:0;
-    box-shadow:0 0 4px rgba(0,0,0,0.3);
+    border: 0;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
     transition: .3s box-shadow;
 }
 
-.form-account input:hover, .form-ics input:hover{
-    box-shadow:0 0 4px rgba(0,0,0,0.7);
+.form-account input:hover, .form-ics input:hover {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
 }
 
 input[type="submit"] {
@@ -40,6 +40,7 @@ input[type="submit"] {
     text-shadow: none;
     margin: 20px 0;
 }
+
 input[type="submit"]:hover {
     background: #52abf6;
     color: #fff;
@@ -60,6 +61,7 @@ input[type="button"] {
     text-shadow: none;
     margin: 20px 25px;
 }
+
 input[type="button"]:hover {
     background: #52abf6;
     color: #fff;

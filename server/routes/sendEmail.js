@@ -7,19 +7,22 @@ router.get('/', function (req, res, next) {
     const sgMail = require('@sendgrid/mail');
 
 
-
     sgMail.setApiKey(process.env.KEY);
 
     const message = {
         to: process.env.email,
         from: process.env.email,
         subject: 'Your meeting is set',
-        text:'Your meeting is set'
+        text: 'Your meeting is set'
     };
 
     sgMail.send(message)
-        .then((response)=>{console.log('Email sent ... ')})
-        .catch((error)=>{console.log(error.message)} );
+        .then((response) => {
+            console.log('Email sent ... ')
+        })
+        .catch((error) => {
+            console.log(error.message)
+        });
 
 
 });

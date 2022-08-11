@@ -60,10 +60,12 @@ export default function ForgotPasswordButton() {
                         name="email"
                         fullWidth
                         variant="standard"
-                        value = {email}
-                        onChange = {(event)=>{setEmail(event.target.value)}}
+                        value={email}
+                        onChange={(event) => {
+                            setEmail(event.target.value)
+                        }}
                     />
-                    <DialogActions sx={{mt:2}}>
+                    <DialogActions sx={{mt: 2}}>
                         <Button onClick={() => setIsOpen(false)}>Cancel</Button>
                         <Button type="submit">Reset</Button>
                     </DialogActions>

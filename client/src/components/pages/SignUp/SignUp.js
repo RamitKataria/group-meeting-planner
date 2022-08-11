@@ -1,4 +1,4 @@
-import {Button, Divider, LinearProgress, Link, TextField} from "@mui/material";
+import {Button, Divider, Link, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -14,12 +14,11 @@ import {createUserWithEmailAndPassword, onAuthStateChanged, updateProfile} from 
 import {useDispatch} from "react-redux";
 import {setUser} from "../../../redux/user";
 import AuthProviders from "./AuthProviders";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { ThemeProvider } from "@mui/material/styles";
+import {ThemeProvider} from "@mui/material/styles";
 import {theme} from '../../../theme/color-theme'
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 import LoadingBar from "../../LoadingBar";
 import {toast, ToastContainer} from "react-toastify";
 import {addUser} from "../../../redux/users/service";
@@ -162,7 +161,7 @@ export default function SignIn() {
                                 </Box>
 
                                 <Divider style={{width: '100%', backgroundColor: 'Gainsboro'}}
-                                         sx={{ borderBottomWidth: 1.5, my: 3 }}/>
+                                         sx={{borderBottomWidth: 1.5, my: 3}}/>
                                 <AuthProviders/>
 
                             </Box>

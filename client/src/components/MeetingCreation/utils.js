@@ -5,15 +5,17 @@ export function roundToHour(timeStr) {
     }
     return time[0] + ':' + time[1];
 }
+
 export function sliderTime(timeStr) {
     return Number(timeStr.split(':')[0]);
 }
+
 export function sliderTimeToString(sliderTime) {
     let timeStr = sliderTime + ':00';
     timeStr = ((sliderTime / 10) < 1) ? ('0' + timeStr) : timeStr;
 
     return timeStr;
-}   
+}
 
 export function creationSliceToInstance(state) {
     const creationTime = new Date();
@@ -42,7 +44,7 @@ function convertToRange(dates, startHour, endHour) {
         const end = new Date(date);
         end.setHours(endHour, 0, 0)
         dateTimeArr.push([
-            start.getTime(), 
+            start.getTime(),
             end.getTime()
         ]);
     }

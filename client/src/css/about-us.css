@@ -3,34 +3,34 @@
     line-height: 2;
 }
 
-.image{
+.image {
     width: 25%;
-    height:auto;
+    height: auto;
     margin: 50px 0;
 }
 
-.left{
+.left {
     float: right;
     margin-left: 30px;
 }
 
-.right1{
+.right1 {
     float: left;
     margin-right: 30px;
 }
 
-.section-left{
+.section-left {
     margin-top: 80px;
-    margin-left:auto;
-    margin-right:0;
+    margin-left: auto;
+    margin-right: 0;
     width: 80%;
     box-shadow: 0 15px 30px 1px grey;
 }
 
-.section-right{
+.section-right {
     margin-top: 80px;
-    margin-left:0;
-    margin-right:auto;
+    margin-left: 0;
+    margin-right: auto;
     width: 80%;
     box-shadow: 0 15px 30px 1px grey;
 }
@@ -57,16 +57,16 @@
 
 @media screen and (max-width: 600px) {
 
-    .mission-div, .team-div, .section-inner-div-left, .section-inner-div-right  {
+    .mission-div, .team-div, .section-inner-div-left, .section-inner-div-right {
         text-align: center;
     }
 
-    .image{
+    .image {
         width: 60%;
         margin: 0;
     }
 
-    .left, .right1{
+    .left, .right1 {
         float: none;
         margin: 0;
     }

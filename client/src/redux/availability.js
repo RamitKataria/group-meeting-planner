@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { updateAvailAsync } from "./meetings/thunks";
-import { REQUEST_STATE } from './utils';
+import {createSlice} from "@reduxjs/toolkit"
+import {updateAvailAsync} from "./meetings/thunks";
+import {REQUEST_STATE} from './utils';
 
 const init = {
     userAvailability: [],
@@ -29,7 +29,7 @@ const availabilitySlice = createSlice({
         },
         setUnavailable(state, action) {
             state.unavailable = action.payload;
-        }, 
+        },
         setGuestDialogue(state, action) {
             state.guestDialogue = action.payload;
         }
@@ -54,5 +54,13 @@ const availabilitySlice = createSlice({
 })
 
 
-export const { setUserSlots, setDates, setTimeRanges, setOthersAvailability, setAvailable, setUnavailable, setGuestDialogue } = availabilitySlice.actions
+export const {
+    setUserSlots,
+    setDates,
+    setTimeRanges,
+    setOthersAvailability,
+    setAvailable,
+    setUnavailable,
+    setGuestDialogue
+} = availabilitySlice.actions
 export default availabilitySlice.reducer

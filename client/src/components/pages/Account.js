@@ -23,263 +23,270 @@ import {useNavigate} from "react-router-dom";
 import Auth from "../../firebaseApp";
 import {onAuthStateChanged, signOut, updateProfile} from "firebase/auth";
 
-import { getUserBasedOnFirebaseId, updateUserBasedOnUserId, deleteUserBasedOnUserId } from "../../redux/users/service";
+import {deleteUserBasedOnUserId, getUserBasedOnFirebaseId, updateUserBasedOnUserId} from "../../redux/users/service";
 
 export default function Account() {
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
-	const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
-	const [currentUserID, setCurrentUserID] = useState("");
-	const [currentUserName, setCurrentUserName] = useState("");
-	const [currentUserEmail, setCurrentUserEmail] = useState("");
+    const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
+    const [logOutDialogOpen, setLogOutDialogOpen] = useState(false);
+    const [currentUserID, setCurrentUserID] = useState("");
+    const [currentUserName, setCurrentUserName] = useState("");
+    const [currentUserEmail, setCurrentUserEmail] = useState("");
 
-	useEffect(() => {
-		onAuthStateChanged(Auth, (user) => {
-			if (user) {
-				const uid = user.uid;
-				setCurrentUserID(uid);
-				setCurrentUserEmail(user.email);
-				setCurrentUserName(user.displayName);
-			}
-		});
-	}, []);
+    useEffect(() => {
+        onAuthStateChanged(Auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                setCurrentUserID(uid);
+                setCurrentUserEmail(user.email);
+                setCurrentUserName(user.displayName);
+            }
+        });
+    }, []);
 
-	useEffect(() => {
-		async function populateAccountInfo() {
-			const response = await getUserBasedOnFirebaseId(currentUserID);
-			setCurrentUser(response);
-		}
-		if (currentUserID !== "")
-			populateAccountInfo();
-	}, [currentUserID]);
+    useEffect(() => {
+        async function populateAccountInfo() {
+            const response = await getUserBasedOnFirebaseId(currentUserID);
+            setCurrentUser(response);
+        }
 
-	const submitAccount = async (event) => {
-		event.preventDefault();
-		const name = event.target.name.value;
-		updateProfile(Auth.currentUser, {
-			displayName: name
-		}).then(() => {
-			toast("👤 Account Updated!");
-		}).catch((error) => {
-			toast("👤 ERR! Account NOT Updated!");
-		});
-	};
+        if (currentUserID !== "")
+            populateAccountInfo();
+    }, [currentUserID]);
 
-	const submitIcs = async (event) => {
-		event.preventDefault();
-		const ics = event.target.ics.value;
-		const content = {"ics": ics};
-		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": content});
-		setCurrentUser(response);
-		toast("📅 Calendar Updated!");
-	};
+    const submitAccount = async (event) => {
+        event.preventDefault();
+        const name = event.target.name.value;
+        updateProfile(Auth.currentUser, {
+            displayName: name
+        }).then(() => {
+            toast("👤 Account Updated!");
+        }).catch((error) => {
+            toast("👤 ERR! Account NOT Updated!");
+        });
+    };
 
-	const deleteCalendar = async (event) => {
-		event.preventDefault();
-		const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"ics": ""}});
-		setCurrentUser(response);
-		toast("🗑️ Calendar Deleted!");
-	};
+    const submitIcs = async (event) => {
+        event.preventDefault();
+        const ics = event.target.ics.value;
+        const content = {"ics": ics};
+        const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": content});
+        setCurrentUser(response);
+        toast("📅 Calendar Updated!");
+    };
 
-	const deleteAccount = async () => {
-		setDeleteAccountDialogOpen(false);
-		await deleteUserBasedOnUserId(currentUserID);
-		alert("Account Deleted!");
-	};
+    const deleteCalendar = async (event) => {
+        event.preventDefault();
+        const response = await updateUserBasedOnUserId({"userId": currentUserID, "updateContents": {"ics": ""}});
+        setCurrentUser(response);
+        toast("🗑️ Calendar Deleted!");
+    };
 
-	const handleLogout = () => {
-		signOut(Auth).then(() => {
-			navigate('../');
-		}).catch((error) => {
-			// An error happened.
-			const errorCode = error.code;
-			const errorMessage = error.message;
-			alert(`${errorCode}: ${errorMessage}`);
-		});
-	}
+    const deleteAccount = async () => {
+        setDeleteAccountDialogOpen(false);
+        await deleteUserBasedOnUserId(currentUserID);
+        alert("Account Deleted!");
+    };
 
-	const [currentUser, setCurrentUser] = useState({});
+    const handleLogout = () => {
+        signOut(Auth).then(() => {
+            navigate('../');
+        }).catch((error) => {
+            // An error happened.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(`${errorCode}: ${errorMessage}`);
+        });
+    }
 
-	return (
-		<div>
-			<Typography
-				sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
-				variant="h4"
-				component="div"
-			>
-				Account Settings
-			</Typography>
-			<ToastContainer
-				position="top-right"
-				autoClose={3000}
-				hideProgressBar
-				newestOnTop
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-			/>
+    const [currentUser, setCurrentUser] = useState({});
 
-			<Box sx={{mx: "auto", my: 5, width: "70%"}}>
-				<Grid
-					container
-					spacing={4}
-					justifyContent="space-between"
-					alignItems="center"
-				>
+    return (
+        <div>
+            <Typography
+                sx={{flex: '1 1 100%', fontWeight: 'bold', my: 5, "textAlign": "center"}}
+                variant="h4"
+                component="div"
+            >
+                Account Settings
+            </Typography>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
 
-					<Grid item lg={6} sm={12} >
-						<Paper elevation={8} >
-							<Box sx={{pt: 3, pb: 10, px: 5}}>
-								<form className="form-account" onSubmit={submitAccount}>
-									<label htmlFor="name">Name</label>
-									<input
-										name="name"
-										defaultValue={currentUserName}
-										type="text"
-										required
-									/>
+            <Box sx={{mx: "auto", my: 5, width: "70%"}}>
+                <Grid
+                    container
+                    spacing={4}
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
 
-									<label htmlFor="email">Email</label>
-									<input
-										name="email"
-										defaultValue={currentUserEmail}
-										type="email"
-										required
-										disabled
-									/>
+                    <Grid item lg={6} sm={12}>
+                        <Paper elevation={8}>
+                            <Box sx={{pt: 3, pb: 10, px: 5}}>
+                                <form className="form-account" onSubmit={submitAccount}>
+                                    <label htmlFor="name">Name</label>
+                                    <input
+                                        name="name"
+                                        defaultValue={currentUserName}
+                                        type="text"
+                                        required
+                                    />
 
-									<label htmlFor="oldPassword">Old Password</label>
-									<input
-										name="oldPassword"
-										placeholder="old password"
-										type="password"
-										disabled
-									/>
+                                    <label htmlFor="email">Email</label>
+                                    <input
+                                        name="email"
+                                        defaultValue={currentUserEmail}
+                                        type="email"
+                                        required
+                                        disabled
+                                    />
 
-									<label htmlFor="newPassword">New Password</label>
-									<input
-										name="newPassword"
-										placeholder="new password"
-										type="password"
-										disabled
-									/>
-									<br/>
+                                    <label htmlFor="oldPassword">Old Password</label>
+                                    <input
+                                        name="oldPassword"
+                                        placeholder="old password"
+                                        type="password"
+                                        disabled
+                                    />
 
-									<Button variant="contained" startIcon={<SaveIcon />}
-											type="submit"
-											sx={{mt: 2}}>
-										Update
-									</Button>
+                                    <label htmlFor="newPassword">New Password</label>
+                                    <input
+                                        name="newPassword"
+                                        placeholder="new password"
+                                        type="password"
+                                        disabled
+                                    />
+                                    <br/>
 
-								</form>
-							</Box>
-						</Paper>
-					</Grid>
-					<Grid item lg={6} sm={12}>
-						<Stack
-							direction="column"
-							justifyContent="space-between"
-							spacing={4}
-						>
-							<Paper elevation={8}>
-								<Box sx={{pt: 3, pb: 10, px: 5}}>
-									<form className="form-ics" onSubmit={submitIcs}>
-										<label htmlFor="ics">ICS Link</label>
-										<input
-											name="ics"
-											defaultValue={currentUser.ics}
-											type="text"
-											required
-										/>
-										<Stack
-											direction="column"
-											justifyContent="center"
-											alignItems="center"
-											spacing={2}
-										>
-											<Button variant="contained" startIcon={<SaveIcon />} type="submit" sx={{mt: 5}}>
-												Update
-											</Button>
-											<Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={deleteCalendar}>
-												Delete Calendar
-											</Button>
-										</Stack>
+                                    <Button variant="contained" startIcon={<SaveIcon/>}
+                                            type="submit"
+                                            sx={{mt: 2}}>
+                                        Update
+                                    </Button>
 
-									</form>
-								</Box>
-							</Paper>
-							<Paper elevation={8}>
-								<Box sx={{pt: 3, pb: 7, px: 5}}>
-									<form>
-										<Stack
-											direction="column"
-											justifyContent="center"
-											alignItems="center"
-											spacing={2}
-										>
-											<Button variant="contained" color="error" startIcon={<LogoutIcon />} onClick={() => setLogOutDialogOpen(true)} sx={{mt: 5}}>
-												Log out
-											</Button>
-											<Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} onClick={() => setDeleteAccountDialogOpen(true)}>
-												Delete Account
-											</Button>
+                                </form>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    <Grid item lg={6} sm={12}>
+                        <Stack
+                            direction="column"
+                            justifyContent="space-between"
+                            spacing={4}
+                        >
+                            <Paper elevation={8}>
+                                <Box sx={{pt: 3, pb: 10, px: 5}}>
+                                    <form className="form-ics" onSubmit={submitIcs}>
+                                        <label htmlFor="ics">ICS Link</label>
+                                        <input
+                                            name="ics"
+                                            defaultValue={currentUser.ics}
+                                            type="text"
+                                            required
+                                        />
+                                        <Stack
+                                            direction="column"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            spacing={2}
+                                        >
+                                            <Button variant="contained" startIcon={<SaveIcon/>} type="submit"
+                                                    sx={{mt: 5}}>
+                                                Update
+                                            </Button>
+                                            <Button variant="contained" color="error" startIcon={<DeleteIcon/>}
+                                                    onClick={deleteCalendar}>
+                                                Delete Calendar
+                                            </Button>
+                                        </Stack>
 
-											<Dialog
-												open={deleteAccountDialogOpen}
-												onClose={() => setDeleteAccountDialogOpen(false)}
-												aria-labelledby="alert-dialog-title"
-												aria-describedby="alert-dialog-description"
-											>
-												<DialogTitle id="alert-dialog-title">
-													{"Are you sure you want to delete this account?"}
-												</DialogTitle>
-												<DialogContent>
-													<DialogContentText id="alert-dialog-description">
-														There's no turning back !
-													</DialogContentText>
-												</DialogContent>
-												<DialogActions>
-													<Button onClick={() => setDeleteAccountDialogOpen(false)} autoFocus>Cancel</Button>
-													<Button onClick={deleteAccount}>
-														Delete
-													</Button>
-												</DialogActions>
-											</Dialog>
+                                    </form>
+                                </Box>
+                            </Paper>
+                            <Paper elevation={8}>
+                                <Box sx={{pt: 3, pb: 7, px: 5}}>
+                                    <form>
+                                        <Stack
+                                            direction="column"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            spacing={2}
+                                        >
+                                            <Button variant="contained" color="error" startIcon={<LogoutIcon/>}
+                                                    onClick={() => setLogOutDialogOpen(true)} sx={{mt: 5}}>
+                                                Log out
+                                            </Button>
+                                            <Button variant="contained" color="error" startIcon={<DeleteForeverIcon/>}
+                                                    onClick={() => setDeleteAccountDialogOpen(true)}>
+                                                Delete Account
+                                            </Button>
 
-											<Dialog
-												open={logOutDialogOpen}
-												onClose={() => setLogOutDialogOpen(false)}
-												aria-labelledby="alert-dialog-title"
-												aria-describedby="alert-dialog-description"
-											>
-												<DialogTitle id="alert-dialog-title">
-													{"Are you sure you want to log out?"}
-												</DialogTitle>
-												<DialogContent>
-													<DialogContentText id="alert-dialog-description">
-														You can log back in after !
-													</DialogContentText>
-												</DialogContent>
-												<DialogActions>
-													<Button onClick={() => setLogOutDialogOpen(false)} autoFocus>Cancel</Button>
-													<Button onClick={handleLogout}>
-														Log out
-													</Button>
-												</DialogActions>
-											</Dialog>
+                                            <Dialog
+                                                open={deleteAccountDialogOpen}
+                                                onClose={() => setDeleteAccountDialogOpen(false)}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">
+                                                    {"Are you sure you want to delete this account?"}
+                                                </DialogTitle>
+                                                <DialogContent>
+                                                    <DialogContentText id="alert-dialog-description">
+                                                        There's no turning back !
+                                                    </DialogContentText>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={() => setDeleteAccountDialogOpen(false)}
+                                                            autoFocus>Cancel</Button>
+                                                    <Button onClick={deleteAccount}>
+                                                        Delete
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
 
-										</Stack>
-									</form>
-								</Box>
-							</Paper>
-						</Stack>
-					</Grid>
-				</Grid>
-			</Box>
-		</div>
+                                            <Dialog
+                                                open={logOutDialogOpen}
+                                                onClose={() => setLogOutDialogOpen(false)}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">
+                                                    {"Are you sure you want to log out?"}
+                                                </DialogTitle>
+                                                <DialogContent>
+                                                    <DialogContentText id="alert-dialog-description">
+                                                        You can log back in after !
+                                                    </DialogContentText>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={() => setLogOutDialogOpen(false)}
+                                                            autoFocus>Cancel</Button>
+                                                    <Button onClick={handleLogout}>
+                                                        Log out
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
 
-	);
+                                        </Stack>
+                                    </form>
+                                </Box>
+                            </Paper>
+                        </Stack>
+                    </Grid>
+                </Grid>
+            </Box>
+        </div>
+
+    );
 }

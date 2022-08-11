@@ -1,5 +1,5 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { actionTypes } from './actionTypes';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {actionTypes} from './actionTypes';
 import MeetingService from './service';
 
 export const getMeetingAsync = createAsyncThunk(
@@ -10,10 +10,10 @@ export const getMeetingAsync = createAsyncThunk(
 );
 
 export const addMeetingsAsync = createAsyncThunk(
-  actionTypes.ADD_MEETING,
-  async (meeting) => {
-    return await MeetingService.addMeeting(meeting);
-  }
+    actionTypes.ADD_MEETING,
+    async (meeting) => {
+        return await MeetingService.addMeeting(meeting);
+    }
 );
 
 export const deleteMeetingAsync = createAsyncThunk(

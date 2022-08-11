@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import '../../css/EventCreation/time-range-picker.css';
 import TimeSlider from './TimeSlider';
-import {storeStartTime, storeEndTime} from '../../redux/meetingCreation'
-import { useSelector, useDispatch } from 'react-redux';
-import { sliderTimeToString, sliderTime, roundToHour } from './utils';
+import {storeEndTime, storeStartTime} from '../../redux/meetingCreation'
+import {useDispatch, useSelector} from 'react-redux';
+import {roundToHour, sliderTime, sliderTimeToString} from './utils';
 import Paper from '@mui/material/Paper';
 import Box from "@mui/material/Box";
 
@@ -20,7 +20,7 @@ function TimeRangePicker() {
     const [startTime, setStartTime] = useState(sliderTimeToString(meetingCreationStore['startTime']));
     const [endTime, setEndTime] = useState(sliderTimeToString(meetingCreationStore['endTime']));
     const [sliderNums, setSliderNums] = useState([meetingCreationStore['startTime'], meetingCreationStore['endTime']]);
-    
+
     function handleSliderChange(event, newValues) {
         setSliderNums(newValues);
         if (sliderNums[0] != newValues[0]) {
@@ -33,16 +33,16 @@ function TimeRangePicker() {
     }
 
     function handleStartTimeChange(e) {
-        const targetValue = sliderTime(e.target.value) < sliderTime(endTime) ? 
-        e.target.value : endTime; 
+        const targetValue = sliderTime(e.target.value) < sliderTime(endTime) ?
+            e.target.value : endTime;
         setSliderNums([sliderTime(targetValue), sliderNums[1]])
         setStartTime(roundToHour(targetValue))
         dispatch(storeStartTime(sliderTime(targetValue)))
     }
 
     function handleEndTimeChange(e) {
-        const targetValue = sliderTime(e.target.value) > sliderTime(startTime) ? 
-        e.target.value : startTime; 
+        const targetValue = sliderTime(e.target.value) > sliderTime(startTime) ?
+            e.target.value : startTime;
         setSliderNums([sliderNums[0], sliderTime(targetValue)])
         setEndTime(roundToHour(targetValue))
         dispatch(storeEndTime(sliderTime(targetValue)))
@@ -57,26 +57,26 @@ function TimeRangePicker() {
                     <div className='time-field'>
                         <label className="time-label">No Earlier Than: </label>
                         <input type='time' value={startTime}
-                            onChange={handleStartTimeChange}
-                            step={3600} />
+                               onChange={handleStartTimeChange}
+                               step={3600}/>
                         {/* <TimePicker value={startTime} onChange={setStartTime} disableClock={true}/> */}
                     </div>
                     <div className='time-field'>
                         <label className="time-label">No Later Than: </label>
                         <input type='time' value={endTime}
-                            onChange={handleEndTimeChange}
-                            step={3600} />
+                               onChange={handleEndTimeChange}
+                               step={3600}/>
                         {/* <TimePicker value={endTime} onChange={setEndTime} disableClock={true}/> */}
                     </div>
                     <TimeSlider
-                    sliderNums = {sliderNums}
-                    handleSliderChange={handleSliderChange}
-                    sliderMarks = {sliderMarks}/>
+                        sliderNums={sliderNums}
+                        handleSliderChange={handleSliderChange}
+                        sliderMarks={sliderMarks}/>
                 </div>
             </Paper>
             <TimeRangeText
-            startTime={startTime}
-            endTime={endTime}/>
+                startTime={startTime}
+                endTime={endTime}/>
         </Box>
     );
 }
@@ -85,7 +85,7 @@ function TimeRangeText(props) {
 
     return (
         <div id="time-range-text">
-            { (props.startTime !== null & props.endTime !== null) ? (
+            {(props.startTime !== null & props.endTime !== null) ? (
                 <div>
                     <p>Between <strong>{props.startTime}</strong> and <strong>{props.endTime}</strong></p>
                 </div>

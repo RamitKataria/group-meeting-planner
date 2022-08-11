@@ -2,22 +2,22 @@ import React, {useEffect} from "react";
 import AvailabilityTable from "./AvailabilityTable";
 import {useDispatch, useSelector} from "react-redux";
 import "../../css/availability-picker.css"
-import { setUserSlots, setOthersAvailability, setGuestDialogue } from "../../redux/availability";
-import { updateAvailAsync } from "../../redux/meetings/thunks";
+import {setGuestDialogue, setOthersAvailability, setUserSlots} from "../../redux/availability";
+import {updateAvailAsync} from "../../redux/meetings/thunks";
 
-const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel='UTC'}) => {
+const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel = 'UTC'}) => {
     const state = useSelector((state) => state.availability);
     const dispatch = useDispatch();
 
     const hourInMilliS = 60 * 60 * 1000;
     let newRanges = [];
     if (Array.isArray(meetingInfo.range) && Array.isArray(meetingInfo.range[0])) {
-       for (let i = 0; i < meetingInfo.range.length; i++) {
+        for (let i = 0; i < meetingInfo.range.length; i++) {
             newRanges.push(meetingInfo.range[i].map(time => new Date(time)))
         }
     }
-    
-    
+
+
     useEffect(() => {
         // update userAvailability & save in state
         if (Array.isArray(meetingInfo.userAvailability) && currentUser) {
@@ -26,12 +26,11 @@ const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel='UTC'}) => 
                     // check if availabilty entry belongs to current user
                     if (entry.user && currentUser.uid) { // firebase user
                         return entry.user === currentUser.uid;
-                    } 
-                    // edge case for robustness
-                    else if (entry.userInfo.displayName && currentUser.displayName) { 
-                        return entry.userInfo.displayName === currentUser.displayName;
                     }
-                    else return false;
+                    // edge case for robustness
+                    else if (entry.userInfo.displayName && currentUser.displayName) {
+                        return entry.userInfo.displayName === currentUser.displayName;
+                    } else return false;
                 }
             )
             if (currentUserAvail) {
@@ -50,8 +49,8 @@ const AvailabilityPicker = ({meetingInfo, currentUser, timezoneLabel='UTC'}) => 
                     return {
                         ...entry,
                         availableSlots: entry.availableSlots.map(d => new Date(d).getTime())
-                    }   
-            });
+                    }
+                });
             dispatch(setOthersAvailability(othersAvailability));
         }
     }, [meetingInfo, currentUser])

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import AvailabilityPeriod from "./AvailabilityPeriod";
-import { usersAvailableAt, fractionOfUsersAvailableAt } from "./utils";
+import {fractionOfUsersAvailableAt, usersAvailableAt} from "./utils";
 
 const locale = 'en-CA';
 
-const AvailabilityTable = ({ 
-    timeZoneLabel, timeUnit, setUserSlots, selectedSlots, othersAvailability, ranges
-}) => {
+const AvailabilityTable = ({
+                               timeZoneLabel, timeUnit, setUserSlots, selectedSlots, othersAvailability, ranges
+                           }) => {
     const [selectionMode, setSelectionMode] = useState(null);
     const [currSelection, setCurrSelection] = useState(selectedSlots);
 
@@ -31,8 +31,8 @@ const AvailabilityTable = ({
     const endSelection = (e) => {
         setSelectionMode(null);
         // only update when the list is updated
-        if (currSelection.length !== selectedSlots.length || 
-            !currSelection.every(e => selectedSlots.includes(e))) {  
+        if (currSelection.length !== selectedSlots.length ||
+            !currSelection.every(e => selectedSlots.includes(e))) {
             setUserSlots(currSelection);
         }
     }
@@ -45,7 +45,7 @@ const AvailabilityTable = ({
         }
     }
 
-    const slots  = ranges.map(() => [])
+    const slots = ranges.map(() => [])
     for (let i = 0; i < ranges.length; i++) {
         const start = ranges[i][0].getTime()
         const end = ranges[i][1].getTime();
@@ -67,7 +67,7 @@ const AvailabilityTable = ({
 
     return (
         <table onMouseDown={startSelection} onMouseUp={endSelection} onMouseLeave={endSelection}
-        className="availability-table">
+               className="availability-table">
             <thead>
             <tr>
                 <th></th>
@@ -76,23 +76,23 @@ const AvailabilityTable = ({
             </tr>
             </thead>
             <tbody>
-                {slots[0].map((pStart, i) => (
-                    <tr key={i}>
-                        <th className="hour">{timeFormat.format(pStart)}</th>
-                        {ranges.map((range, j) => (
-                            <AvailabilityPeriod
-                                key={j}
-                                start={slots[j][i].getTime()}
-                                duration={1}
-                                availability={1}
-                                processSelection={slotHandleMouseEnter}
-                                selected={currSelection.includes(slots[j][i].getTime())}
-                                fractionAvailable={fractionOfUsersAvailableAt(slots[j][i].getTime(), othersAvailability)}
-                                availableList={usersAvailableAt(slots[j][i].getTime(), othersAvailability)}
-                            />
-                        ))}
-                    </tr>
-                ))}
+            {slots[0].map((pStart, i) => (
+                <tr key={i}>
+                    <th className="hour">{timeFormat.format(pStart)}</th>
+                    {ranges.map((range, j) => (
+                        <AvailabilityPeriod
+                            key={j}
+                            start={slots[j][i].getTime()}
+                            duration={1}
+                            availability={1}
+                            processSelection={slotHandleMouseEnter}
+                            selected={currSelection.includes(slots[j][i].getTime())}
+                            fractionAvailable={fractionOfUsersAvailableAt(slots[j][i].getTime(), othersAvailability)}
+                            availableList={usersAvailableAt(slots[j][i].getTime(), othersAvailability)}
+                        />
+                    ))}
+                </tr>
+            ))}
             </tbody>
         </table>
     );

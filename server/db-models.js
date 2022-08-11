@@ -6,9 +6,9 @@ mongoose.connect("mongodb+srv://" + process.env.ATLAS_USERNAME + ":" + process.e
 
 const MeetingSchema = new mongoose.Schema({
     id: {
-      type: String,
-      index: true,
-      unique: true
+        type: String,
+        index: true,
+        unique: true
     },
     name: {
         type: String,
@@ -17,11 +17,11 @@ const MeetingSchema = new mongoose.Schema({
     description: String,
     dateTimeCreated: Date,
     dateTimeUpdated: Date,
-    createdBy: { type: String, ref: 'User' },
+    createdBy: {type: String, ref: 'User'},
     range: [[Date]],
     userAvailability: [{
-        id : false ,
-        user:  { type: String, ref: 'User' },
+        id: false,
+        user: {type: String, ref: 'User'},
         availableSlots: [Date]
     }]
 });
@@ -30,7 +30,7 @@ const Meeting = mongoose.model('Meeting', MeetingSchema);
 
 const UserSchema = new mongoose.Schema({
     ics: String,
-    meetings: [ { type: String, ref: 'Meeting' }],
+    meetings: [{type: String, ref: 'Meeting'}],
     firebaseUID: {
         type: String,
         index: true,
@@ -49,4 +49,4 @@ function removeForbiddenFields(obj) {
     return retval;
 }
 
-module.exports = { Meeting, User, removeForbiddenFields }
+module.exports = {Meeting, User, removeForbiddenFields}

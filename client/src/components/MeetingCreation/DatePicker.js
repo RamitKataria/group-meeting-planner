@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState} from 'react';
 
-import { Calendar } from '@natscale/react-calendar';
+import {Calendar} from '@natscale/react-calendar';
 import "../../css/EventCreation/date-picker.css";
 import '@natscale/react-calendar/dist/main.css';
 import ViewSwitch from './ViewSwitch';
 import {storeDates} from '../../redux/meetingCreation'
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Box from "@mui/material/Box";
 
 export default function DatePicker() {
@@ -16,8 +16,8 @@ export default function DatePicker() {
 
     const changeMultiDates = useCallback(
         (val) => {
-        setMultiDates(val);
-        dispatch(storeDates(val.map(e=>e.toDateString())));
+            setMultiDates(val);
+            dispatch(storeDates(val.map(e => e.toDateString())));
         },
         [dispatch]
     )
@@ -39,7 +39,7 @@ export default function DatePicker() {
 
     function onSwitch(newState) {
         if (multiDateView & multiDates.length > 0) {
-            setRangeDates(multiDatesToRange(multiDates)); 
+            setRangeDates(multiDatesToRange(multiDates));
         }
         setView(newState);
     }
@@ -49,16 +49,17 @@ export default function DatePicker() {
             <h2>What days might work? </h2>
             <Box sx={{minHeight: 35}}>
                 <ViewSwitch
-                checked = {multiDateView}
-                handleSwitch = {onSwitch}
+                    checked={multiDateView}
+                    handleSwitch={onSwitch}
                 />
             </Box>
             <Calendar size={360}
-            fontSize={18}
-            isRangeSelector={!multiDateView}
-            noPadRangeCell={!multiDateView}
-            isMultiSelector={multiDateView}
-            value={multiDateView ? multiDates : rangeDates} onChange={multiDateView ? onMultiDateChange : onRangeChange} />
+                      fontSize={18}
+                      isRangeSelector={!multiDateView}
+                      noPadRangeCell={!multiDateView}
+                      isMultiSelector={multiDateView}
+                      value={multiDateView ? multiDates : rangeDates}
+                      onChange={multiDateView ? onMultiDateChange : onRangeChange}/>
             <Box sx={{minHeight: 20}}>
                 <DateSelectionText
                     multiDateView={multiDateView}
@@ -102,12 +103,13 @@ function DateSelectionText(props) {
 
     return (
         <div>
-            { (props.multiDates.length > 1) ? (
+            {(props.multiDates.length > 1) ? (
                 <div>
-                    <p>Between <strong>{range[0].toDateString()}</strong> and <strong>{range[1].toDateString()}</strong></p>
+                    <p>Between <strong>{range[0].toDateString()}</strong> and <strong>{range[1].toDateString()}</strong>
+                    </p>
                 </div>
             ) : <p></p>}
-            { (props.multiDates.length > 0 & props.multiDates.length <= 1) ? (
+            {(props.multiDates.length > 0 & props.multiDates.length <= 1) ? (
                 <div>
                     <p>On <strong>{range[0].toDateString()}</strong></p>
                 </div>

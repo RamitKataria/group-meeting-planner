@@ -3,12 +3,11 @@ import {Button} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Stack from "@mui/material/Stack";
-import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";
+import {getRedirectResult, GoogleAuthProvider, signInWithRedirect} from "firebase/auth";
 import Auth from "../../../firebaseApp";
 import {setUser} from "../../../redux/user";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {addUser} from "../../../redux/users/service";
 
 export default function AuthProviders() {
     const dispatch = useDispatch();
@@ -50,14 +49,16 @@ export default function AuthProviders() {
             alignItems="center"
             spacing={2}
         >
-            <Button variant="outlined" startIcon={<GoogleIcon/>} onClick={handleGoogleSignIn} >
+            <Button variant="outlined" startIcon={<GoogleIcon/>} onClick={handleGoogleSignIn}>
                 Continue with Google
             </Button>
 
-            <Button variant="outlined" startIcon={<GitHubIcon/>} onClick={() => {navigate('/')}} >
+            <Button variant="outlined" startIcon={<GitHubIcon/>} onClick={() => {
+                navigate('/')
+            }}>
                 Continue with GitHub
             </Button>
-         </Stack>
+        </Stack>
     )
 }
 

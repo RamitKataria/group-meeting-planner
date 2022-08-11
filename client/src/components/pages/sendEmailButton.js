@@ -1,29 +1,29 @@
- import React from "react";
+import React from "react";
 import {Button} from "@mui/material";
 
 
-
-
-
-export default function SendEmail(){
-    function sendMail(){
+export default function SendEmail() {
+    function sendMail() {
         fetch(process.env.REACT_APP_SERVER_URL + '/sendmail', {
             method: 'GET'
-        }).then(()=>{
+        }).then(() => {
             console.log("email sent successfully!")
-        }).catch((error)=>{console.log(error.message)});
+        }).catch((error) => {
+            console.log(error.message)
+        });
     }
 
-    return(
+    return (
         <div>
             <Button variant="text"
-            onClick= {()=>{sendMail()}} >
+                    onClick={() => {
+                        sendMail()
+                    }}>
                 SendEmail
             </Button>
         </div>
 
     );
-
 
 
 }

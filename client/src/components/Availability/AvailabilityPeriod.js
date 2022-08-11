@@ -1,10 +1,10 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import { setAvailable, setUnavailable } from "../../redux/availability";
+import {setAvailable, setUnavailable} from "../../redux/availability";
 
-const AvailabilityPeriod = ({ 
-    start, duration, processSelection, selected, fractionAvailable, availableList 
-}) => {
+const AvailabilityPeriod = ({
+                                start, duration, processSelection, selected, fractionAvailable, availableList
+                            }) => {
     const dispatch = useDispatch();
 
     function availabilityClass(fraction) {
@@ -32,18 +32,18 @@ const AvailabilityPeriod = ({
 
     const cellColour = {
         backgroundColor: selected ?
-        '#5fa2db' : 
-        'rgb(236, 120, 97, ' + availAlpha + ')'
+            '#5fa2db' :
+            'rgb(236, 120, 97, ' + availAlpha + ')'
     }
-    
+
     return (
         <>
-            <td 
-            className={"availability-table-cell" 
-                + (selected ? " selected" : "")}
-            onMouseEnter={onEnter} onMouseLeave={onLeave}
-            id={start}
-            style={cellColour}>
+            <td
+                className={"availability-table-cell"
+                    + (selected ? " selected" : "")}
+                onMouseEnter={onEnter} onMouseLeave={onLeave}
+                id={start}
+                style={cellColour}>
             </td>
         </>
     );

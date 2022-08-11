@@ -13,7 +13,7 @@ div.time-field {
     display: inline-block;
 }
 
-.time-field input[type="time"]{
+.time-field input[type="time"] {
     font-family: 'Kdam Thmor Pro', sans-serif;
     width: 100px;
 }

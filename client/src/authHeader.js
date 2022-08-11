@@ -8,4 +8,4 @@ async function getAuthHeader() {
     return ''
 }
 
-export { getAuthHeader }
+export {getAuthHeader}

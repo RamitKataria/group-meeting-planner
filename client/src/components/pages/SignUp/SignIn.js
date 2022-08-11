@@ -1,4 +1,4 @@
-import {Button, Divider, FormControlLabel, LinearProgress, Link, TextField} from "@mui/material";
+import {Button, Divider, Link, TextField} from "@mui/material";
 import ForgotPasswordButton from "./ForgotPasswordButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -14,13 +14,12 @@ import {useDispatch} from "react-redux";
 import {onAuthStateChanged, signInWithEmailAndPassword} from "firebase/auth";
 import {setUser} from "../../../redux/user";
 import AuthProviders from "./AuthProviders";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {ThemeProvider } from "@mui/material/styles";
+import {ThemeProvider} from "@mui/material/styles";
 import {theme} from '../../../theme/color-theme'
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 import Auth from "../../../firebaseApp";
 import {toast, ToastContainer} from "react-toastify";
 import LoadingBar from "../../LoadingBar";
@@ -80,10 +79,10 @@ export default function SignIn() {
                                 draggable
                                 pauseOnHover
                             />
-                            <Box component="div" sx={{px:7, py: 7}}>
+                            <Box component="div" sx={{px: 7, py: 7}}>
                                 <Box component="div" sx={{justifyContent: "center", display: "flex", mb: 2}}>
                                     <Avatar sx={{bgcolor: 'black'}}>
-                                        <LockOutlinedIcon />
+                                        <LockOutlinedIcon/>
                                     </Avatar>
                                 </Box>
                                 <Typography
@@ -120,21 +119,22 @@ export default function SignIn() {
                                         id="password"
                                         autoComplete="current-password"
                                         InputProps={{
-                                            endAdornment:(
+                                            endAdornment: (
                                                 <InputAdornment position="end">
                                                     <IconButton
                                                         aria-label="toggle password visibility"
                                                         onClick={handleClickShowPassword}
                                                         edge="end"
                                                     >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
                                                     </IconButton>
                                                 </InputAdornment>
                                             )
                                         }}
                                     />
 
-                                    <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit" sx={{mt: 3}}>
+                                    <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon/>} type="submit"
+                                            sx={{mt: 3}}>
                                         Log in
                                     </Button>
                                 </Stack>
@@ -142,12 +142,13 @@ export default function SignIn() {
 
                                 <Box display="flex" justifyContent="space-between" sx={{mt: 2}}>
                                     <ForgotPasswordButton/>
-                                    <Link href="../signup" variant="body2" >
+                                    <Link href="../signup" variant="body2">
                                         Don't have an account?
                                     </Link>
                                 </Box>
 
-                                <Divider style={{width:'100%', backgroundColor:'Gainsboro'}} sx={{ borderBottomWidth: 1.5, my: 3 }}/>
+                                <Divider style={{width: '100%', backgroundColor: 'Gainsboro'}}
+                                         sx={{borderBottomWidth: 1.5, my: 3}}/>
                                 <AuthProviders/>
 
                             </Box>
